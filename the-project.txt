@@ -1,0 +1,31 @@
+1. Dashboard for Gordian Knot. 
+   a.| Projects, Bugs, To-do list
+        --- CRUD operations with Backend
+        --- Validate addtask field, warn user of imputOpen/cancel button
+        --- Sidebar has to stick to right side Or top?. 
+   b.| Invoices, Save, Download-pdf -- Ok
+   c.| Clientes 
+   d.| Analytics from Google and Search Console
+   e.| Chat
+        --- With IT Academy is done
+   f.| Financial following
+   g.| API de correos
+
+2. Authorization
+   a.| Login/Logout with JWT 
+        --- With It-Academy / FullStack Open 5 is done
+   b.| Routing with Authorization
+  
+
+
+
+3. Examples and Tutorial
+   a.| Dashboard Example to Start with
+          https://github.com/KaterinaLupacheva/dashboard-layout/
+   b.| DragAndDrop Feature - https://egghead.io/lessons/react-designate-control-of-dragging-for-a-react-beautiful-dnd-draggable-with-draghandleprops
+        https://medium.com/@jtonti/basic-kanban-board-in-react-593b14300a74
+   c.| Clean Architecture Deep Dive
+   https://betterprogramming.pub/node-clean-architecture-deep-dive-ab68e523554b     
+
+
+4. What is react ref and inner ref all about. 
