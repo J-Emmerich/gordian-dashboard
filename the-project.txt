@@ -1,10 +1,24 @@
 1. Dashboard for Gordian Knot. 
    a.| Projects, Bugs, To-do list
         --- CRUD operations with Backend
+                 - Delete and Put are missing
         --- Validate addtask field, warn user of imputOpen/cancel button
         --- Sidebar has to stick to right side Or top?. 
-   b.| Invoices, Save, Download-pdf -- Ok
-   c.| Clientes 
+        --- Autofocus when adding card and tasks
+        --- Change background color when adding
+        --- Create event that points when is leaving the page without saving
+        --- Create autosave functionality
+        --- Add Projects functionality
+        --- Add Calendar functionality
+        
+   b.| Invoices, Save, Download-pdf 
+          --- Add it to the dashboard
+          --- Preview should not be enabled
+          --- Must have a function where each Invoice 
+          is saved to open it later
+          --- At some point ability to create templates
+
+   c.| Clientes / CRM 
    d.| Analytics from Google and Search Console
    e.| Chat
         --- With IT Academy is done
