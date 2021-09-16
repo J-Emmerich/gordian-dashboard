@@ -1,7 +1,5 @@
 1. Dashboard for Gordian Knot. 
    a.| Projects, Bugs, To-do list
-        --- CRUD operations with Backend
-                 - Delete and Put are missing
         --- Validate addtask field, warn user of imputOpen/cancel button
         --- Sidebar has to stick to right side Or top?. 
         --- Autofocus when adding card and tasks
@@ -10,6 +8,11 @@
         --- Create autosave functionality
         --- Add Projects functionality
         --- Add Calendar functionality
+        --- Cards have the same size as the biggest one, change to differnt sizes
+        --- Add Priority-Low
+
+        --- CRUD operations with Backend - Missing Put, low priority. 
+
         
    b.| Invoices, Save, Download-pdf 
           --- Add it to the dashboard
@@ -24,6 +27,7 @@
         --- With IT Academy is done
    f.| Financial following
    g.| API de correos
+   h.| Make it Responsive. 
 
 2. Authorization
    a.| Login/Logout with JWT 

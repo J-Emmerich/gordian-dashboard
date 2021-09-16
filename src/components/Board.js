@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Card from "./Card";
-import firstCard from "../data/initialData";
+import firstCard from "../services/initialData";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
 import BoardButtons from "./BoardButtons";
-import axios from "axios";
-
-import {
-  moveCardsInsideBoard,
-  moveTasksInsideCards
-} from "../helpers/drag-and-drop";
+import { preventFirstCardBug } from "../helpers/prevent-first-card-bug";
+import { moveOnBoard } from "../helpers/drag-and-drop";
+import services from "../services/board";
 import { v4 as uuid } from "uuid";
 
 const BoardContainer = styled.section`
@@ -26,90 +23,47 @@ const Container = styled.div`
 const BoardButtonsContainer = styled.div`
   background-color: green;
 `;
-const url = "https://llowm.sse.codesandbox.io/";
-const sendData = async (boardData) => {
-  try {
-    await axios.post(url, boardData);
-  } catch (err) {
-    console.log("Error sending data");
-    console.log(err);
-  }
-};
-
-const getThat = async () => {
-  try {
-    const response = await axios.get(url);
-    return response.data;
-  } catch (err) {
-    console.log(err);
-  }
-};
 
 const Board = () => {
-  const [initialValues, setInitial] = useState(false);
+  const [isSaved, setIsSaved] = useState(true);
   const [boardData, setBoardData] = useState(firstCard);
   const [isInsertingTask, setIsInsertingTask] = useState(false);
   const [isInsertingCard, setIsInsertingCard] = useState(false);
   const [newTaskContent, setNewTaskContent] = useState("");
   const [newCardTitle, setNewCardTitle] = useState("New Card");
 
-  // useEffect(() => {
-  //   (async () => {
-  //     const data = await getThat();
-  //     console.log(data)
-  //     if (data) {
-  //       console.log("This effect should not run");
-  //       setBoardData(data);
-  //       setInitial(true);
-  //     } else {
-  //       setBoardData(firstCard);
-  //       setInitial(true);
-  //     }
-  //   })();
-  // }, []);
+  useEffect(() => {
+    const result = preventFirstCardBug(boardData);
+    if (result) setIsInsertingCard(true);
+  }, []);
+
+  useEffect(async () => {
+    if (boardData.initialData === true) {
+      async function fetchProject() {
+        const data = await services.getProject();
+        if (data) {
+          setBoardData(data);
+          setIsInsertingCard(false);
+        }
+      }
+      fetchProject();
+    }
+  }, []);
 
   useEffect(() => {
-    if (boardData.initialData !== true) {
-      (async () => {
-        await sendData(boardData);
-      })();
-    }
+    setIsSaved(false);
   }, [boardData]);
 
+  const saveToDatabase = async () => {
+    const data = await services.saveBoardToDatabase(boardData);
+    setBoardData(data);
+    setIsSaved(true);
+  };
+
   const onDragEnd = (result) => {
-    const { destination, source, draggableId, type } = result;
-    // If the user cancel with escape or error, do nothing
-    if (!destination) {
-      return;
-    }
-    // If the user take the task out of the card, do nothing
-    if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    ) {
-      return;
-    }
-
-    // Moving cards inside Board :::
-    if (type === "card") {
-      const newBoardData = moveCardsInsideBoard(
-        boardData,
-        source,
-        destination,
-        draggableId
-      );
-      setBoardData(newBoardData);
-    }
-    // Moving tasks inside Cards:::
-    if (type === "task") {
-      const newBoardData = moveTasksInsideCards(
-        boardData,
-        source,
-        destination,
-        draggableId
-      );
-
-      setBoardData(newBoardData);
+    const toUpdate = moveOnBoard(result, boardData);
+    if (toUpdate) {
+      setBoardData(toUpdate);
     }
   };
 
@@ -141,7 +95,6 @@ const Board = () => {
 
   const addTask = (card) => {
     // If it's setting a new task in a card you can't set a new one
-
     if (isInsertingTask) {
       return;
     } else {
@@ -156,9 +109,48 @@ const Board = () => {
         (card) => card.id === newCard.id
       );
       newBoardData.cards[index] = newCard;
-      // console.log(newBoardData);
       setBoardData(newBoardData);
     }
+  };
+
+  const removeTask = (targetTask, targetCard) => {
+    let tasksInBoard = Array.from(boardData.tasks);
+    tasksInBoard = tasksInBoard.filter((task) => task.id !== targetTask.id);
+    let cardsInBoard = Array.from(boardData.cards);
+    let newCard = cardsInBoard.find((card) => card.id === targetCard.id);
+    newCard.taskIds = newCard.taskIds.filter(
+      (taskId) => taskId !== targetTask.id
+    );
+    cardsInBoard = cardsInBoard.map((card) => {
+      return card.id === newCard.id ? newCard : card;
+    });
+
+    const newBoardData = { ...boardData };
+    newBoardData.tasks = tasksInBoard;
+    newBoardData.cards = cardsInBoard;
+
+    setBoardData(newBoardData);
+  };
+
+  const removeCard = (targetCard) => {
+    let newCardOrder = [...boardData.cardOrder];
+    let newCards = [...boardData.cards];
+    let newBoardTasks = [...boardData.tasks];
+
+    // Makes an array that has all id's that are not found in the deleted card
+    newBoardTasks = newBoardTasks.filter(
+      (sourceTask) =>
+        !targetCard.taskIds.some((targetId) => sourceTask.id === targetId)
+    );
+
+    newCardOrder = newCardOrder.filter((id) => id !== targetCard.id);
+    newCards = newCards.filter((card) => card.id !== targetCard.id);
+
+    const newBoardData = { ...boardData };
+    newBoardData.tasks = newBoardTasks;
+    newBoardData.cardOrder = newCardOrder;
+    newBoardData.cards = newCards;
+    setBoardData(newBoardData);
   };
 
   const handleTaskChange = (event) => {
@@ -209,7 +201,11 @@ const Board = () => {
   return (
     <BoardContainer className="board">
       <BoardButtonsContainer>
-        <BoardButtons addCard={addCard} />
+        <BoardButtons
+          addCard={addCard}
+          isSaved={isSaved}
+          saveToDatabase={saveToDatabase}
+        />
       </BoardButtonsContainer>
 
       <DragDropContext onDragEnd={onDragEnd}>
@@ -218,7 +214,6 @@ const Board = () => {
             <Container {...provided.droppableProps} ref={provided.innerRef}>
               {boardData.cardOrder.map((cardId, index) => {
                 const card = boardData.cards.find((card) => {
-                  console.log("This has to run again");
                   return card.id === cardId;
                 });
                 // Needs to initialize as empty to send as prop
@@ -246,6 +241,8 @@ const Board = () => {
                     newTaskContent={newTaskContent}
                     handleCardTitleChange={handleCardTitleChange}
                     handleCardTitleSubmit={handleCardTitleSubmit}
+                    removeTask={removeTask}
+                    removeCard={removeCard}
                   />
                 );
               })}
