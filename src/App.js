@@ -9,10 +9,13 @@ import Typography from "@material-ui/core/Typography";
 import Drawer from "@material-ui/core/Drawer";
 import IconButton from "@material-ui/core/IconButton";
 import clsx from "clsx";
-import Board from "./components/Board";
 import { makeStyles } from "@material-ui/core";
-import Nav from "./components/Nav";
 import styled from "styled-components";
+
+// Components
+import Board from "./components/to-do/Board";
+import Nav from "./components/Nav";
+import InvoiceDashboard from "./components/invoice/InvoiceDashboard";
 
 const useStyles = makeStyles(styles);
 
@@ -62,8 +65,11 @@ export default function App() {
               <Board />
             </Route>
             <Route path="/about">About</Route>
+            <Route path="/pdf">
+              <InvoiceDashboard />
+            </Route>
             <Route path="/" exact>
-              <p>me</p>
+              <p>This should be the Home</p>
             </Route>
           </Switch>
         </main>

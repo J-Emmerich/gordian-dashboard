@@ -1,3 +1,6 @@
+DocumentPDF for the view
+
+
 1. Dashboard for Gordian Knot. 
    a.| Projects, Bugs, To-do list
         --- Validate addtask field, warn user of imputOpen/cancel button
@@ -28,7 +31,8 @@
    f.| Financial following
    g.| API de correos
    h.| Make it Responsive. 
-
+   i.| Timeline
+   j.| Like BaseCamp - each project has own thing/One general for the business
 2. Authorization
    a.| Login/Logout with JWT 
         --- With It-Academy / FullStack Open 5 is done

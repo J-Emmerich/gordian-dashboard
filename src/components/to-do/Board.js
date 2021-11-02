@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Card from "./Card";
-import firstCard from "../services/initialData";
+import firstCard from "../../services/initialData";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
 import BoardButtons from "./BoardButtons";
-import { preventFirstCardBug } from "../helpers/prevent-first-card-bug";
-import { moveOnBoard } from "../helpers/drag-and-drop";
-import services from "../services/board";
+import { preventFirstCardBug } from "../../helpers/prevent-first-card-bug";
+import { moveOnBoard } from "../../helpers/drag-and-drop";
+import services from "../../services/board";
 import { v4 as uuid } from "uuid";
 
 const BoardContainer = styled.section`
