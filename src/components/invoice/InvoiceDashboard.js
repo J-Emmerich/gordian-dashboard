@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Modal from "@material-ui/core/Modal";
-import Button from "@material-ui/core/Button";
-import ArticleInput from "./ArticleInput";
-import saveInvoice from "../../services/invoice";
+import services from "../../services/invoice";
 import { v4 as uuid } from "uuid";
-
+import styled from "styled-components";
 import ModalForm from "./ModalForm";
 
 const modalStyle = {
@@ -14,7 +12,7 @@ const modalStyle = {
   height: "70%",
   left: "20%",
   top: "15%",
-  overflowY: "scroll"
+  overflowY: "auto"
 };
 let newInvoice = {
   invoiceNumber: "",
@@ -37,16 +35,52 @@ let article = {
   vat: ""
 };
 
+const InvoiceList = styled.section`
+  display: flex;
+  flex-flow: column wrap;
+`;
+
+const InvoiceRow = styled.div`
+  display: flex;
+`;
+const InvoiceColumn = styled.div`
+  padding: 5px;
+`;
+
+const Dashboard = styled.section`
+  padding-top: 20px;
+`;
+
 const InvoiceDashboard = () => {
+  // Modal Inputs State
   const [invoice, setInvoice] = useState(newInvoice);
   const [articles, setArticles] = useState([article]);
   const [articlesList, setArticlesList] = useState([]);
+  // Invoice List State
   const [invoiceList, setInvoiceList] = useState([]);
 
-  const [open, setOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+
+  useEffect(() => {
+    setArticles(articlesList);
+  }, [articlesList]);
+
+  useEffect(() => {
+    async function callGetInvoices() {
+      const invoices = await services.getInvoices();
+      setInvoiceList(invoices);
+    }
+
+    console.log("Is calling the invoices");
+    callGetInvoices();
+    setInvoice(newInvoice);
+  }, [invoice]);
+
   const handleClose = () => {
-    setOpen(false);
+    setOpenModal(false);
   };
+
+  // Invoice Handlers
   const handleChange = (event) => {
     let name = event.target.name;
     let value = event.target.value;
@@ -87,27 +121,43 @@ const InvoiceDashboard = () => {
     setArticlesList(articles.filter((article) => article.articleId !== id));
   };
 
-  useEffect(() => {
-    setArticles(articlesList);
-  }, [articlesList]);
-
   // Save the articles list to the current invoice
   const handleSubmit = async (event) => {
     event.preventDefault();
     const invoiceToSave = { ...invoice, articles: articles };
-    saveInvoice(invoiceToSave);
-    setOpen(false);
+    services.saveInvoice(invoiceToSave);
+    setOpenModal(false);
+    setInvoice(invoiceToSave);
+  };
+  // End of invoice Handlers
+
+  // Invoice List functions
+
+  const mapInvoiceList = () => {
+    console.log("called map");
+    const mapped = invoiceList.map((invoice) => {
+      return (
+        <InvoiceRow key={invoice._id}>
+          <InvoiceColumn>| ID--: {invoice._id} </InvoiceColumn>
+          <InvoiceColumn>| Factura: {invoice.invoiceNumber}</InvoiceColumn>
+          <InvoiceColumn>| Cliente: {invoice.clientName}</InvoiceColumn>
+          <InvoiceColumn>| Total: {invoice.invoiceTotal}</InvoiceColumn>
+        </InvoiceRow>
+      );
+    });
+
+    return mapped;
   };
 
   return (
-    <>
+    <Dashboard>
       <div>
         <div>This is the dashboard.</div>
-        <button onClick={() => setOpen(true)}>New Invoice</button>
-        <div>
-          <p>This are the last invoices</p>
-        </div>
-        <Modal open={open} onClose={handleClose}>
+        <button onClick={() => setOpenModal(true)}>New Invoice</button>
+        <InvoiceList>
+          {invoiceList.length > 0 ? mapInvoiceList() : <p>No invoices</p>}
+        </InvoiceList>
+        <Modal open={openModal} onClose={handleClose}>
           <div style={modalStyle}>
             <ModalForm
               handleChange={handleChange}
@@ -121,7 +171,7 @@ const InvoiceDashboard = () => {
           </div>
         </Modal>
       </div>
-    </>
+    </Dashboard>
   );
 };
 

@@ -5,6 +5,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import PostAddOutlinedIcon from "@material-ui/icons/PostAddOutlined";
 import SaveOutlinedIcon from "@material-ui/icons/SaveOutlined";
 
+// Why not styled components?
 const listStyle = {
   display: "flex",
   flexWrap: "wrap",

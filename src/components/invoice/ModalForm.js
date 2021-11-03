@@ -1,7 +1,6 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
 import ArticleInput from "./ArticleInput";
-import styled from "styled-components";
 
 const datePicker = {
   padding: 0,

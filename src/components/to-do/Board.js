@@ -37,7 +37,7 @@ const Board = () => {
     if (result) setIsInsertingCard(true);
   }, []);
 
-  useEffect(async () => {
+  useEffect(() => {
     if (boardData.initialData === true) {
       async function fetchProject() {
         const data = await services.getProject();

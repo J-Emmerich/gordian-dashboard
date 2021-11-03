@@ -1,4 +1,3 @@
-DocumentPDF for the view
 
 
 1. Dashboard for Gordian Knot. 
@@ -18,10 +17,9 @@ DocumentPDF for the view
 
         
    b.| Invoices, Save, Download-pdf 
-          --- Add it to the dashboard
-          --- Preview should not be enabled
-          --- Must have a function where each Invoice 
-          is saved to open it later
+          --- Edit Invoice
+          --- Auto Increment Value
+          --- React-Table
           --- At some point ability to create templates
 
    c.| Clientes / CRM 
@@ -37,17 +35,5 @@ DocumentPDF for the view
    a.| Login/Logout with JWT 
         --- With It-Academy / FullStack Open 5 is done
    b.| Routing with Authorization
-  
-
-
-
-3. Examples and Tutorial
-   a.| Dashboard Example to Start with
-          https://github.com/KaterinaLupacheva/dashboard-layout/
-   b.| DragAndDrop Feature - https://egghead.io/lessons/react-designate-control-of-dragging-for-a-react-beautiful-dnd-draggable-with-draghandleprops
-        https://medium.com/@jtonti/basic-kanban-board-in-react-593b14300a74
-   c.| Clean Architecture Deep Dive
-   https://betterprogramming.pub/node-clean-architecture-deep-dive-ab68e523554b     
-
 
 4. What is react ref and inner ref all about. 
