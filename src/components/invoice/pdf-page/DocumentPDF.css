@@ -93,23 +93,23 @@ hr {
   padding: 0 5px;
   margin: 10px 0;
 }
-table {
+.pdf-table {
   width: 100%;
   margin: 0 30px;
   padding: 0;
   border-collapse: collapse;
 }
 
-tbody tr:nth-child(odd) {
+.pdf-tbody tr:nth-child(odd) {
   background: #eee;
 }
 
-thead {
+.pdf-thead {
   background-color: var(--blue);
   color: var(--inblue);
 }
-td,
-th {
+.pdf-td,
+.pdf-th {
   padding: 5px 15px;
 }
 .total-container p {

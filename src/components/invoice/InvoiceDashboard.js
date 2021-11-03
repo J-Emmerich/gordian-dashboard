@@ -4,6 +4,7 @@ import services from "../../services/invoice";
 import { v4 as uuid } from "uuid";
 import styled from "styled-components";
 import ModalForm from "./ModalForm";
+import InvoiceTable from "./InvoiceTable";
 
 const modalStyle = {
   backgroundColor: "white",
@@ -68,10 +69,10 @@ const InvoiceDashboard = () => {
   useEffect(() => {
     async function callGetInvoices() {
       const invoices = await services.getInvoices();
+      console.log("Is calling the invoices", invoices);
       setInvoiceList(invoices);
     }
 
-    console.log("Is calling the invoices");
     callGetInvoices();
     setInvoice(newInvoice);
   }, [invoice]);
@@ -131,32 +132,12 @@ const InvoiceDashboard = () => {
   };
   // End of invoice Handlers
 
-  // Invoice List functions
-
-  const mapInvoiceList = () => {
-    console.log("called map");
-    const mapped = invoiceList.map((invoice) => {
-      return (
-        <InvoiceRow key={invoice._id}>
-          <InvoiceColumn>| ID--: {invoice._id} </InvoiceColumn>
-          <InvoiceColumn>| Factura: {invoice.invoiceNumber}</InvoiceColumn>
-          <InvoiceColumn>| Cliente: {invoice.clientName}</InvoiceColumn>
-          <InvoiceColumn>| Total: {invoice.invoiceTotal}</InvoiceColumn>
-        </InvoiceRow>
-      );
-    });
-
-    return mapped;
-  };
-
   return (
     <Dashboard>
       <div>
         <div>This is the dashboard.</div>
         <button onClick={() => setOpenModal(true)}>New Invoice</button>
-        <InvoiceList>
-          {invoiceList.length > 0 ? mapInvoiceList() : <p>No invoices</p>}
-        </InvoiceList>
+        {invoiceList.length > 0 ? <InvoiceTable data={invoiceList} /> : null}
         <Modal open={openModal} onClose={handleClose}>
           <div style={modalStyle}>
             <ModalForm
