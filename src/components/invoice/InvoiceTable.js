@@ -1,5 +1,6 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useTable, useSortBy, useFilters } from "react-table";
+import PictureAsPdfIcon from "@material-ui/icons/PictureAsPdf";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -11,6 +12,9 @@ const Container = styled.div`
     }
   }
   td {
+    padding: 10px;
+  }
+  input {
     padding: 10px;
   }
 `;
@@ -52,16 +56,16 @@ const InvoiceTable = ({ data, handleClick, saveToPdf }) => {
             accessor: "invoiceTotal"
           },
           {
-            Header: "Save to pdf",
+            Header: "Download",
             accessor: "_id",
             Cell: (props) => {
               return (
-                <button
+                <PictureAsPdfIcon
                   className="save-to-pdf"
                   onClick={() => saveToPdf(props.cell.value)}
                 >
                   PDF
-                </button>
+                </PictureAsPdfIcon>
               );
             }
           }
@@ -104,9 +108,9 @@ const InvoiceTable = ({ data, handleClick, saveToPdf }) => {
           {rows.map((row) => {
             prepareRow(row);
             return (
-              <tr>
+              <tr key={row.original._id}>
                 {row.cells.map((cell) => {
-                  if (cell.column.Header !== "Save to pdf") {
+                  if (cell.column.Header !== "Download") {
                     return (
                       <td
                         className="react-td"

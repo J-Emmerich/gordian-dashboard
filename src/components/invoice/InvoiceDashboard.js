@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Modal from "@material-ui/core/Modal";
+import Button from "@material-ui/core/Button";
 import services from "../../services/invoice";
 import { v4 as uuid } from "uuid";
 import styled from "styled-components";
@@ -39,6 +40,10 @@ let article = {
 const Dashboard = styled.section`
   padding-top: 20px;
 `;
+const DashboardHeader = styled.div`
+  display: flex;
+  justify-content: center;
+`;
 
 const InvoiceDashboard = () => {
   // Modal Inputs State
@@ -50,7 +55,7 @@ const InvoiceDashboard = () => {
   const [invoiceList, setInvoiceList] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [openModal, setOpenModal] = useState(false);
-
+  const [filterInput, setFilterInput] = useState("");
   useEffect(() => {
     setArticles(articlesList);
   }, [articlesList]);
@@ -148,12 +153,24 @@ const InvoiceDashboard = () => {
       console.log("so bad!");
     }
   };
+  // Update the state when input changes
+  const handleFilterChange = (e) => {
+    const value = e.target.value || undefined;
 
+    setFilterInput(value);
+  };
   return (
     <Dashboard>
       <div>
-        <div>This is the dashboard.</div>
-        <button onClick={() => setOpenModal(true)}>New Invoice</button>
+        <DashboardHeader>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => setOpenModal(true)}
+          >
+            Nueva Factura
+          </Button>
+        </DashboardHeader>
         {invoiceList.length > 0 ? (
           <InvoiceTable
             data={invoiceList}
