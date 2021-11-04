@@ -36,18 +36,6 @@ let article = {
   vat: ""
 };
 
-const InvoiceList = styled.section`
-  display: flex;
-  flex-flow: column wrap;
-`;
-
-const InvoiceRow = styled.div`
-  display: flex;
-`;
-const InvoiceColumn = styled.div`
-  padding: 5px;
-`;
-
 const Dashboard = styled.section`
   padding-top: 20px;
 `;
@@ -57,9 +45,10 @@ const InvoiceDashboard = () => {
   const [invoice, setInvoice] = useState(newInvoice);
   const [articles, setArticles] = useState([article]);
   const [articlesList, setArticlesList] = useState([]);
+  const [invoiceSaved, setInvoiceSaved] = useState(false);
   // Invoice List State
   const [invoiceList, setInvoiceList] = useState([]);
-
+  const [isEditing, setIsEditing] = useState(false);
   const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
@@ -69,24 +58,28 @@ const InvoiceDashboard = () => {
   useEffect(() => {
     async function callGetInvoices() {
       const invoices = await services.getInvoices();
-      console.log("Is calling the invoices", invoices);
+      console.log("called get invoices");
+
       setInvoiceList(invoices);
     }
 
     callGetInvoices();
-    setInvoice(newInvoice);
-  }, [invoice]);
+  }, [invoiceSaved]);
 
-  const handleClose = () => {
+  const resetDashboardState = () => {
     setOpenModal(false);
+    setIsEditing(false);
+    setInvoice(newInvoice);
+    setArticles([article]);
+    setArticlesList([]);
   };
 
   // Invoice Handlers
   const handleChange = (event) => {
     let name = event.target.name;
     let value = event.target.value;
-    newInvoice = { ...invoice, [name]: value };
-    setInvoice(newInvoice);
+    const changedInvoice = { ...invoice, [name]: value };
+    setInvoice(changedInvoice);
   };
 
   const handleArticleChange = (event) => {
@@ -126,25 +119,43 @@ const InvoiceDashboard = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const invoiceToSave = { ...invoice, articles: articles };
-    services.saveInvoice(invoiceToSave);
-    setOpenModal(false);
-    setInvoice(invoiceToSave);
+    await services.saveInvoice(invoiceToSave);
+    setInvoiceSaved(!invoiceSaved);
+    resetDashboardState();
   };
   // End of invoice Handlers
+
+  // Editing invoice
+  const editInvoice = (invoiceReceived) => {
+    setInvoice(invoiceReceived);
+    setArticlesList(invoiceReceived.articles);
+    setIsEditing(true);
+    setOpenModal(true);
+  };
+
+  const handleEdit = async (e) => {
+    e.preventDefault();
+    const invoiceToSave = { ...invoice, articles: articles };
+    await services.editInvoice(invoiceToSave);
+    setInvoiceSaved(!invoiceSaved);
+    resetDashboardState();
+  };
 
   return (
     <Dashboard>
       <div>
         <div>This is the dashboard.</div>
         <button onClick={() => setOpenModal(true)}>New Invoice</button>
-        {invoiceList.length > 0 ? <InvoiceTable data={invoiceList} /> : null}
-        <Modal open={openModal} onClose={handleClose}>
+        {invoiceList.length > 0 ? (
+          <InvoiceTable data={invoiceList} handleClick={editInvoice} />
+        ) : null}
+        <Modal open={openModal} onClose={() => resetDashboardState()}>
           <div style={modalStyle}>
             <ModalForm
               handleChange={handleChange}
               articlesList={articlesList}
               handleArticleChange={handleArticleChange}
-              handleSubmit={handleSubmit}
+              handleSubmit={isEditing ? handleEdit : handleSubmit}
               removeArticle={removeArticle}
               addAnotherArticle={addAnotherArticle}
               invoice={invoice}

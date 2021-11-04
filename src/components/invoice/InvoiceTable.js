@@ -1,11 +1,17 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { useTable, useSortBy, useFilters } from "react-table";
 import styled from "styled-components";
 
 const Container = styled.div`
   padding-top: 15px;
+  tr {
+    :hover {
+      cursor: pointer;
+    }
+  }
 `;
-const InvoiceTable = ({ data }) => {
+
+const InvoiceTable = ({ data, handleClick }) => {
   const [filterInput, setFilterInput] = useState("");
 
   // Update the state when input changes
@@ -63,33 +69,42 @@ const InvoiceTable = ({ data }) => {
         onChange={handleFilterChange}
         placeholder={"Search name"}
       />
-      <table {...getTableProps()}>
+      <table className="-highlight" {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
                 <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                   {column.render("Header")}
-
-                  {/* <div>
-                    {column.id === "clientName"
-                      ? column.render("Filter")
-                      : null}
-                  </div> */}
                 </th>
               ))}
             </tr>
           ))}
         </thead>
 
-        <tbody {...getTableBodyProps()}>
+        <tbody className="rt-tbody" {...getTableBodyProps()}>
           {rows.map((row) => {
             prepareRow(row);
             return (
-              <tr {...row.getRowProps()}>
+              <tr
+                onClick={() => {
+                  handleClick(row.original);
+                }}
+              >
                 {row.cells.map((cell) => {
                   return (
-                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                    <td
+                      className="react-td"
+                      {...cell.getCellProps()}
+                      onMouseEnter={(e) =>
+                        (e.target.parentNode.style.backgroundColor = "red")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.target.parentNode.style.backgroundColor = "white")
+                      }
+                    >
+                      {cell.render("Cell")}
+                    </td>
                   );
                 })}
               </tr>
