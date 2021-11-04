@@ -65,7 +65,7 @@ export default function App() {
               <Board />
             </Route>
             <Route path="/about">
-              <InvoiceTable />
+              <p>This should be the About</p>
             </Route>
             <Route path="/pdf">
               <InvoiceDashboard />

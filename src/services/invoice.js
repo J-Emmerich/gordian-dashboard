@@ -9,13 +9,7 @@ const saveInvoice = async (invoice) => {
 };
 const editInvoice = async (invoice) => {
   try {
-    console.log(invoice);
-    console.log(invoice._id);
-    const invoiceReturned = await axios.put(
-      `${baseUrl}/pdf/${invoice._id}`,
-      invoice
-    );
-    console.log(invoiceReturned);
+    await axios.put(`${baseUrl}/pdf/${invoice._id}`, invoice);
   } catch (err) {
     console.log(err);
   }
@@ -39,4 +33,19 @@ const getOneInvoice = async (id) => {
   }
 };
 
-export default { saveInvoice, getInvoices, getOneInvoice, editInvoice };
+const saveToPdf = async (id) => {
+  try {
+    const pdf = await axios.get(`${baseUrl}/pdf/download/${id}`);
+    console.log(pdf);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export default {
+  saveInvoice,
+  getInvoices,
+  getOneInvoice,
+  editInvoice,
+  saveToPdf
+};

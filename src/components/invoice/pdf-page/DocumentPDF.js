@@ -4,7 +4,7 @@ import Header from "./Header";
 import CustDetails from "./CustDetails";
 import Articles from "./Articles";
 import Total from "./Total";
-// import "./DocumentPDF.css";
+import "./DocumentPDF.css";
 
 const DocumentPDF = ({ match }) => {
   const [invoice, setInvoice] = useState(null);

@@ -141,13 +141,25 @@ const InvoiceDashboard = () => {
     resetDashboardState();
   };
 
+  const handlePdf = async (id) => {
+    if (window.confirm("do you want to save it?")) {
+      await services.saveToPdf(id);
+    } else {
+      console.log("so bad!");
+    }
+  };
+
   return (
     <Dashboard>
       <div>
         <div>This is the dashboard.</div>
         <button onClick={() => setOpenModal(true)}>New Invoice</button>
         {invoiceList.length > 0 ? (
-          <InvoiceTable data={invoiceList} handleClick={editInvoice} />
+          <InvoiceTable
+            data={invoiceList}
+            handleClick={editInvoice}
+            saveToPdf={handlePdf}
+          />
         ) : null}
         <Modal open={openModal} onClose={() => resetDashboardState()}>
           <div style={modalStyle}>
