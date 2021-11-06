@@ -55,7 +55,7 @@ const InvoiceDashboard = () => {
   const [invoiceList, setInvoiceList] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [openModal, setOpenModal] = useState(false);
-  const [filterInput, setFilterInput] = useState("");
+
   useEffect(() => {
     setArticles(articlesList);
   }, [articlesList]);
@@ -63,8 +63,6 @@ const InvoiceDashboard = () => {
   useEffect(() => {
     async function callGetInvoices() {
       const invoices = await services.getInvoices();
-      console.log("called get invoices");
-
       setInvoiceList(invoices);
     }
 
@@ -162,7 +160,9 @@ const InvoiceDashboard = () => {
 
   const deleteInvoice = async (id) => {
     if (window.confirm("Do you really want to delete the file?")) {
-      await services.deleteInvoice(id);
+     await services.deleteInvoice(id);
+     setInvoiceSaved(!invoiceSaved);
+     resetDashboardState();
     } else {
       console.log("so bad!");
     }
