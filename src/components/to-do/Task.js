@@ -1,9 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 import { Draggable } from "react-beautiful-dnd";
+import BackspaceIcon from "@material-ui/icons/Backspace";
+import { IconButton } from "@material-ui/core";
 
 const Container = styled.div`
   border: 1px solid lightgrey;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   border-radius: 2px;
   padding: 8px;
   margin-bottom: 8px;
@@ -15,8 +20,11 @@ const Container = styled.div`
       ? "lightgreen"
       : "white"};
 `;
+const TaskContainer = styled.div`
+  padding-left: 10px;
+`;
 
-const Task = ({ task, index }) => {
+const Task = ({ task, index, removeTask, card }) => {
   const isDragDisabled = task.id === "task-1";
   return (
     <Draggable
@@ -34,7 +42,10 @@ const Task = ({ task, index }) => {
             isDragging={snapshot.isDragging}
             isDragDisabled={isDragDisabled}
           >
-            {task.content}
+            <TaskContainer>{task.content}</TaskContainer>
+            <IconButton onClick={() => removeTask(task, card)}>
+              <BackspaceIcon />
+            </IconButton>
           </Container>
         );
       }}

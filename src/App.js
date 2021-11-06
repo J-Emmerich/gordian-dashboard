@@ -9,11 +9,14 @@ import Typography from "@material-ui/core/Typography";
 import Drawer from "@material-ui/core/Drawer";
 import IconButton from "@material-ui/core/IconButton";
 import clsx from "clsx";
-import Board from "./components/Board";
 import { makeStyles } from "@material-ui/core";
-import Nav from "./components/Nav";
 import styled from "styled-components";
 
+// Components
+import Board from "./components/to-do/Board";
+import Nav from "./components/Nav";
+import InvoiceDashboard from "./components/invoice/InvoiceDashboard";
+import InvoiceTable from "./components/invoice/InvoiceTable";
 const useStyles = makeStyles(styles);
 
 //This component is to fix the App bar standing over the other components.
@@ -61,9 +64,14 @@ export default function App() {
             <Route path="/board">
               <Board />
             </Route>
-            <Route path="/about">About</Route>
+            <Route path="/about">
+              <p>This should be the About</p>
+            </Route>
+            <Route path="/pdf">
+              <InvoiceDashboard />
+            </Route>
             <Route path="/" exact>
-              <p>me</p>
+              <p>This should be the Home</p>
             </Route>
           </Switch>
         </main>

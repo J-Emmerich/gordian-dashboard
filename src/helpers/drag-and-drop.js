@@ -1,9 +1,41 @@
-export const moveCardsInsideBoard = (
-  boardData,
-  source,
-  destination,
-  draggableId
-) => {
+export const moveOnBoard = (data, boardData) => {
+  const { destination, source, draggableId, type } = data;
+  // If the user cancel with escape or error, do nothing
+  if (!destination) {
+    return;
+  }
+  // If the user take the task out of the card, do nothing
+  if (
+    destination.droppableId === source.droppableId &&
+    destination.index === source.index
+  ) {
+    return;
+  }
+
+  // Moving cards inside Board :::
+  if (type === "card") {
+    const newBoardData = moveCardsInsideBoard(
+      boardData,
+      source,
+      destination,
+      draggableId
+    );
+    return newBoardData;
+  }
+  // Moving tasks inside Cards:::
+  if (type === "task") {
+    const newBoardData = moveTasksInsideCards(
+      boardData,
+      source,
+      destination,
+      draggableId
+    );
+
+    return newBoardData;
+  }
+};
+
+const moveCardsInsideBoard = (boardData, source, destination, draggableId) => {
   const newCardOrder = Array.from(boardData.cardOrder);
   newCardOrder.splice(source.index, 1);
   newCardOrder.splice(destination.index, 0, draggableId);
@@ -18,12 +50,7 @@ export const moveCardsInsideBoard = (
   return newBoardData;
 };
 
-export const moveTasksInsideCards = (
-  boardData,
-  source,
-  destination,
-  draggableId
-) => {
+const moveTasksInsideCards = (boardData, source, destination, draggableId) => {
   // Define the cards where to splice later
   const cardStart = boardData.cards.find(
     (card) => card.id === source.droppableId

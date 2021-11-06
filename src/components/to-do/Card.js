@@ -4,6 +4,8 @@ import Task from "./Task";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import AddTaskForm from "./AddTaskForm";
 import CardTitleForm from "./CardTitleForm";
+import { IconButton } from "@material-ui/core";
+import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
 
 const Container = styled.div`
   margin: 8px;
@@ -15,9 +17,6 @@ const Container = styled.div`
   background-color: #efefef;
 `;
 
-const Title = styled.h3`
-  padding: 8px;
-`;
 const TaskList = styled.div`
   padding: 8px;
   transition: background-color 0.5s ease;
@@ -25,6 +24,15 @@ const TaskList = styled.div`
     props.isDraggingOver ? "skyblue" : "inherit"};
   flex-grow: 1;
   min-height: 100px;
+`;
+
+const Title = styled.h3`
+  padding: 8px;
+  text-align: center;
+`;
+const TitleContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;
 
 const Card = ({
@@ -39,7 +47,9 @@ const Card = ({
   isNewCard,
   newCardTitle,
   handleCardTitleChange,
-  handleCardTitleSubmit
+  handleCardTitleSubmit,
+  removeTask,
+  removeCard
 }) => {
   const isDragDisabled = isNewCard === true;
   return (
@@ -51,18 +61,23 @@ const Card = ({
     >
       {(provided) => (
         <Container {...provided.draggableProps} ref={provided.innerRef}>
-          <Title {...provided.dragHandleProps}>
-            {isNewCard ? (
-              <CardTitleForm
-                newCardTitle={newCardTitle}
-                handleContent={handleCardTitleChange}
-                saveTitle={handleCardTitleSubmit}
-                cardId={card.id}
-              />
-            ) : (
-              card.title
-            )}
-          </Title>
+          <TitleContainer>
+            <Title {...provided.dragHandleProps}>
+              {isNewCard ? (
+                <CardTitleForm
+                  newCardTitle={newCardTitle}
+                  handleContent={handleCardTitleChange}
+                  saveTitle={handleCardTitleSubmit}
+                  cardId={card.id}
+                />
+              ) : (
+                card.title
+              )}
+            </Title>
+            <IconButton onClick={() => removeCard(card)}>
+              <RemoveCircleOutlineIcon fontSize="small" />
+            </IconButton>
+          </TitleContainer>
           <Droppable droppableId={card.id} type="task">
             {(provided, snapshot) => (
               <TaskList
@@ -71,7 +86,15 @@ const Card = ({
                 {...provided.droppableProps}
               >
                 {tasks.map((task, index) => {
-                  return <Task key={task.id} task={task} index={index} />;
+                  return (
+                    <Task
+                      key={task.id}
+                      task={task}
+                      index={index}
+                      removeTask={removeTask}
+                      card={card}
+                    />
+                  );
                 })}
                 {provided.placeholder}
               </TaskList>
