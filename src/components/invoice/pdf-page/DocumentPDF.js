@@ -5,31 +5,23 @@ import CustDetails from "./CustDetails";
 import Articles from "./Articles";
 import Total from "./Total";
 import "./DocumentPDF.css";
-
-const DocumentPDF = ({ match }) => {
+const baseUrl = "http://localhost:8080"
+const DocumentPDF = (props) => {
   const [invoice, setInvoice] = useState(null);
-
-  useEffect((id) => {
-    axios
-      .get(`https://8vfdu.sse.codesandbox.io/pdf/61808f1b5a017fe8cbba7033`)
-      .then((response) => {
-        console.log(response);
-        console.log(response.data);
-        setInvoice(response.data);
-      });
-  }, []);
-  // useEffect(
-  //   (id) => {
-  //     axios
-  //       .get(`https://8vfdu.sse.codesandbox.io/pdf/${match.params.id}`)
-  //       .then((response) => {
-  //         console.log(response);
-  //         console.log(response.data);
-  //         setInvoice(response.data);
-  //       });
-  //   },
-  //   [match.params]
-  // );
+console.log(props, "this are the props")
+const match = props.match;
+  useEffect(
+    (id) => {
+      axios
+        .get(`${baseUrl}/pdf/${match.params.id}`)
+        .then((response) => {
+          console.log(response);
+          console.log(response.data);
+          setInvoice(response.data);
+        });
+    },
+    [match.params]
+  );
 
   useEffect(() => console.log("this are the invoices:", invoice), [invoice]);
 
@@ -49,7 +41,6 @@ const DocumentPDF = ({ match }) => {
                 <CustDetails
                   invoice={invoice}
                   client={invoice.client}
-                  address={invoice.client.address}
                 />
                 <Articles articles={invoice.articles} />
                 <hr></hr>

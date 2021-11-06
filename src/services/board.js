@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = "https://8vfdu.sse.codesandbox.io/dashboard";
+const url = "http://localhost:8080/dashboard";
 
 const saveBoardToDatabase = async (boardData) => {
   try {

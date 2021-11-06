@@ -1,23 +1,14 @@
 import React from "react";
 
-const CustDetails = ({ invoice, client, address }) => {
+const CustDetails = ({ invoice }) => {
   const {
     invoiceNumber,
     invoiceDate,
-    invoiceDue,
     invoiceTotal,
-    orderNumber
+    orderNumber,
+    clientName
   } = invoice;
-  const {
-    clientCity,
 
-    clientPostalCode,
-    countryCode,
-    clientAddress
-  } = address;
-  const { clientName, clientEmail, clientPhone } = client;
-
-  //   console.log("called", prop.clientName);
   return (
     <section className="cust-details-container">
       <div className="cust-details">
@@ -37,7 +28,6 @@ const CustDetails = ({ invoice, client, address }) => {
           <ul className="detail-lists-results">
             <li>{invoiceNumber} </li>
             <li>{invoiceDate}</li>
-            <li>{invoiceDue}</li>
             {/* <li>{orderNumber}</li> */}
           </ul>
         </div>

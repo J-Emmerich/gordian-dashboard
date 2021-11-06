@@ -1,3 +1,4 @@
+
 :root {
   --blue: #7fb8bf;
   --salmon: rgb(228, 165, 140);
@@ -10,7 +11,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: "Roboto";
-  font-weight: 300;
+  font-weight: 400;
 }
 ul {
   /* Removing default decoration */

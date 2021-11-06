@@ -1,8 +1,10 @@
 import axios from "axios";
-const baseUrl = "https://8vfdu.sse.codesandbox.io";
+import handleFileDownload from "../helpers/handle-file-download";
+
+const baseUrl = "http://localhost:8080";
 const saveInvoice = async (invoice) => {
   try {
-    await axios.post("https://8vfdu.sse.codesandbox.io/pdf", invoice);
+    await axios.post(`${baseUrl}/pdf`, invoice);
   } catch (err) {
     console.log(err);
   }
@@ -17,7 +19,7 @@ const editInvoice = async (invoice) => {
 
 const getInvoices = async () => {
   try {
-    const invoices = await axios.get("https://8vfdu.sse.codesandbox.io/pdf");
+    const invoices = await axios.get(`${baseUrl}/pdf`);
     return invoices.data;
   } catch (err) {
     console.log(err);
@@ -35,8 +37,9 @@ const getOneInvoice = async (id) => {
 
 const saveToPdf = async (id) => {
   try {
-    const pdf = await axios.get(`${baseUrl}/pdf/download/${id}`);
-    console.log(pdf);
+    const pdf = await axios.get(`${baseUrl}/pdf/download/${id}`, {responseType: 'blob', });
+    handleFileDownload(pdf, id);
+    console.log(pdf)
   } catch (err) {
     console.log(err);
   }
