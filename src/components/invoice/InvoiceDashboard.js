@@ -159,6 +159,16 @@ const InvoiceDashboard = () => {
 
     setFilterInput(value);
   };
+
+  const deleteInvoice = async (id) => {
+    if (window.confirm("Do you really want to delete the file?")) {
+      await services.deleteInvoice(id);
+    } else {
+      console.log("so bad!");
+    }
+
+  };
+
   return (
     <Dashboard>
       <div>
@@ -176,6 +186,7 @@ const InvoiceDashboard = () => {
             data={invoiceList}
             handleClick={editInvoice}
             saveToPdf={handlePdf}
+            deleteInvoice={deleteInvoice}
           />
         ) : null}
         <Modal open={openModal} onClose={() => resetDashboardState()}>

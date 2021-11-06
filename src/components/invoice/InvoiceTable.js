@@ -1,12 +1,13 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useTable, useSortBy, useFilters } from "react-table";
 import PictureAsPdfIcon from "@material-ui/icons/PictureAsPdf";
+import DeleteIcon from "@material-ui/icons/Delete";
 import styled from "styled-components";
 
 const Container = styled.div`
   padding-top: 15px;
   .react-td,
-  .save-to-pdf {
+  .save-to-pdf, .delete {
     :hover {
       cursor: pointer;
     }
@@ -19,7 +20,7 @@ const Container = styled.div`
   }
 `;
 
-const InvoiceTable = ({ data, handleClick, saveToPdf }) => {
+const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
   const [filterInput, setFilterInput] = useState("");
 
   // Update the state when input changes
@@ -45,7 +46,7 @@ const InvoiceTable = ({ data, handleClick, saveToPdf }) => {
         columns: [
           {
             Header: "Date",
-            accessor: "invoiceDate"
+            accessor: "invoiceDate",
           },
           {
             Header: "Numero de Factura",
@@ -66,6 +67,20 @@ const InvoiceTable = ({ data, handleClick, saveToPdf }) => {
                 >
                   PDF
                 </PictureAsPdfIcon>
+              );
+            }
+          },
+          {
+            Header: "Delete",
+            accessor: "",
+            Cell: (props) => {
+              return (
+                <DeleteIcon
+                  className="delete"
+                  onClick={() => deleteInvoice(props.cell.row.original._id)}
+                >
+                  PDF
+                </DeleteIcon>
               );
             }
           }
@@ -110,7 +125,7 @@ const InvoiceTable = ({ data, handleClick, saveToPdf }) => {
             return (
               <tr key={row.original._id}>
                 {row.cells.map((cell) => {
-                  if (cell.column.Header !== "Download") {
+                  if (cell.column.Header !== "Download" && cell.column.Header !== "Delete" )  {
                     return (
                       <td
                         className="react-td"

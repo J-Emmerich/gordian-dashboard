@@ -2,20 +2,7 @@ import axios from "axios";
 import handleFileDownload from "../helpers/handle-file-download";
 
 const baseUrl = "http://localhost:8080";
-const saveInvoice = async (invoice) => {
-  try {
-    await axios.post(`${baseUrl}/pdf`, invoice);
-  } catch (err) {
-    console.log(err);
-  }
-};
-const editInvoice = async (invoice) => {
-  try {
-    await axios.put(`${baseUrl}/pdf/${invoice._id}`, invoice);
-  } catch (err) {
-    console.log(err);
-  }
-};
+
 
 const getInvoices = async () => {
   try {
@@ -35,6 +22,30 @@ const getOneInvoice = async (id) => {
   }
 };
 
+const saveInvoice = async (invoice) => {
+  try {
+    await axios.post(`${baseUrl}/pdf`, invoice);
+  } catch (err) {
+    console.log(err);
+  }
+};
+const editInvoice = async (invoice) => {
+  try {
+    await axios.put(`${baseUrl}/pdf/${invoice._id}`, invoice);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const deleteInvoice = async (id) => {
+  try {
+const invoice = await axios.delete(`${baseUrl}/pdf/${id}`);
+console.log("Deleted");
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 const saveToPdf = async (id) => {
   try {
     const pdf = await axios.get(`${baseUrl}/pdf/download/${id}`, {responseType: 'blob', });
@@ -45,10 +56,13 @@ const saveToPdf = async (id) => {
   }
 };
 
+
+
 export default {
-  saveInvoice,
   getInvoices,
   getOneInvoice,
+  saveInvoice,
   editInvoice,
+  deleteInvoice,
   saveToPdf
 };
