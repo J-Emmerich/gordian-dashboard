@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const url = "http://localhost:8080/dashboard";
+const baseUrl = "https://ufl1g.sse.codesandbox.io";
 
 const saveBoardToDatabase = async (boardData) => {
   try {
-    const response = await axios.post(url, boardData);
+    const response = await axios.post(`${baseUrl}/dashboard`, boardData);
     console.log("this is the response::::", response);
     return response.data;
   } catch (err) {
@@ -15,7 +15,7 @@ const saveBoardToDatabase = async (boardData) => {
 
 const getProject = async () => {
   try {
-    const response = await axios.get(url);
+    const response = await axios.get(`${baseUrl}/dashboard`);
     return response.data;
   } catch (err) {
     console.log(err);
@@ -24,7 +24,7 @@ const getProject = async () => {
 
 // Use only for debugging, deletes all database
 const __cleanAndLog = async () => {
-  await axios.delete(url);
+  await axios.delete(`${baseUrl}/dashboard`);
 };
 
 export default { saveBoardToDatabase, getProject, __cleanAndLog };

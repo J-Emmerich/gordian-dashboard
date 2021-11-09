@@ -1,12 +1,28 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
 import ArticleInput from "./ArticleInput";
+import styled from "styled-components";
 
 const datePicker = {
-  padding: 0,
-  margin: 0,
+  padding: 5,
+  margin: 5,
   fontSize: 12
 };
+
+const Form = styled.form`
+  & fieldset {
+    border: solid 0 black;
+  }
+  & input[type="text"] {
+    width: 50%;
+  }
+  & label {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    margin: 5px;
+  }
+`;
 
 const ModalForm = ({
   handleChange,
@@ -19,11 +35,11 @@ const ModalForm = ({
 }) => {
   return (
     <div>
-      <form>
+      <Form>
         <fieldset>
           <h2> Customer details</h2>
           <label>
-            Client Name :
+            Client Name:
             <input
               onChange={handleChange}
               value={invoice.clientName}
@@ -126,7 +142,7 @@ const ModalForm = ({
         <Button variant="contained" color="primary" onClick={handleSubmit}>
           Save Invoice
         </Button>
-      </form>
+      </Form>
     </div>
   );
 };

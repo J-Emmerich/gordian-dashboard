@@ -5,20 +5,17 @@ import CustDetails from "./CustDetails";
 import Articles from "./Articles";
 import Total from "./Total";
 import "./DocumentPDF.css";
-const baseUrl = "http://localhost:8080"
-const DocumentPDF = (props) => {
+const baseUrl = "https://ufl1g.sse.codesandbox.io";
+const DocumentPDF = ({ match }) => {
   const [invoice, setInvoice] = useState(null);
-console.log(props, "this are the props")
-const match = props.match;
+
   useEffect(
     (id) => {
-      axios
-        .get(`${baseUrl}/pdf/${match.params.id}`)
-        .then((response) => {
-          console.log(response);
-          console.log(response.data);
-          setInvoice(response.data);
-        });
+      axios.get(`${baseUrl}/pdf/${match.params.id}`).then((response) => {
+        console.log(response);
+        console.log(response.data);
+        setInvoice(response.data);
+      });
     },
     [match.params]
   );
@@ -38,10 +35,7 @@ const match = props.match;
             <hr></hr>
             {invoice !== null ? (
               <>
-                <CustDetails
-                  invoice={invoice}
-                  client={invoice.client}
-                />
+                <CustDetails invoice={invoice} client={invoice.client} />
                 <Articles articles={invoice.articles} />
                 <hr></hr>
                 <Total invoice={invoice} />

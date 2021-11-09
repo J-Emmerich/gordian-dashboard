@@ -16,6 +16,7 @@ const modalStyle = {
   top: "15%",
   overflowY: "auto"
 };
+
 let newInvoice = {
   invoiceNumber: "",
   invoiceDate: "",
@@ -43,6 +44,13 @@ const Dashboard = styled.section`
 const DashboardHeader = styled.div`
   display: flex;
   justify-content: center;
+`;
+
+const Content = styled.section`
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  margin-top: 20px;
 `;
 
 const InvoiceDashboard = () => {
@@ -85,12 +93,13 @@ const InvoiceDashboard = () => {
     setInvoice(changedInvoice);
   };
 
-  const handleArticleChange = (event) => {
+  const handleArticleChange = (event, id) => {
     let name = event.target.name;
     let value = event.target.value;
 
     // Get the random uuid
-    const id = event.target.parentNode.parentNode.id;
+    // const id = event.target.parentNode.parentNode.id;
+    console.log(id);
     // Find the correct article to change
     const articleToChange = articles.find((article) => {
       return article.articleId === id;
@@ -112,9 +121,8 @@ const InvoiceDashboard = () => {
     const newArticle = { ...article, articleId: newId };
     setArticlesList(articlesList.concat([newArticle]));
   };
-  const removeArticle = (event) => {
+  const removeArticle = (event, id) => {
     event.preventDefault();
-    const id = event.target.parentNode.parentNode.id;
     setArticlesList(articles.filter((article) => article.articleId !== id));
   };
 
@@ -151,22 +159,15 @@ const InvoiceDashboard = () => {
       console.log("so bad!");
     }
   };
-  // Update the state when input changes
-  const handleFilterChange = (e) => {
-    const value = e.target.value || undefined;
-
-    setFilterInput(value);
-  };
 
   const deleteInvoice = async (id) => {
     if (window.confirm("Do you really want to delete the file?")) {
-     await services.deleteInvoice(id);
-     setInvoiceSaved(!invoiceSaved);
-     resetDashboardState();
+      await services.deleteInvoice(id);
+      setInvoiceSaved(!invoiceSaved);
+      resetDashboardState();
     } else {
       console.log("so bad!");
     }
-
   };
 
   return (
@@ -181,14 +182,16 @@ const InvoiceDashboard = () => {
             Nueva Factura
           </Button>
         </DashboardHeader>
-        {invoiceList.length > 0 ? (
-          <InvoiceTable
-            data={invoiceList}
-            handleClick={editInvoice}
-            saveToPdf={handlePdf}
-            deleteInvoice={deleteInvoice}
-          />
-        ) : null}
+        <Content>
+          {invoiceList ? (
+            <InvoiceTable
+              data={invoiceList}
+              handleClick={editInvoice}
+              saveToPdf={handlePdf}
+              deleteInvoice={deleteInvoice}
+            />
+          ) : null}
+        </Content>
         <Modal open={openModal} onClose={() => resetDashboardState()}>
           <div style={modalStyle}>
             <ModalForm

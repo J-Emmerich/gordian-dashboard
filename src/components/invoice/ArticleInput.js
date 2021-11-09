@@ -1,66 +1,65 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
+import styled from "styled-components";
+
+const FlexContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  & button {
+    margin-left: 20px;
+  }
+`;
 
 const ArticleInput = ({ onChange, article, removeArticle }) => {
   return (
     <div className="article-input" id={article.articleId}>
-      <Button variant="contained" color="secondary" onClick={removeArticle}>
-        Remove Article
-      </Button>
-      <label>
-        Article Name:
+      <FlexContainer>
+        <label>Article Name:</label>
         <input
-          onChange={onChange}
+          onChange={(e) => onChange(e, article.articleId)}
           value={article.articleName}
           name="articleName"
           type="text"
         />
-      </label>
-      <label>
-        Price per Unit:
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={(e) => removeArticle(e, article.articleId)}
+        >
+          Remove Article
+        </Button>
+      </FlexContainer>
+      <FlexContainer>
+        <label>Price per Unit:</label>
         <input
-          onChange={onChange}
+          onChange={(e) => onChange(e, article.articleId)}
           value={article.pricePerUnit}
           name="pricePerUnit"
-          type="text"
+          type="number"
         />
-      </label>
-      <label>
-        Is IVA included:
+        <label>Quantity:</label>
         <input
-          onChange={onChange}
-          value={article.isIvaIncluded}
-          name="isIvaIncluded"
-          type="checkbox"
-        />
-      </label>
-      <label>
-        Quantity:
-        <input
-          onChange={onChange}
+          onChange={(e) => onChange(e, article.articleId)}
           value={article.quantity}
           name="quantity"
           type="number"
         />
-      </label>
-      <label>
-        Tasa de IVA
+
+        <label>Tasa de IVA: </label>
         <input
-          onChange={onChange}
+          onChange={(e) => onChange(e, article.articleId)}
           value={article.vat}
           name="vat"
           type="number"
         />
-      </label>
-      <label>
-        Total Price:
+        <label>Total Price:</label>
         <input
-          onChange={onChange}
+          onChange={(e) => onChange(e, article.articleId)}
           value={article.totalPrice}
           name="totalPrice"
           type="number"
         />
-      </label>
+      </FlexContainer>
     </div>
   );
 };

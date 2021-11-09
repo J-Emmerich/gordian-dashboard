@@ -7,7 +7,8 @@ import styled from "styled-components";
 const Container = styled.div`
   padding-top: 15px;
   .react-td,
-  .save-to-pdf, .delete {
+  .save-to-pdf,
+  .delete {
     :hover {
       cursor: pointer;
     }
@@ -16,7 +17,11 @@ const Container = styled.div`
     padding: 10px;
   }
   input {
+    margin-bottom: 20px;
     padding: 10px;
+  }
+  th {
+    padding-left: 10px;
   }
 `;
 
@@ -46,7 +51,7 @@ const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
         columns: [
           {
             Header: "Date",
-            accessor: "invoiceDate",
+            accessor: "invoiceDate"
           },
           {
             Header: "Numero de Factura",
@@ -125,7 +130,10 @@ const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
             return (
               <tr key={row.original._id}>
                 {row.cells.map((cell) => {
-                  if (cell.column.Header !== "Download" && cell.column.Header !== "Delete" )  {
+                  if (
+                    cell.column.Header !== "Download" &&
+                    cell.column.Header !== "Delete"
+                  ) {
                     return (
                       <td
                         className="react-td"

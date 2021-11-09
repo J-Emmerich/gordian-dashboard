@@ -17,9 +17,7 @@
 
         
    b.| Invoices, Save, Download-pdf 
-          --- Edit Invoice
           --- Auto Increment Value
-          --- React-Table
           --- At some point ability to create templates
 
    c.| Clientes / CRM 

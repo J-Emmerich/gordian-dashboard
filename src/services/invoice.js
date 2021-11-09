@@ -1,8 +1,8 @@
 import axios from "axios";
 import handleFileDownload from "../helpers/handle-file-download";
 
-const baseUrl = "http://localhost:8080";
-
+// const baseUrl = "http://localhost:8080";
+const baseUrl = "https://ufl1g.sse.codesandbox.io";
 
 const getInvoices = async () => {
   try {
@@ -39,24 +39,24 @@ const editInvoice = async (invoice) => {
 
 const deleteInvoice = async (id) => {
   try {
-const invoice = await axios.delete(`${baseUrl}/pdf/${id}`);
-console.log("Deleted");
-  } catch (err) {
-    console.log(err);
-  }
-}
-
-const saveToPdf = async (id) => {
-  try {
-    const pdf = await axios.get(`${baseUrl}/pdf/download/${id}`, {responseType: 'blob', });
-    handleFileDownload(pdf, id);
-    console.log(pdf)
+    const invoice = await axios.delete(`${baseUrl}/pdf/${id}`);
+    console.log("Deleted");
   } catch (err) {
     console.log(err);
   }
 };
 
-
+const saveToPdf = async (id) => {
+  try {
+    const pdf = await axios.get(`${baseUrl}/pdf/download/${id}`, {
+      responseType: "blob"
+    });
+    handleFileDownload(pdf, id);
+    console.log(pdf);
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 export default {
   getInvoices,

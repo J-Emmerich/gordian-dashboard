@@ -18,10 +18,14 @@ function Nav() {
   return (
     <>
       <List component={Container}>
-        <ListItemLink to="/" primary="Home" icon={<HomeIcon />} />
-        <ListItemLink to="/board" primary="Board" icon={<DashboardIcon />} />
-        <ListItemLink to="/pdf" primary="Invoices" icon={<ReceiptIcon />} />
-        <ListItemLink to="/about" primary="About" icon={<InfoIcon />} />
+        <ListItemLink to="/app" primary="Home" icon={<HomeIcon />} />
+        <ListItemLink
+          to="/app/board"
+          primary="Board"
+          icon={<DashboardIcon />}
+        />
+        <ListItemLink to="/app/pdf" primary="Invoices" icon={<ReceiptIcon />} />
+        <ListItemLink to="/app/about" primary="About" icon={<InfoIcon />} />
       </List>
     </>
   );
