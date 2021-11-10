@@ -2,6 +2,13 @@ import React, { useState, useMemo, useEffect } from "react";
 import { useTable, useSortBy, useFilters, usePagination } from "react-table";
 import PictureAsPdfIcon from "@material-ui/icons/PictureAsPdf";
 import DeleteIcon from "@material-ui/icons/Delete";
+import LastPage from "@material-ui/icons/LastPage";
+import FirstPage from "@material-ui/icons/FirstPage";
+import NavigateNext from "@material-ui/icons/NavigateNext";
+import NavigateBefore from "@material-ui/icons/NavigateBefore";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -24,6 +31,8 @@ const Container = styled.div`
     padding-left: 10px;
   }
 `;
+
+const Pagination = styled.div``;
 
 const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
   const [filterInput, setFilterInput] = useState("");
@@ -99,9 +108,19 @@ const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
     getTableProps,
     getTableBodyProps,
     headerGroups,
-    rows,
+    page,
     prepareRow,
-    setFilter
+    setFilter,
+    // Pagination helpers
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    setPageSize,
+    state: { pageIndex, pageSize }
   } = useTable({ columns, data }, useFilters, useSortBy, usePagination);
 
   return (
@@ -109,7 +128,7 @@ const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
       <input
         value={filterInput}
         onChange={handleFilterChange}
-        placeholder={"Search name"}
+        placeholder={"Buscar por nome"}
       />
       <table className="-highlight" {...getTableProps()}>
         <thead>
@@ -125,7 +144,7 @@ const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
         </thead>
 
         <tbody className="rt-tbody" {...getTableBodyProps()}>
-          {rows.map((row) => {
+          {page.map((row) => {
             prepareRow(row);
             return (
               <tr key={row.original._id}>
@@ -162,6 +181,50 @@ const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
           })}
         </tbody>
       </table>
+      <Pagination>
+        <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+          <FirstPage />
+        </button>{" "}
+        <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+          <NavigateBefore />
+        </button>{" "}
+        <button onClick={() => nextPage()} disabled={!canNextPage}>
+          <NavigateNext />
+        </button>{" "}
+        <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+          <LastPage />
+        </button>{" "}
+        <span>
+          Página
+          <strong>
+            {pageIndex + 1} de {pageOptions.length}
+          </strong>{" "}
+        </span>
+        <span>
+          | Ir a página:{" "}
+          <input
+            type="number"
+            defaultValue={pageIndex + 1}
+            onChange={(e) => {
+              const page = e.target.value ? Number(e.target.value) - 1 : 0;
+              gotoPage(page);
+            }}
+            style={{ width: "100px" }}
+          />
+        </span>{" "}
+        <Select
+          value={pageSize}
+          onChange={(e) => {
+            setPageSize(Number(e.target.value));
+          }}
+        >
+          {[10, 20, 30, 40, 50].map((pageSize) => (
+            <MenuItem key={pageSize} value={pageSize}>
+              Mostrar {pageSize}
+            </MenuItem>
+          ))}
+        </Select>
+      </Pagination>
     </Container>
   );
 };
