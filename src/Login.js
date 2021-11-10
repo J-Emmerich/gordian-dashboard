@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Router, Route, Switch } from "react-router-dom";
-import styled from "styled-components";
 import history from "./helpers/history";
+import { ACCESS_TOKEN } from "./constants/index";
 
 import PrivateRoute from "./components/PrivateRoute";
 import LoginForm from "./components/LoginForm";
@@ -13,14 +13,8 @@ const Content = {
 };
 
 const Login = () => {
-  const [isUsernameDefined, setIsUsernameDefined] = useState(false);
-  const [user, setUser] = useState({});
-  const [token, setToken] = useState(null);
-
   const submitUser = (response) => {
-    setUser(response.user);
-    setToken(response.token);
-    setIsUsernameDefined(!isUsernameDefined);
+    localStorage.setItem(ACCESS_TOKEN, response.token);
     history.push("/app");
   };
 
@@ -28,8 +22,8 @@ const Login = () => {
     <div style={Content}>
       <Router history={history}>
         <Switch>
-          <PrivateRoute component={App} path="/app" user={user} token={token} />
-          <Route component={DocumentPDF} path="/topdf/:id" />
+          <PrivateRoute component={App} path="/app" />
+          <PrivateRoute component={DocumentPDF} path="/topdf/:id" />
           <Route path="/">
             <LoginForm submitUser={submitUser} />
           </Route>

@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from "react";
-import { useTable, useSortBy, useFilters } from "react-table";
+import { useTable, useSortBy, useFilters, usePagination } from "react-table";
 import PictureAsPdfIcon from "@material-ui/icons/PictureAsPdf";
 import DeleteIcon from "@material-ui/icons/Delete";
 import styled from "styled-components";
@@ -102,7 +102,7 @@ const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
     rows,
     prepareRow,
     setFilter
-  } = useTable({ columns, data }, useFilters, useSortBy);
+  } = useTable({ columns, data }, useFilters, useSortBy, usePagination);
 
   return (
     <Container>
