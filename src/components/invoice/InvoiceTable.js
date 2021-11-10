@@ -1,5 +1,9 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import { useTable, useSortBy, useFilters, usePagination } from "react-table";
+import dayjs from "dayjs";
+import advancedFormat from "dayjs/plugin/advancedFormat";
+import styled from "styled-components";
+
 import PictureAsPdfIcon from "@material-ui/icons/PictureAsPdf";
 import DeleteIcon from "@material-ui/icons/Delete";
 import LastPage from "@material-ui/icons/LastPage";
@@ -8,8 +12,10 @@ import NavigateNext from "@material-ui/icons/NavigateNext";
 import NavigateBefore from "@material-ui/icons/NavigateBefore";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
+import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
+import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 
-import styled from "styled-components";
+dayjs.extend(advancedFormat); // Plugin to format date
 
 const Container = styled.div`
   padding-top: 15px;
@@ -29,6 +35,11 @@ const Container = styled.div`
   }
   th {
     padding-left: 10px;
+    height: 30px;
+    & div {
+      display: flex;
+      align-items: center;
+    }
   }
 `;
 
@@ -44,6 +55,11 @@ const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
     setFilterInput(value);
   };
 
+  const formatDate = (date) => {
+    const formatedDate = dayjs(date).format("DD/MM/YYYY");
+    return dayjs(formatedDate, "DD/MM/YYYY").format();
+  };
+
   const columns = useMemo(
     () => [
       {
@@ -51,7 +67,8 @@ const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
         columns: [
           {
             Header: "Nombre",
-            accessor: "clientName"
+            accessor: "clientName",
+            sortBy: "string"
           }
         ]
       },
@@ -60,7 +77,11 @@ const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
         columns: [
           {
             Header: "Date",
-            accessor: "invoiceDate"
+            accessor: (row) => formatDate(row.invoiceDate), //
+            sortBy: "datetime",
+            Cell: (props) => {
+              return <>{dayjs(props.cell.value).format("DD/MM/YYYY")}</>;
+            }
           },
           {
             Header: "Numero de Factura",
@@ -68,7 +89,8 @@ const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
           },
           {
             Header: "Total",
-            accessor: "invoiceTotal"
+            accessor: "invoiceTotal",
+            sortBy: "basic"
           },
           {
             Header: "Download",
@@ -136,7 +158,20 @@ const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
                 <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                  {column.render("Header")}
+                  <div>
+                    {column.render("Header")}
+                    <span>
+                      {column.isSorted ? (
+                        column.isSortedDesc ? (
+                          <ArrowDropDownIcon />
+                        ) : (
+                          <ArrowDropUpIcon />
+                        )
+                      ) : (
+                        ""
+                      )}
+                    </span>
+                  </div>
                 </th>
               ))}
             </tr>
