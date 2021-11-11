@@ -1,8 +1,21 @@
-import React, { useState, useMemo, useEffect } from "react";
-import { useTable, useSortBy, useFilters } from "react-table";
+import React, { useState, useMemo } from "react";
+import { useTable, useSortBy, useFilters, usePagination } from "react-table";
+import dayjs from "dayjs";
+import advancedFormat from "dayjs/plugin/advancedFormat";
+import styled from "styled-components";
+
 import PictureAsPdfIcon from "@material-ui/icons/PictureAsPdf";
 import DeleteIcon from "@material-ui/icons/Delete";
-import styled from "styled-components";
+import LastPage from "@material-ui/icons/LastPage";
+import FirstPage from "@material-ui/icons/FirstPage";
+import NavigateNext from "@material-ui/icons/NavigateNext";
+import NavigateBefore from "@material-ui/icons/NavigateBefore";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
+import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+
+dayjs.extend(advancedFormat); // Plugin to format date
 
 const Container = styled.div`
   padding-top: 15px;
@@ -22,8 +35,15 @@ const Container = styled.div`
   }
   th {
     padding-left: 10px;
+    height: 30px;
+    & div {
+      display: flex;
+      align-items: center;
+    }
   }
 `;
+
+const Pagination = styled.div``;
 
 const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
   const [filterInput, setFilterInput] = useState("");
@@ -35,6 +55,11 @@ const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
     setFilterInput(value);
   };
 
+  const formatDate = (date) => {
+    const formatedDate = dayjs(date).format("DD/MM/YYYY");
+    return dayjs(formatedDate, "DD/MM/YYYY").format();
+  };
+
   const columns = useMemo(
     () => [
       {
@@ -42,7 +67,8 @@ const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
         columns: [
           {
             Header: "Nombre",
-            accessor: "clientName"
+            accessor: "clientName",
+            sortBy: "string"
           }
         ]
       },
@@ -51,7 +77,11 @@ const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
         columns: [
           {
             Header: "Date",
-            accessor: "invoiceDate"
+            accessor: (row) => formatDate(row.invoiceDate), //
+            sortBy: "datetime",
+            Cell: (props) => {
+              return <>{dayjs(props.cell.value).format("DD/MM/YYYY")}</>;
+            }
           },
           {
             Header: "Numero de Factura",
@@ -59,7 +89,8 @@ const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
           },
           {
             Header: "Total",
-            accessor: "invoiceTotal"
+            accessor: "invoiceTotal",
+            sortBy: "basic"
           },
           {
             Header: "Download",
@@ -99,17 +130,27 @@ const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
     getTableProps,
     getTableBodyProps,
     headerGroups,
-    rows,
+    page,
     prepareRow,
-    setFilter
-  } = useTable({ columns, data }, useFilters, useSortBy);
+    setFilter,
+    // Pagination helpers
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    setPageSize,
+    state: { pageIndex, pageSize }
+  } = useTable({ columns, data }, useFilters, useSortBy, usePagination);
 
   return (
     <Container>
       <input
         value={filterInput}
         onChange={handleFilterChange}
-        placeholder={"Search name"}
+        placeholder={"Buscar por nome"}
       />
       <table className="-highlight" {...getTableProps()}>
         <thead>
@@ -117,7 +158,20 @@ const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
                 <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                  {column.render("Header")}
+                  <div>
+                    {column.render("Header")}
+                    <span>
+                      {column.isSorted ? (
+                        column.isSortedDesc ? (
+                          <ArrowDropDownIcon />
+                        ) : (
+                          <ArrowDropUpIcon />
+                        )
+                      ) : (
+                        ""
+                      )}
+                    </span>
+                  </div>
                 </th>
               ))}
             </tr>
@@ -125,7 +179,7 @@ const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
         </thead>
 
         <tbody className="rt-tbody" {...getTableBodyProps()}>
-          {rows.map((row) => {
+          {page.map((row) => {
             prepareRow(row);
             return (
               <tr key={row.original._id}>
@@ -162,6 +216,50 @@ const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
           })}
         </tbody>
       </table>
+      <Pagination>
+        <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+          <FirstPage />
+        </button>{" "}
+        <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+          <NavigateBefore />
+        </button>{" "}
+        <button onClick={() => nextPage()} disabled={!canNextPage}>
+          <NavigateNext />
+        </button>{" "}
+        <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+          <LastPage />
+        </button>{" "}
+        <span>
+          Página
+          <strong>
+            {pageIndex + 1} de {pageOptions.length}
+          </strong>{" "}
+        </span>
+        <span>
+          | Ir a página:{" "}
+          <input
+            type="number"
+            defaultValue={pageIndex + 1}
+            onChange={(e) => {
+              const page = e.target.value ? Number(e.target.value) - 1 : 0;
+              gotoPage(page);
+            }}
+            style={{ width: "100px" }}
+          />
+        </span>{" "}
+        <Select
+          value={pageSize}
+          onChange={(e) => {
+            setPageSize(Number(e.target.value));
+          }}
+        >
+          {[10, 20, 30, 40, 50].map((pageSize) => (
+            <MenuItem key={pageSize} value={pageSize}>
+              Mostrar {pageSize}
+            </MenuItem>
+          ))}
+        </Select>
+      </Pagination>
     </Container>
   );
 };
