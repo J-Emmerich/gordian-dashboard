@@ -40,7 +40,7 @@ const editInvoice = async (invoice) => {
 const deleteInvoice = async (id) => {
   try {
     const invoice = await axios.delete(`${baseUrl}/pdf/${id}`);
-    console.log("Deleted");
+    console.log("Deleted", invoice);
   } catch (err) {
     console.log(err);
   }

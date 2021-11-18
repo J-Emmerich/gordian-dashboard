@@ -16,6 +16,8 @@ import styled from "styled-components";
 import Board from "./components/to-do/Board";
 import Nav from "./components/Nav";
 import InvoiceDashboard from "./components/invoice/InvoiceDashboard";
+import CRMDashboard from "./components/crm/CRMDashboard";
+
 const useStyles = makeStyles(styles);
 
 //This component is to fix the App bar standing over the other components.
@@ -63,7 +65,7 @@ export default function App({ user, token }) {
             <Route path="/app/board" component={Board} />
 
             <Route path="/app/about">
-              <p>This should be the About</p>
+              <CRMDashboard />
             </Route>
             <Route path="/app/pdf">
               <InvoiceDashboard />
