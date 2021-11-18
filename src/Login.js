@@ -8,10 +8,6 @@ import LoginForm from "./components/LoginForm";
 import App from "./App";
 import DocumentPDF from "./components/invoice/pdf-page/DocumentPDF";
 
-const Content = {
-  backgroundColor: "#151414"
-};
-
 const Login = () => {
   const submitUser = (response) => {
     localStorage.setItem(ACCESS_TOKEN, response.token);
@@ -19,7 +15,7 @@ const Login = () => {
   };
 
   return (
-    <div style={Content}>
+    <div>
       <Router history={history}>
         <Switch>
           <PrivateRoute component={App} path="/app" />

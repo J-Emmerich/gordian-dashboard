@@ -84,8 +84,10 @@ const LoginForm = ({ submitUser }) => {
 
   const submitLogin = async (e, username, password) => {
     e.preventDefault();
+
     try {
       const user = await loginNewUser(username, password);
+      console.log(user);
       submitUser(user);
     } catch (err) {
       setErrorMessage(err.message);
@@ -143,13 +145,13 @@ const LoginForm = ({ submitUser }) => {
           Submit
         </FormSubmit>
 
-        {/* <BottomMessage>
+        <BottomMessage>
           Want to&nbsp;
           <a href="#" onClick={() => setIsLoginForm(!isLoginForm)}>
             {isLoginForm ? "Sign Up" : "Login"}
           </a>
           &nbsp;instead?
-        </BottomMessage> */}
+        </BottomMessage>
       </Form>
       {errorMessage ? (
         <ErrorMessage>
