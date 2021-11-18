@@ -7,6 +7,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import HomeIcon from "@material-ui/icons/Home";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import InfoIcon from "@material-ui/icons/Info";
+import PersonIcon from "@material-ui/icons/Person";
 import ReceiptIcon from "@material-ui/icons/Receipt";
 import styled from "styled-components";
 
@@ -26,6 +27,11 @@ function Nav() {
         />
         <ListItemLink to="/app/pdf" primary="Invoices" icon={<ReceiptIcon />} />
         <ListItemLink to="/app/about" primary="About" icon={<InfoIcon />} />
+        <ListItemLink
+          to="/app/customer"
+          primary="Customers"
+          icon={<PersonIcon />}
+        />
       </List>
     </>
   );

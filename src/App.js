@@ -65,6 +65,9 @@ export default function App({ user, token }) {
             <Route path="/app/board" component={Board} />
 
             <Route path="/app/about">
+              <p>This should be the About</p>
+            </Route>
+            <Route path="/app/customer">
               <CRMDashboard />
             </Route>
             <Route path="/app/pdf">
