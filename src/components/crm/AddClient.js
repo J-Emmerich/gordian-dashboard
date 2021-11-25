@@ -49,31 +49,38 @@ const ModalForm = ({
           </label>
           <label>
             Modelo Contrato:
-            <select onChange={handleChange} name="modeloContrato">
-              <option value="ivaIncluido">12</option>
-              <option value="ivaNoIncluido" selected>
-                12 + IVA
-              </option>
+            <select
+              defaultValue="12 IVA Incluído"
+              onChange={handleChange}
+              name="modeloContrato"
+            >
+              <option value="12 IVA Incluído">12</option>
+              <option value="12 + IVA">12 + IVA</option>
+              <option value="20 IVA incluído">20 IVA incluido</option>
             </select>
           </label>
           <label>
             Estado del Contrato:
-            <select onChange={handleChange} name="estadoContrato">
-              <option value="firmado">Firmado los dos</option>
-              <option value="firmadoPet">Firmado Pet</option>
-              <option value="firmadoCliente">Firmado Cliente </option>
-              <option value="noFirmado" selected>
-                No Firmado
+            <select
+              defaultValue="Firmado por Pet Sitter"
+              onChange={handleChange}
+              name="estadoContrato"
+            >
+              <option value="Firmado">Firmado por los dos</option>
+              <option value="Firmado por Pet Sitter">
+                Firmado por Pet Sitter
               </option>
+              <option value="Firmado por Cliente">Firmado por Cliente</option>
+              <option value="No firmado">No Firmado</option>
             </select>
           </label>
         </fieldset>
 
         <fieldset>
           <div>
-            <h2>Pets </h2>
+            <h2>Mascotas</h2>
             <Button variant="contained" color="primary" onClick={addPet}>
-              Add Pet
+              Añadir Mascota
             </Button>
           </div>
           <section>
@@ -94,7 +101,7 @@ const ModalForm = ({
         </fieldset>
 
         <Button variant="contained" color="primary" onClick={handleSubmit}>
-          Save Invoice
+          Guardar
         </Button>
       </Form>
     </div>

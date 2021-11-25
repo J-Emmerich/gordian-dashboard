@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Modal from "@material-ui/core/Modal";
 import Button from "@material-ui/core/Button";
-import services from "../../services/crm";
+import services from "../../services/bugtracker";
 import { v4 as uuid } from "uuid";
 import styled from "styled-components";
 
-import CRMTable from "./CRMTable";
-import AddClient from "./AddClient";
+import BugTable from "./BugTable";
+import AddBug from "./AddBug";
 
 const modalStyle = {
   backgroundColor: "white",
@@ -18,16 +18,15 @@ const modalStyle = {
   overflowY: "auto"
 };
 
-let newCustomer = {
-  name: "",
-  estadoContrato: "No Firmado",
-  modeloContrato: "12 + IVA"
+let newBug = {
+  descripcion: "",
+  estadoBug: "Abierto",
+  severidad: "Poca"
 };
 
-let pet = {
-  petType: "",
-  petName: "",
-  petId: ""
+let comment = {
+  contenido: "",
+  commentId: ""
 };
 
 const Dashboard = styled.section`
@@ -45,83 +44,82 @@ const Content = styled.section`
   margin-top: 20px;
 `;
 
-const CRMDashboard = () => {
+const BugTrackerDashboard = () => {
   // Modal Inputs State
-  const [customer, setCustomer] = useState(newCustomer);
-  const [pets, setPets] = useState([pet]);
-  const [petList, setPetList] = useState([]);
+  const [bug, setBug] = useState(newBug);
+  const [comments, setPets] = useState([comment]);
+  const [commentList, setCommentList] = useState([]);
   const [customerSaved, setCustomerSaved] = useState(false);
   // Invoice List State
-  const [customerList, setCustomerList] = useState([]);
+  const [bugList, setBugList] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
-    setPets(petList);
-  }, [petList]);
+    setPets(commentList);
+  }, [commentList]);
 
   useEffect(() => {
     callGetCustomers();
   }, [customerSaved]);
 
   async function callGetCustomers() {
-    const customers = await services.getCustomers();
-    console.log("this clients returned", customers);
-    setCustomerList(customers);
+    const bugs = await services.getBugs();
+    console.log("this bugs returned", bugs);
+    setBugList(bugs);
   }
   const resetDashboardState = () => {
     setOpenModal(false);
     setIsEditing(false);
     setCustomerSaved(!customerSaved);
-    setCustomer(newCustomer);
-    setPets([pet]);
-    setPetList([]);
+    setBug(newBug);
+    setPets([comment]);
+    setCommentList([]);
   };
 
-  // Invoice Handlers
+  // Bug Handlers
   const handleChange = (event) => {
     let name = event.target.name;
     let value = event.target.value;
-    const changedInvoice = { ...customer, [name]: value };
-    console.log(changedInvoice);
-    setCustomer(changedInvoice);
+    const changedBug = { ...bug, [name]: value };
+    setBug(changedBug);
   };
 
-  const handlePetChange = (event, id) => {
+  const handleCommentChange = (event, id) => {
     let name = event.target.name;
     let value = event.target.value;
 
-    // Find the correct pet to change
-    const petToChange = pets.find((pet) => {
-      return pet.petId === id;
+    // Find the correct comment to change
+    const petToChange = comments.find((comment) => {
+      return comment.commentId === id;
     });
 
-    const newPet = { ...petToChange, [name]: value };
-    // if is the pet you're changing save the new one
+    const newComment = { ...petToChange, [name]: value };
+    // if is the comment you're changing save the new one
     // otherwise keep the old
-    setPetList(
-      pets.map((pet) => {
-        return pet.petId === id ? newPet : pet;
+    setCommentList(
+      comments.map((comment) => {
+        return comment.commentId === id ? newComment : comment;
       })
     );
   };
 
-  const addAnotherPet = (event) => {
+  const addComment = (event) => {
     event.preventDefault();
     const newId = uuid();
-    const newPet = { ...pet, petId: newId };
-    setPetList(petList.concat([newPet]));
+    const newComment = { ...comment, commentId: newId };
+    setCommentList(commentList.concat([newComment]));
   };
-  const removePet = (event, id) => {
+  const removeComment = (event, id) => {
     event.preventDefault();
-    setPetList(pets.filter((pet) => pet.petId !== id));
+    setCommentList(comments.filter((comment) => comment.commentId !== id));
   };
 
   // Save the articles list to the current customer
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const invoiceToSave = { ...customer, pets: pets };
-    await services.saveCustomer(invoiceToSave);
+    const bugToSave = { ...bug, comments: comments };
+    await services.saveBug(bugToSave);
     setCustomerSaved(!customerSaved);
     resetDashboardState();
   };
@@ -130,31 +128,23 @@ const CRMDashboard = () => {
   // Editing customer
   const editCustomer = (customerReceived) => {
     console.log("I received this", customerReceived);
-    setCustomer(customerReceived);
-    setPetList(customerReceived.pets);
+    setBug(customerReceived);
+    setCommentList(customerReceived.comments);
     setIsEditing(true);
     setOpenModal(true);
   };
 
   const handleEdit = async (e) => {
     e.preventDefault();
-    const customerToSave = { ...customer, pets: pets };
-    await services.editCustomer(customerToSave);
+    const customerToSave = { ...bug, comments: comments };
+    await services.editBug(customerToSave);
     setCustomerSaved(!customerSaved);
     resetDashboardState();
   };
 
-  const handlePdf = async (id) => {
-    if (window.confirm("do you want to save it?")) {
-      await services.saveToPdf(id);
-    } else {
-      console.log("so bad!");
-    }
-  };
-
   const deleteCustomer = async (id) => {
     if (window.confirm("Do you really want to delete the file?")) {
-      await services.deleteCustomer(id);
+      await services.deleteBug(id);
       await callGetCustomers();
       setCustomerSaved(!customerSaved);
       resetDashboardState();
@@ -165,10 +155,9 @@ const CRMDashboard = () => {
 
   const callTable = () => {
     return (
-      <CRMTable
-        data={customerList}
+      <BugTable
+        data={bugList}
         handleClick={editCustomer}
-        saveToPdf={handlePdf}
         deleteCustomer={deleteCustomer}
       />
     );
@@ -183,20 +172,20 @@ const CRMDashboard = () => {
             color="primary"
             onClick={() => setOpenModal(true)}
           >
-            Nuevo Cliente
+            Nuevo Bug
           </Button>
         </DashboardHeader>
-        <Content>{customerList ? callTable() : null}</Content>
+        <Content>{bugList ? callTable() : null}</Content>
         <Modal open={openModal} onClose={() => resetDashboardState()}>
           <div style={modalStyle}>
-            <AddClient
+            <AddBug
               handleChange={handleChange}
-              petList={petList}
-              handlePetChange={handlePetChange}
+              commentList={commentList}
+              handleCommentChange={handleCommentChange}
               handleSubmit={isEditing ? handleEdit : handleSubmit}
-              removePet={removePet}
-              addPet={addAnotherPet}
-              customer={customer}
+              removeComment={removeComment}
+              addComment={addComment}
+              bug={bug}
             />
           </div>
         </Modal>
@@ -205,4 +194,4 @@ const CRMDashboard = () => {
   );
 };
 
-export default CRMDashboard;
+export default BugTrackerDashboard;

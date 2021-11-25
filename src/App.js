@@ -17,6 +17,7 @@ import Board from "./components/to-do/Board";
 import Nav from "./components/Nav";
 import InvoiceDashboard from "./components/invoice/InvoiceDashboard";
 import CRMDashboard from "./components/crm/CRMDashboard";
+import BugTrackerDashboard from "./components/bugtracker/BugTrackerDashboard";
 
 const useStyles = makeStyles(styles);
 
@@ -63,9 +64,8 @@ export default function App({ user, token }) {
         <main className={classes.main}>
           <Switch>
             <Route path="/app/board" component={Board} />
-
-            <Route path="/app/about">
-              <p>This should be the About</p>
+            <Route path="/app/bugtracker">
+              <BugTrackerDashboard />
             </Route>
             <Route path="/app/customer">
               <CRMDashboard />

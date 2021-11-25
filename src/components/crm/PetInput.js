@@ -26,7 +26,7 @@ const PetInput = ({ onChange, pet, removePet }) => {
           color="secondary"
           onClick={(e) => removePet(e, pet.petId)}
         >
-          Remove Article
+          Delete Pet
         </Button>
       </FlexContainer>
       <FlexContainer>

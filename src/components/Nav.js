@@ -22,15 +22,19 @@ function Nav() {
         <ListItemLink to="/app" primary="Home" icon={<HomeIcon />} />
         <ListItemLink
           to="/app/board"
-          primary="Board"
+          primary="Cuadro de Notas"
           icon={<DashboardIcon />}
         />
-        <ListItemLink to="/app/pdf" primary="Invoices" icon={<ReceiptIcon />} />
-        <ListItemLink to="/app/about" primary="About" icon={<InfoIcon />} />
+        <ListItemLink to="/app/pdf" primary="Facturas" icon={<ReceiptIcon />} />
         <ListItemLink
           to="/app/customer"
-          primary="Customers"
+          primary="Clientes"
           icon={<PersonIcon />}
+        />
+        <ListItemLink
+          to="/app/bugtracker"
+          primary="Bug Tracker"
+          icon={<InfoIcon />}
         />
       </List>
     </>
