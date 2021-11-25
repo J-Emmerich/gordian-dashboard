@@ -13,9 +13,11 @@ const getBugs = async () => {
   }
 };
 
-const saveBug = async (customer) => {
+const saveBug = async (token, customer) => {
   try {
-    const response = await axios.post(`${baseUrl}/${path}`, customer);
+    const response = await axios.post(`${baseUrl}/${path}`, customer, {
+      headers: { Authorization: `Bearer: ${token}` }
+    });
     console.log("this is the response::::", response);
     return response.data;
   } catch (err) {
@@ -24,11 +26,14 @@ const saveBug = async (customer) => {
   }
 };
 
-const editBug = async (customer) => {
+const editBug = async (token, customer) => {
   try {
     const edited = await axios.put(
       `${baseUrl}/${path}/${customer._id}`,
-      customer
+      customer,
+      {
+        headers: { Authorization: `Bearer: ${token}` }
+      }
     );
     console.log(edited.data, "this is edited:::: ");
   } catch (err) {
@@ -36,9 +41,11 @@ const editBug = async (customer) => {
   }
 };
 
-const deleteBug = async (id) => {
+const deleteBug = async (token, id) => {
   try {
-    const customer = await axios.delete(`${baseUrl}/${path}/${id}`);
+    const customer = await axios.delete(`${baseUrl}/${path}/${id}`, {
+      headers: { Authorization: `Bearer: ${token}` }
+    });
     console.log("Deleted", customer);
   } catch (err) {
     console.log(err);

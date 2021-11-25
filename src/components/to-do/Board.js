@@ -24,14 +24,14 @@ const BoardButtonsContainer = styled.div`
   background-color: green;
 `;
 
-const Board = () => {
+const Board = ({ token }) => {
   const [isSaved, setIsSaved] = useState(true);
   const [boardData, setBoardData] = useState(firstCard);
   const [isInsertingTask, setIsInsertingTask] = useState(false);
   const [isInsertingCard, setIsInsertingCard] = useState(false);
   const [newTaskContent, setNewTaskContent] = useState("");
   const [newCardTitle, setNewCardTitle] = useState("New Card");
-
+  console.log(token, "this is token in board");
   useEffect(() => {
     const result = preventFirstCardBug(boardData);
     if (result) setIsInsertingCard(true);
@@ -40,7 +40,7 @@ const Board = () => {
   useEffect(() => {
     if (boardData.initialData === true) {
       async function fetchProject() {
-        const data = await services.getProject();
+        const data = await services.getProject(token);
         if (data) {
           setBoardData(data);
           setIsInsertingCard(false);
@@ -55,7 +55,7 @@ const Board = () => {
   }, [boardData]);
 
   const saveToDatabase = async () => {
-    const data = await services.saveBoardToDatabase(boardData);
+    const data = await services.saveBoardToDatabase(token, boardData);
     setBoardData(data);
     setIsSaved(true);
   };

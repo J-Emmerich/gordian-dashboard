@@ -3,7 +3,7 @@ import axios from "axios";
 const baseUrl = "https://ufl1g.sse.codesandbox.io";
 const path = "auth";
 
-export const registerNewUser = async (username, password) => {
+const registerNewUser = async (username, password) => {
   try {
     const user = await axios.post(`${baseUrl}/${path}/register`, {
       username,
@@ -17,7 +17,7 @@ export const registerNewUser = async (username, password) => {
   }
 };
 
-export const loginNewUser = async (username, password) => {
+const loginNewUser = async (username, password) => {
   try {
     const user = await axios.post(`${baseUrl}/${path}/login`, {
       username,
@@ -29,3 +29,5 @@ export const loginNewUser = async (username, password) => {
     throw new Error(error.response.data.msg);
   }
 };
+
+export default { loginNewUser, registerNewUser };

@@ -26,7 +26,7 @@ const FixHeader = styled.div`
   height: 55px;
 `;
 
-export default function App({ user, token }) {
+export default function App({ token }) {
   const classes = useStyles();
 
   const [isOpened, setIsOpened] = useState(false);
@@ -63,15 +63,17 @@ export default function App({ user, token }) {
         </Drawer>
         <main className={classes.main}>
           <Switch>
-            <Route path="/app/board" component={Board} />
+            <Route path="/app/board">
+              <Board token={token} />
+            </Route>
             <Route path="/app/bugtracker">
-              <BugTrackerDashboard />
+              <BugTrackerDashboard token={token} />
             </Route>
             <Route path="/app/customer">
-              <CRMDashboard />
+              <CRMDashboard token={token} />
             </Route>
             <Route path="/app/pdf">
-              <InvoiceDashboard />
+              <InvoiceDashboard token={token} />
             </Route>
             <Route path="/app" exact>
               <p>This should be the Home</p>

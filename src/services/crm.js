@@ -2,9 +2,11 @@ import axios from "axios";
 
 const baseUrl = "https://ufl1g.sse.codesandbox.io";
 
-const getCustomers = async () => {
+const getCustomers = async (token) => {
   try {
-    const customers = await axios.get(`${baseUrl}/customer`);
+    const customers = await axios.get(`${baseUrl}/customer`, {
+      headers: { Authorization: `Bearer: ${token}` }
+    });
 
     return customers.data;
   } catch (err) {
@@ -12,9 +14,11 @@ const getCustomers = async () => {
   }
 };
 
-const saveCustomer = async (customer) => {
+const saveCustomer = async (token, customer) => {
   try {
-    const response = await axios.post(`${baseUrl}/customer`, customer);
+    const response = await axios.post(`${baseUrl}/customer`, customer, {
+      headers: { Authorization: `Bearer: ${token}` }
+    });
     console.log("this is the response::::", response);
     return response.data;
   } catch (err) {
@@ -23,11 +27,14 @@ const saveCustomer = async (customer) => {
   }
 };
 
-const editCustomer = async (customer) => {
+const editCustomer = async (token, customer) => {
   try {
     const edited = await axios.put(
       `${baseUrl}/customer/${customer._id}`,
-      customer
+      customer,
+      {
+        headers: { Authorization: `Bearer: ${token}` }
+      }
     );
     console.log(edited.data, "this is edited:::: ");
   } catch (err) {
@@ -35,9 +42,11 @@ const editCustomer = async (customer) => {
   }
 };
 
-const deleteCustomer = async (id) => {
+const deleteCustomer = async (token, id) => {
   try {
-    const customer = await axios.delete(`${baseUrl}/customer/${id}`);
+    const customer = await axios.delete(`${baseUrl}/customer/${id}`, {
+      headers: { Authorization: `Bearer: ${token}` }
+    });
     console.log("Deleted", customer);
   } catch (err) {
     console.log(err);
