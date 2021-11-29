@@ -4,51 +4,62 @@ import handleFileDownload from "../helpers/handle-file-download";
 // const baseUrl = "http://localhost:8080";
 const baseUrl = "https://ufl1g.sse.codesandbox.io";
 
-const getInvoices = async () => {
+const getInvoices = async (token) => {
   try {
-    const invoices = await axios.get(`${baseUrl}/pdf`);
+    const invoices = await axios.get(`${baseUrl}/pdf`, {
+      headers: { Authorization: `Bearer: ${token}` }
+    });
     return invoices.data;
   } catch (err) {
     console.log(err);
   }
 };
 
-const getOneInvoice = async (id) => {
+const getOneInvoice = async (token, id) => {
   try {
-    const invoice = await axios.get(`${baseUrl}/pdf/${id}`);
+    const invoice = await axios.get(`${baseUrl}/pdf/${id}`, {
+      headers: { Authorization: `Bearer: ${token}` }
+    });
     return invoice.data;
   } catch (err) {
     console.log(err);
   }
 };
 
-const saveInvoice = async (invoice) => {
+const saveInvoice = async (token, invoice) => {
   try {
-    await axios.post(`${baseUrl}/pdf`, invoice);
+    await axios.post(`${baseUrl}/pdf`, invoice, {
+      headers: { Authorization: `Bearer: ${token}` }
+    });
   } catch (err) {
     console.log(err);
   }
 };
-const editInvoice = async (invoice) => {
+const editInvoice = async (token, invoice) => {
   try {
-    await axios.put(`${baseUrl}/pdf/${invoice._id}`, invoice);
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-const deleteInvoice = async (id) => {
-  try {
-    const invoice = await axios.delete(`${baseUrl}/pdf/${id}`);
-    console.log("Deleted");
+    await axios.put(`${baseUrl}/pdf/${invoice._id}`, invoice, {
+      headers: { Authorization: `Bearer: ${token}` }
+    });
   } catch (err) {
     console.log(err);
   }
 };
 
-const saveToPdf = async (id) => {
+const deleteInvoice = async (token, id) => {
+  try {
+    const invoice = await axios.delete(`${baseUrl}/pdf/${id}`, {
+      headers: { Authorization: `Bearer: ${token}` }
+    });
+    console.log("Deleted", invoice);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const saveToPdf = async (token, id) => {
   try {
     const pdf = await axios.get(`${baseUrl}/pdf/download/${id}`, {
+      headers: { Authorization: `Bearer: ${token}` },
       responseType: "blob"
     });
     handleFileDownload(pdf, id);

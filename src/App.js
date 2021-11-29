@@ -16,6 +16,9 @@ import styled from "styled-components";
 import Board from "./components/to-do/Board";
 import Nav from "./components/Nav";
 import InvoiceDashboard from "./components/invoice/InvoiceDashboard";
+import CRMDashboard from "./components/crm/CRMDashboard";
+import BugTrackerDashboard from "./components/bugtracker/BugTrackerDashboard";
+
 const useStyles = makeStyles(styles);
 
 //This component is to fix the App bar standing over the other components.
@@ -23,7 +26,7 @@ const FixHeader = styled.div`
   height: 55px;
 `;
 
-export default function App({ user, token }) {
+export default function App({ token }) {
   const classes = useStyles();
 
   const [isOpened, setIsOpened] = useState(false);
@@ -60,13 +63,17 @@ export default function App({ user, token }) {
         </Drawer>
         <main className={classes.main}>
           <Switch>
-            <Route path="/app/board" component={Board} />
-
-            <Route path="/app/about">
-              <p>This should be the About</p>
+            <Route path="/app/board">
+              <Board token={token} />
+            </Route>
+            <Route path="/app/bugtracker">
+              <BugTrackerDashboard token={token} />
+            </Route>
+            <Route path="/app/customer">
+              <CRMDashboard token={token} />
             </Route>
             <Route path="/app/pdf">
-              <InvoiceDashboard />
+              <InvoiceDashboard token={token} />
             </Route>
             <Route path="/app" exact>
               <p>This should be the Home</p>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { registerNewUser, loginNewUser } from "../services/auth";
+import services from "../services/auth";
 
 const Container = styled.div`
   display: flex;
@@ -84,8 +84,9 @@ const LoginForm = ({ submitUser }) => {
 
   const submitLogin = async (e, username, password) => {
     e.preventDefault();
+
     try {
-      const user = await loginNewUser(username, password);
+      const user = await services.loginNewUser(username, password);
       submitUser(user);
     } catch (err) {
       setErrorMessage(err.message);
@@ -97,7 +98,7 @@ const LoginForm = ({ submitUser }) => {
   const submitRegister = async (e, username, password) => {
     try {
       e.preventDefault();
-      const user = await registerNewUser(username, password);
+      const user = await services.registerNewUser(username, password);
       submitUser(user);
     } catch (err) {
       setErrorMessage(err.message);
@@ -143,13 +144,13 @@ const LoginForm = ({ submitUser }) => {
           Submit
         </FormSubmit>
 
-        {/* <BottomMessage>
+        <BottomMessage>
           Want to&nbsp;
           <a href="#" onClick={() => setIsLoginForm(!isLoginForm)}>
             {isLoginForm ? "Sign Up" : "Login"}
           </a>
           &nbsp;instead?
-        </BottomMessage> */}
+        </BottomMessage>
       </Form>
       {errorMessage ? (
         <ErrorMessage>
