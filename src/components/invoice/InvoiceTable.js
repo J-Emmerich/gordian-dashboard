@@ -17,6 +17,20 @@ import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 
 dayjs.extend(advancedFormat); // Plugin to format date
 
+const Table = styled.table`
+  border-collapse: collapse;
+  border-radius: 1em;
+  overflow: hidden;
+  width: 100%;
+`;
+
+const TableHeader = styled.thead`
+  background-color: #eee;
+  & th {
+    padding: 20px;
+  }
+`;
+
 const Container = styled.div`
   padding-top: 15px;
   .react-td,
@@ -43,11 +57,12 @@ const Container = styled.div`
   }
 `;
 
-const Pagination = styled.div``;
+const Pagination = styled.div`
+  width: 100%;
+`;
 
 const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
   const [filterInput, setFilterInput] = useState("");
-
   // Update the state when input changes
   const handleFilterChange = (e) => {
     const value = e.target.value || undefined;
@@ -63,64 +78,54 @@ const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
   const columns = useMemo(
     () => [
       {
-        Header: "Cliente",
-        columns: [
-          {
-            Header: "Nombre",
-            accessor: "clientName",
-            sortBy: "string"
-          }
-        ]
+        Header: "Nombre",
+        accessor: "clientName",
+        sortBy: "string"
       },
       {
-        Header: "Información Facturas",
-        columns: [
-          {
-            Header: "Date",
-            accessor: (row) => formatDate(row.invoiceDate), //
-            sortBy: "datetime",
-            Cell: (props) => {
-              return <>{dayjs(props.cell.value).format("DD/MM/YYYY")}</>;
-            }
-          },
-          {
-            Header: "Numero de Factura",
-            accessor: "invoiceNumber"
-          },
-          {
-            Header: "Total",
-            accessor: "invoiceTotal",
-            sortBy: "basic"
-          },
-          {
-            Header: "Download",
-            accessor: "_id",
-            Cell: (props) => {
-              return (
-                <PictureAsPdfIcon
-                  className="save-to-pdf"
-                  onClick={() => saveToPdf(props.cell.value)}
-                >
-                  PDF
-                </PictureAsPdfIcon>
-              );
-            }
-          },
-          {
-            Header: "Delete",
-            accessor: "",
-            Cell: (props) => {
-              return (
-                <DeleteIcon
-                  className="delete"
-                  onClick={() => deleteInvoice(props.cell.row.original._id)}
-                >
-                  PDF
-                </DeleteIcon>
-              );
-            }
-          }
-        ]
+        Header: "Fecha",
+        accessor: (row) => formatDate(row.invoiceDate), //
+        sortBy: "datetime",
+        Cell: (props) => {
+          return <>{dayjs(props.cell.value).format("DD/MM/YYYY")}</>;
+        }
+      },
+      {
+        Header: "Numero de Factura",
+        accessor: "invoiceNumber"
+      },
+      {
+        Header: "Total",
+        accessor: "invoiceTotal",
+        sortBy: "basic"
+      },
+      {
+        Header: "Download",
+        accessor: "_id",
+        Cell: (props) => {
+          return (
+            <PictureAsPdfIcon
+              className="save-to-pdf"
+              onClick={() => saveToPdf(props.cell.value)}
+            >
+              PDF
+            </PictureAsPdfIcon>
+          );
+        }
+      },
+      {
+        Header: "Delete",
+        accessor: "",
+        Cell: (props) => {
+          return (
+            <DeleteIcon
+              className="delete"
+              onClick={() => deleteInvoice(props.cell.row.original._id)}
+            >
+              PDF
+            </DeleteIcon>
+          );
+        }
       }
     ],
     [saveToPdf]
@@ -150,10 +155,10 @@ const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
       <input
         value={filterInput}
         onChange={handleFilterChange}
-        placeholder={"Buscar por nome"}
+        placeholder={"Buscar por nombre"}
       />
-      <table className="-highlight" {...getTableProps()}>
-        <thead>
+      <Table {...getTableProps()}>
+        <TableHeader>
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
@@ -176,7 +181,7 @@ const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
               ))}
             </tr>
           ))}
-        </thead>
+        </TableHeader>
 
         <tbody className="rt-tbody" {...getTableBodyProps()}>
           {page.map((row) => {
@@ -193,10 +198,10 @@ const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
                         className="react-td"
                         {...cell.getCellProps()}
                         onMouseEnter={(e) => {
-                          e.target.parentNode.style.backgroundColor = "red";
+                          e.target.parentNode.style.backgroundColor = "#F1769A";
                         }}
                         onMouseLeave={(e) => {
-                          e.target.parentNode.style.backgroundColor = "white";
+                          e.target.parentNode.style.backgroundColor = "inherit";
                         }}
                         onClick={() => {
                           handleClick(cell.row.original);
@@ -215,7 +220,7 @@ const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
             );
           })}
         </tbody>
-      </table>
+      </Table>
       <Pagination>
         <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
           <FirstPage />
@@ -236,7 +241,7 @@ const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
           </strong>{" "}
         </span>
         <span>
-          | Ir a página:{" "}
+          | Ir a la página:{" "}
           <input
             type="number"
             defaultValue={pageIndex + 1}
@@ -255,7 +260,7 @@ const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
         >
           {[10, 20, 30, 40, 50].map((pageSize) => (
             <MenuItem key={pageSize} value={pageSize}>
-              Mostrar {pageSize}
+              {pageSize}
             </MenuItem>
           ))}
         </Select>

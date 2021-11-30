@@ -3,27 +3,29 @@ import Button from "@material-ui/core/Button";
 import PetInput from "./PetInput";
 import styled from "styled-components";
 
-const datePicker = {
-  padding: 5,
-  margin: 5,
-  fontSize: 12
-};
-
 const Form = styled.form`
+  display: flex;
+  flex-flow: column wrap;
+  margin: 0px 10px;
   & fieldset {
     border: solid 0 black;
   }
-  & input[type="text"] {
-    width: 50%;
+  & input[type="text"],
+  input[type="number"],
+  select,
+  option {
+    background-color: #f3f3f3;
+    border: none;
+    margin: 10px;
   }
-  & label {
-    display: flex;
-    align-content: center;
-    align-items: center;
-    margin: 5px;
+  & select,
+  option {
+    padding: 10px;
   }
 `;
-
+const Title = styled.div`
+  align-self: center;
+`;
 const ModalForm = ({
   handleChange,
   petList,
@@ -36,46 +38,42 @@ const ModalForm = ({
   return (
     <div>
       <Form>
-        <fieldset>
-          <h2> Customer details</h2>
-          <label>
-            Client Name:
-            <input
-              onChange={handleChange}
-              value={customer.name}
-              name="name"
-              type="text"
-            />
-          </label>
-          <label>
-            Modelo Contrato:
-            <select
-              defaultValue="12 IVA Incluído"
-              onChange={handleChange}
-              name="modeloContrato"
-            >
-              <option value="12 IVA Incluído">12</option>
-              <option value="12 + IVA">12 + IVA</option>
-              <option value="20 IVA incluído">20 IVA incluido</option>
-            </select>
-          </label>
-          <label>
-            Estado del Contrato:
-            <select
-              defaultValue="Firmado por Pet Sitter"
-              onChange={handleChange}
-              name="estadoContrato"
-            >
-              <option value="Firmado">Firmado por los dos</option>
-              <option value="Firmado por Pet Sitter">
-                Firmado por Pet Sitter
-              </option>
-              <option value="Firmado por Cliente">Firmado por Cliente</option>
-              <option value="No firmado">No Firmado</option>
-            </select>
-          </label>
-        </fieldset>
-
+        <Title>
+          <h2> Detalles del Cliente</h2>
+        </Title>
+        Client Name:
+        <input
+          onChange={handleChange}
+          value={customer.name}
+          name="name"
+          type="text"
+          placeholder="Nombre del cliente"
+        />
+        Modelo Contrato:
+        <select
+          defaultValue="12 IVA Incluído"
+          onChange={handleChange}
+          name="modeloContrato"
+        >
+          <option value="12 IVA Incluído">12</option>
+          <option value="12 + IVA">12 + IVA</option>
+          <option value="20 IVA incluído">20 IVA incluido</option>
+        </select>
+        Estado del Contrato:
+        <select
+          defaultValue="Estado del Contrato"
+          onChange={handleChange}
+          name="estadoContrato"
+        >
+          {/* // https://reactgo.com/react-select-tag-placeholder/ */}
+          <option value="" disabled selected>
+            Estado del contrato:{" "}
+          </option>
+          <option value="Firmado">Firmado por los dos</option>
+          <option value="Firmado por Pet Sitter">Firmado por Pet Sitter</option>
+          <option value="Firmado por Cliente">Firmado por Cliente</option>
+          <option value="No firmado">No Firmado</option>
+        </select>
         <fieldset>
           <div>
             <h2>Mascotas</h2>
@@ -99,7 +97,6 @@ const ModalForm = ({
               : null}
           </section>
         </fieldset>
-
         <Button variant="contained" color="primary" onClick={handleSubmit}>
           Guardar
         </Button>

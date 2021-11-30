@@ -1,11 +1,13 @@
 import axios from "axios";
 
-const baseUrl = "https://ufl1g.sse.codesandbox.io";
+const baseUrl = "https://qrci0.sse.codesandbox.io";
 const path = "bugtracker";
 
-const getBugs = async () => {
+const getBugs = async (token) => {
   try {
-    const customers = await axios.get(`${baseUrl}/${path}`);
+    const customers = await axios.get(`${baseUrl}/${path}`, {
+      headers: { Authorization: `Bearer: ${token}` }
+    });
 
     return customers.data;
   } catch (err) {

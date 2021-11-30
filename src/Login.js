@@ -1,7 +1,7 @@
 import React from "react";
 import { Router, Route, Switch } from "react-router-dom";
 import history from "./helpers/history";
-import { ACCESS_TOKEN } from "./constants/index";
+import constants from "./constants/index";
 
 import PrivateRoute from "./components/PrivateRoute";
 import LoginForm from "./components/LoginForm";
@@ -10,7 +10,7 @@ import DocumentPDF from "./components/invoice/pdf-page/DocumentPDF";
 
 const Login = () => {
   const submitUser = (response) => {
-    localStorage.setItem(ACCESS_TOKEN, response.token);
+    localStorage.setItem(constants.ACCESS_TOKEN, response.token);
     history.push("/app");
   };
 
