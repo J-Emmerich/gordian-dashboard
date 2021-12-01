@@ -19,6 +19,7 @@ import InvoiceDashboard from "./components/invoice/InvoiceDashboard";
 import CRMDashboard from "./components/crm/CRMDashboard";
 import BugTrackerDashboard from "./components/bugtracker/BugTrackerDashboard";
 import Home from "./components/Home";
+import Settings from "./components/settings/Settings";
 
 const useStyles = makeStyles(styles);
 
@@ -27,7 +28,7 @@ const FixHeader = styled.div`
   height: 55px;
 `;
 
-export default function App({ token }) {
+export default function App({ token, user }) {
   const classes = useStyles();
 
   const [isOpened, setIsOpened] = useState(false);
@@ -75,6 +76,9 @@ export default function App({ token }) {
             </Route>
             <Route path="/app/pdf">
               <InvoiceDashboard token={token} />
+            </Route>
+            <Route path="/app/ajustes">
+              <Settings user={user} token={token} />
             </Route>
             <Route path="/app" exact>
               <Home />

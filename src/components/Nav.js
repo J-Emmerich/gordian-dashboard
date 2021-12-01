@@ -9,6 +9,7 @@ import DashboardIcon from "@material-ui/icons/Dashboard";
 import PersonIcon from "@material-ui/icons/Person";
 import ReceiptIcon from "@material-ui/icons/Receipt";
 import BugReportIcon from "@material-ui/icons/BugReport";
+import SettingsIcon from "@material-ui/icons/Settings";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -43,6 +44,11 @@ function Nav() {
           to="/app/bugtracker"
           primary="Bug Tracker"
           icon={<BugReportIcon color="error" />}
+        />
+        <ListItemLink
+          to="/app/ajustes"
+          primary="Ajustes"
+          icon={<SettingsIcon color="primary" />}
         />
       </List>
     </>
