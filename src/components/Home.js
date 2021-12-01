@@ -36,7 +36,7 @@ const Home = () => {
       </p>
       <p>
         Si quieres saber más contactame por{" "}
-        <a href="https://linkedin.com/joaoemmerich">Linkedin</a>
+        <a href="https://linkedin.com/in/joaoemmerich">LinkedIn</a>
       </p>
       <p>João Emmerich</p>
 
