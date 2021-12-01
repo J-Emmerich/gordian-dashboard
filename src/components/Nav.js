@@ -6,9 +6,9 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import HomeIcon from "@material-ui/icons/Home";
 import DashboardIcon from "@material-ui/icons/Dashboard";
-import InfoIcon from "@material-ui/icons/Info";
 import PersonIcon from "@material-ui/icons/Person";
 import ReceiptIcon from "@material-ui/icons/Receipt";
+import BugReportIcon from "@material-ui/icons/BugReport";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -34,7 +34,7 @@ function Nav() {
         <ListItemLink
           to="/app/bugtracker"
           primary="Bug Tracker"
-          icon={<InfoIcon />}
+          icon={<BugReportIcon />}
         />
       </List>
     </>

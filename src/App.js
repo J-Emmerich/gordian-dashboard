@@ -18,6 +18,7 @@ import Nav from "./components/Nav";
 import InvoiceDashboard from "./components/invoice/InvoiceDashboard";
 import CRMDashboard from "./components/crm/CRMDashboard";
 import BugTrackerDashboard from "./components/bugtracker/BugTrackerDashboard";
+import Home from "./components/Home";
 
 const useStyles = makeStyles(styles);
 
@@ -76,14 +77,14 @@ export default function App({ token }) {
               <InvoiceDashboard token={token} />
             </Route>
             <Route path="/app" exact>
-              <p>This should be the Home</p>
+              <Home />
             </Route>
           </Switch>
         </main>
       </div>
 
       <footer className={classes.footer}>
-        <Typography variant="h6">Footer</Typography>
+        <Typography variant="h6"></Typography>
       </footer>
     </div>
   );

@@ -21,7 +21,8 @@ const Container = styled.div`
 `;
 
 const BoardButtonsContainer = styled.div`
-  background-color: green;
+  border: 1px solid #fc86aa;
+  margin: 20px;
 `;
 
 const Board = ({ token }) => {
