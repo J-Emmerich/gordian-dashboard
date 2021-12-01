@@ -66,7 +66,6 @@ const CRMDashboard = ({ token }) => {
 
   async function callGetCustomers() {
     const customers = await services.getCustomers(token);
-    console.log("this clients returned", customers);
     setCustomerList(customers);
   }
   const resetDashboardState = () => {
@@ -83,7 +82,6 @@ const CRMDashboard = ({ token }) => {
     let name = event.target.name;
     let value = event.target.value;
     const changedInvoice = { ...customer, [name]: value };
-    console.log(changedInvoice);
     setCustomer(changedInvoice);
   };
 
@@ -129,7 +127,6 @@ const CRMDashboard = ({ token }) => {
 
   // Editing customer
   const editCustomer = (customerReceived) => {
-    console.log("I received this", customerReceived);
     setCustomer(customerReceived);
     setPetList(customerReceived.pets);
     setIsEditing(true);

@@ -12,7 +12,6 @@ const registerNewUser = async (username, password) => {
 
     return user.data;
   } catch (error) {
-    console.log("at the axios error", error.response);
     throw new Error(error.response.data.msg);
   }
 };
@@ -23,7 +22,6 @@ const loginNewUser = async (username, password) => {
       username,
       password
     });
-    console.log(user);
     return user.data;
   } catch (error) {
     throw new Error(error.response.data.msg);

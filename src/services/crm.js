@@ -36,7 +36,6 @@ const editCustomer = async (token, customer) => {
         headers: { Authorization: `Bearer: ${token}` }
       }
     );
-    console.log(edited.data, "this is edited:::: ");
   } catch (err) {
     console.log(err);
   }

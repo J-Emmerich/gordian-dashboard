@@ -52,7 +52,6 @@ const deleteInvoice = async (token, id) => {
     const invoice = await axios.delete(`${baseUrl}/pdf/${id}`, {
       headers: { Authorization: `Bearer: ${token}` }
     });
-    console.log("Deleted", invoice);
   } catch (err) {
     console.log(err);
   }
@@ -65,7 +64,6 @@ const saveToPdf = async (token, id) => {
       responseType: "blob"
     });
     handleFileDownload(pdf, id);
-    console.log(pdf);
   } catch (err) {
     console.log(err);
   }

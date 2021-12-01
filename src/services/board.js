@@ -11,7 +11,6 @@ const saveBoardToDatabase = async (token, boardData) => {
     return response.data;
   } catch (err) {
     console.log("Error sending data");
-    console.log(err);
   }
 };
 

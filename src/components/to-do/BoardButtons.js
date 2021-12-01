@@ -12,7 +12,6 @@ const listStyle = {
   justifyContent: "center",
   overflow: "hidden"
 };
-
 const listItemStyle = {
   width: "50px"
 };

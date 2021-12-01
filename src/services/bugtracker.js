@@ -20,7 +20,6 @@ const saveBug = async (token, customer) => {
     const response = await axios.post(`${baseUrl}/${path}`, customer, {
       headers: { Authorization: `Bearer: ${token}` }
     });
-    console.log("this is the response::::", response);
     return response.data;
   } catch (err) {
     console.log("Error sending data");
@@ -37,7 +36,6 @@ const editBug = async (token, customer) => {
         headers: { Authorization: `Bearer: ${token}` }
       }
     );
-    console.log(edited.data, "this is edited:::: ");
   } catch (err) {
     console.log(err);
   }
@@ -48,7 +46,6 @@ const deleteBug = async (token, id) => {
     const customer = await axios.delete(`${baseUrl}/${path}/${id}`, {
       headers: { Authorization: `Bearer: ${token}` }
     });
-    console.log("Deleted", customer);
   } catch (err) {
     console.log(err);
   }
