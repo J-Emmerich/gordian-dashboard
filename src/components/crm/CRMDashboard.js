@@ -197,6 +197,7 @@ const CRMDashboard = ({ token }) => {
               removePet={removePet}
               addPet={addAnotherPet}
               customer={customer}
+              closeModal={() => resetDashboardState()}
             />
           </div>
         </Modal>

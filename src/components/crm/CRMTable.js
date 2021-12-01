@@ -169,10 +169,10 @@ const CRMTable = ({ data, handleClick, deleteCustomer }) => {
                         className="react-td"
                         {...cell.getCellProps()}
                         onMouseEnter={(e) => {
-                          e.target.parentNode.style.backgroundColor = "red";
+                          e.target.parentNode.style.backgroundColor = "#F1769A";
                         }}
                         onMouseLeave={(e) => {
-                          e.target.parentNode.style.backgroundColor = "white";
+                          e.target.parentNode.style.backgroundColor = "inherit";
                         }}
                         onClick={() => {
                           handleClick(cell.row.original);

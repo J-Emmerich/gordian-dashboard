@@ -186,6 +186,7 @@ const BugTrackerDashboard = ({ token }) => {
               removeComment={removeComment}
               addComment={addComment}
               bug={bug}
+              closeModal={() => resetDashboardState()}
             />
           </div>
         </Modal>

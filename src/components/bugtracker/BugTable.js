@@ -14,6 +14,19 @@ import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 
 dayjs.extend(advancedFormat); // Plugin to format date
+const Table = styled.table`
+  border-collapse: collapse;
+  border-radius: 1em;
+  overflow: hidden;
+  width: 100%;
+`;
+
+const TableHeader = styled.thead`
+  background-color: #eee;
+  & th {
+    padding: 20px;
+  }
+`;
 
 const Container = styled.div`
   padding-top: 15px;
@@ -129,8 +142,8 @@ const CRMTable = ({ data, handleClick, deleteCustomer }) => {
         onChange={handleFilterChange}
         placeholder={"Buscar por nome"}
       />
-      <table className="-highlight" {...getTableProps()}>
-        <thead>
+      <Table className="-highlight" {...getTableProps()}>
+        <TableHeader>
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
@@ -153,7 +166,7 @@ const CRMTable = ({ data, handleClick, deleteCustomer }) => {
               ))}
             </tr>
           ))}
-        </thead>
+        </TableHeader>
 
         <tbody className="rt-tbody" {...getTableBodyProps()}>
           {page.map((row) => {
@@ -170,10 +183,10 @@ const CRMTable = ({ data, handleClick, deleteCustomer }) => {
                         className="react-td"
                         {...cell.getCellProps()}
                         onMouseEnter={(e) => {
-                          e.target.parentNode.style.backgroundColor = "red";
+                          e.target.parentNode.style.backgroundColor = "#F1769A";
                         }}
                         onMouseLeave={(e) => {
-                          e.target.parentNode.style.backgroundColor = "white";
+                          e.target.parentNode.style.backgroundColor = "inherit";
                         }}
                         onClick={() => {
                           handleClick(cell.row.original);
@@ -192,7 +205,7 @@ const CRMTable = ({ data, handleClick, deleteCustomer }) => {
             );
           })}
         </tbody>
-      </table>
+      </Table>
       <Pagination>
         <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
           <FirstPage />

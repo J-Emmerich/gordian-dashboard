@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import ArticleInput from "./ArticleInput";
 import styled from "styled-components";
+import TextField from "@material-ui/core/TextField";
+
 import "dayjs";
 import DayJsUtils from "@date-io/dayjs";
 import {
@@ -20,7 +22,6 @@ const Form = styled.form`
   input[type="number"] {
     background-color: #f3f3f3;
     border: none;
-    margin: 10px;
   }
 `;
 const Title = styled.div`
@@ -47,6 +48,22 @@ const StyledButton = styled(Button)`
   }
 `;
 
+const StyledTextField = styled(TextField)`
+  margin: 0px 20px;
+  & input,
+  textarea,
+  select,
+  option {
+    padding: 20px;
+    background-color: #f3f3f3;
+  }
+`;
+
+const StyledDate = styled(KeyboardDatePicker)`
+  & input {
+    padding: 20px;
+  }
+`;
 const ModalForm = ({
   handleChange,
   articlesList,
@@ -83,40 +100,44 @@ const ModalForm = ({
         <hr />
         <Header>
           <fieldset>
-            <input
+            <StyledTextField
               onChange={handleChange}
               value={invoice.clientName}
               id="clientName"
               name="clientName"
               type="text"
               placeholder="Nombre del cliente:"
+              variant="outlined"
+              margin="none"
             />
 
-            <input
+            <StyledTextField
               onChange={handleChange}
               value={invoice.invoiceNumber}
               name="invoiceNumber"
               id="invoiceNumber"
               type="text"
               placeholder="Número de la factura"
+              variant="outlined"
             />
-            <input
+            <StyledTextField
               onChange={handleChange}
               value={invoice.orderNumber}
               name="orderNumber"
               type="text"
               placeholder="Número del pedido"
+              variant="outlined"
             />
           </fieldset>
           <hr />
           <div>
             <MuiPickersUtilsProvider utils={DayJsUtils}>
-              <KeyboardDatePicker
+              <StyledDate
                 autoOk
                 inputVariant="standard"
                 variant="inline"
                 format="DD/MM/YYYY"
-                margin="dense"
+                margin="normal"
                 id="date-picker-inline"
                 placeholder="Fecha de la Factura"
                 value={selectedDate}
@@ -150,33 +171,37 @@ const ModalForm = ({
         <Button variant="contained" color="primary" onClick={addAnotherArticle}>
           Añadir Artículo
         </Button>
+
         <Title>
           <h2>Total</h2>
         </Title>
-
-        <input
+        <hr />
+        <StyledTextField
           onChange={handleChange}
           value={invoice.invoiceTotal}
           name="invoiceTotal"
           type="number"
           placeholder="Total factura"
+          variant="outlined"
         />
-        <input
+        <StyledTextField
           onChange={handleChange}
           value={invoice.invoiceSubTotal}
           name="invoiceSubTotal"
           type="number"
           placeholder="Base Imponible"
+          variant="outlined"
         />
 
-        <input
+        <StyledTextField
           onChange={handleChange}
           value={invoice.invoiceTax}
           name="invoiceTax"
           type="number"
           placeholder=" Importe del IVA"
+          variant="outlined"
         />
-
+        <hr />
         <StyledButton
           variant="contained"
           color="primary"
@@ -184,7 +209,11 @@ const ModalForm = ({
         >
           Guardar Factura
         </StyledButton>
-        <StyledButton variant="contained" color="disabled" onClick={closeModal}>
+        <StyledButton
+          variant="contained"
+          color="secondary"
+          onClick={closeModal}
+        >
           Cancelar
         </StyledButton>
       </Form>
