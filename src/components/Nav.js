@@ -19,22 +19,30 @@ function Nav() {
   return (
     <>
       <List component={Container}>
-        <ListItemLink to="/app" primary="Home" icon={<HomeIcon />} />
+        <ListItemLink
+          to="/app"
+          primary="Home"
+          icon={<HomeIcon color="primary" />}
+        />
         <ListItemLink
           to="/app/board"
           primary="Cuadro de Notas"
-          icon={<DashboardIcon />}
+          icon={<DashboardIcon color="primary" />}
         />
-        <ListItemLink to="/app/pdf" primary="Facturas" icon={<ReceiptIcon />} />
+        <ListItemLink
+          to="/app/pdf"
+          primary="Facturas"
+          icon={<ReceiptIcon color="primary" />}
+        />
         <ListItemLink
           to="/app/customer"
           primary="Clientes"
-          icon={<PersonIcon />}
+          icon={<PersonIcon color="primary" />}
         />
         <ListItemLink
           to="/app/bugtracker"
           primary="Bug Tracker"
-          icon={<BugReportIcon />}
+          icon={<BugReportIcon color="error" />}
         />
       </List>
     </>

@@ -21,7 +21,6 @@ export const styles = () => ({
     flex: 1
   },
   drawer: {
-    background: "#D8DCD6",
     position: "static",
     transition: "width .7s"
   },
