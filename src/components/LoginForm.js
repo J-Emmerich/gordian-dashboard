@@ -4,11 +4,16 @@ import services from "../services/auth";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 
+const Dashboard = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+`;
 const Container = styled.div`
   display: flex;
   flex-flow: column wrap;
-  align-self: center;
   justify-content: center;
+  flex-grow: 1;
 `;
 
 const Form = styled.div`
@@ -86,74 +91,76 @@ const LoginForm = ({ submitUser }) => {
   };
 
   return (
-    <Container>
+    <Dashboard>
       <header style={{ backgroundColor: "#00022E", color: "#FC86AA" }}>
         <FormTitle>Gordian Knot</FormTitle>
       </header>
 
-      <Form>
-        <FormTitle>{isLoginForm ? "Login" : "Registro"}</FormTitle>
-        <form>
-          <InputBlock>
-            <StyledTextField
-              placeholder="Nombre de usuario"
-              variant="outlined"
-              type="text"
-              id="username"
-              margin="dense"
-              onChange={(e) => setUsername(e.target.value)}
-              value={username}
-            />
-          </InputBlock>
-          <InputBlock>
-            <StyledTextField
-              placeholder="Contraseña"
-              type="password"
-              variant="outlined"
-              id="password"
-              margin="dense"
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
-            />
-          </InputBlock>
-        </form>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={
-            isLoginForm
-              ? (e) => submitLogin(e, username, password)
-              : (e) => submitRegister(e, username, password)
-          }
-        >
-          Enviar
-        </Button>
-
-        <BottomMessage>
-          Quieres&nbsp;
+      <Container>
+        <Form>
+          <FormTitle>{isLoginForm ? "Login" : "Registro"}</FormTitle>
+          <form>
+            <InputBlock>
+              <StyledTextField
+                placeholder="Nombre de usuario"
+                variant="outlined"
+                type="text"
+                id="username"
+                margin="dense"
+                onChange={(e) => setUsername(e.target.value)}
+                value={username}
+              />
+            </InputBlock>
+            <InputBlock>
+              <StyledTextField
+                placeholder="Contraseña"
+                type="password"
+                variant="outlined"
+                id="password"
+                margin="dense"
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
+              />
+            </InputBlock>
+          </form>
           <Button
-            style={{ color: "#FC86AA" }}
-            onClick={() => setIsLoginForm(!isLoginForm)}
+            variant="contained"
+            color="primary"
+            onClick={
+              isLoginForm
+                ? (e) => submitLogin(e, username, password)
+                : (e) => submitRegister(e, username, password)
+            }
           >
-            {isLoginForm ? "te registrar" : "hacer login"}
+            Enviar
           </Button>
-          &nbsp;?
-        </BottomMessage>
-      </Form>
-      {errorMessage ? (
-        <ErrorMessage>
-          <p>{errorMessage}</p>
-        </ErrorMessage>
-      ) : (
-        <ErrorMessage>&nbsp;</ErrorMessage>
-      )}
+
+          <BottomMessage>
+            Quieres&nbsp;
+            <Button
+              style={{ color: "#FC86AA" }}
+              onClick={() => setIsLoginForm(!isLoginForm)}
+            >
+              {isLoginForm ? "te registrar" : "hacer login"}
+            </Button>
+            &nbsp;?
+          </BottomMessage>
+        </Form>
+        {errorMessage ? (
+          <ErrorMessage>
+            <p>{errorMessage}</p>
+          </ErrorMessage>
+        ) : (
+          <ErrorMessage>&nbsp;</ErrorMessage>
+        )}
+      </Container>
       <footer style={{ backgroundColor: "#00022E", color: "#FC86AA" }}>
         <BottomMessage>
           Desarollado por{" "}
           <a href="https://linkedin.com/in/joao-emmerich">João Emmerich</a>
         </BottomMessage>
       </footer>
-    </Container>
+    </Dashboard>
   );
 };
 
