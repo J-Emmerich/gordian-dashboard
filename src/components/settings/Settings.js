@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
+
 import services from "../../services/auth";
-const Settings = () => {
+
+const Settings = ({ token, user }) => {
   return (
     <div>
       <p>Estos son los ajustes.</p>

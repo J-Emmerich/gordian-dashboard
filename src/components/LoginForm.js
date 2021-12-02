@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import services from "../services/auth";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
+import { UserContext } from "../services/userContext";
 
 const Dashboard = styled.div`
   display: flex;
@@ -64,12 +65,14 @@ const LoginForm = ({ submitUser }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const { login } = useContext(UserContext);
+
   const submitLogin = async (e, username, password) => {
     e.preventDefault();
-
+    console.log("here", login);
     try {
       const user = await services.loginNewUser(username, password);
-      submitUser(user);
+      login(user);
     } catch (err) {
       setErrorMessage(err.message);
       setTimeout(() => {
@@ -81,7 +84,7 @@ const LoginForm = ({ submitUser }) => {
     try {
       e.preventDefault();
       const user = await services.registerNewUser(username, password);
-      submitUser(user);
+      login(user);
     } catch (err) {
       setErrorMessage(err.message);
       setTimeout(() => {
