@@ -5,7 +5,6 @@ import BackspaceIcon from "@material-ui/icons/Backspace";
 import { IconButton } from "@material-ui/core";
 
 const Container = styled.div`
-  border: 1px solid lightgrey;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -17,8 +16,8 @@ const Container = styled.div`
     props.isDragDisabled
       ? "lightgrey"
       : props.isDragging
-      ? "lightgreen"
-      : "white"};
+      ? "white"
+      : "lightgrey"};
 `;
 const TaskContainer = styled.div`
   padding-left: 10px;

@@ -65,7 +65,7 @@ const BugTrackerDashboard = ({ token }) => {
 
   async function callGetCustomers() {
     const bugs = await services.getBugs(token);
-    console.log("this bugs returned", bugs);
+
     setBugList(bugs);
   }
   const resetDashboardState = () => {
@@ -127,7 +127,6 @@ const BugTrackerDashboard = ({ token }) => {
 
   // Editing customer
   const editCustomer = (customerReceived) => {
-    console.log("I received this", customerReceived);
     setBug(customerReceived);
     setCommentList(customerReceived.comments);
     setIsEditing(true);
@@ -186,6 +185,7 @@ const BugTrackerDashboard = ({ token }) => {
               removeComment={removeComment}
               addComment={addComment}
               bug={bug}
+              closeModal={() => resetDashboardState()}
             />
           </div>
         </Modal>

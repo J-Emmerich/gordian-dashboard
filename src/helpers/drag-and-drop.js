@@ -40,8 +40,6 @@ const moveCardsInsideBoard = (boardData, source, destination, draggableId) => {
   newCardOrder.splice(source.index, 1);
   newCardOrder.splice(destination.index, 0, draggableId);
 
-  console.log(newCardOrder);
-
   const newBoardData = {
     ...boardData,
     cardOrder: newCardOrder

@@ -1,20 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import services from "../services/auth";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import { UserContext } from "../services/userContext";
 
+const Dashboard = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+`;
 const Container = styled.div`
   display: flex;
   flex-flow: column wrap;
-  align-self: center;
   justify-content: center;
+  flex-grow: 1;
 `;
 
 const Form = styled.div`
   margin: 40px auto;
   font-family: "Segoe UI", sans-serif;
   padding: 25px 28px;
-  background: #201d1c;
-
   border-radius: 4px;
   border: 1px solid #302d2d;
   display: flex;
@@ -25,45 +31,22 @@ const FormTitle = styled.p`
   font-size: 28px;
   margin-bottom: 20px;
   font-weight: 400;
-  color: #e7e7e7;
 `;
-const Label = styled.label`
-  display: block;
-  font-size: 16px;
-  margin-bottom: 8px;
-  color: #a4a4a4;
-`;
-const Input = styled.input`
-  padding: 10px 8px;
 
-  font-size: 16px;
-  background: #323131;
-  border: none;
-  color: #c7c7c7;
-  border-radius: 4px;
-  outline: none;
-  transition: all 0.2s ease;
-`;
 const BottomMessage = styled.p`
-  color: #e7e7e7;
   text-align: center;
   > a {
-    color: #e7e7e7;
+    color: #fc86aa;
   }
 `;
-const FormSubmit = styled.button`
-  padding: 10px 18px;
-  font-size: 15px;
-  background: #1a3969;
-  width: 100%;
-  border: none;
-  border-radius: 4px;
-  color: #f4f4f4;
-  align-self: center;
-  margin-top: 3px;
-  cursor: pointer;
+const StyledTextField = styled(TextField)`
+  & input,
+  textarea,
+  select,
+  option {
+    padding: 20px;
+  }
 `;
-
 const ErrorMessage = styled.div`
   flex-grow: 0;
   text-align: center;
@@ -82,12 +65,14 @@ const LoginForm = ({ submitUser }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const { login } = useContext(UserContext);
+
   const submitLogin = async (e, username, password) => {
     e.preventDefault();
-
+    console.log("here", login);
     try {
       const user = await services.loginNewUser(username, password);
-      submitUser(user);
+      login(user);
     } catch (err) {
       setErrorMessage(err.message);
       setTimeout(() => {
@@ -99,7 +84,7 @@ const LoginForm = ({ submitUser }) => {
     try {
       e.preventDefault();
       const user = await services.registerNewUser(username, password);
-      submitUser(user);
+      login(user);
     } catch (err) {
       setErrorMessage(err.message);
       setTimeout(() => {
@@ -109,57 +94,76 @@ const LoginForm = ({ submitUser }) => {
   };
 
   return (
-    <Container>
-      <Form>
-        <FormTitle>{isLoginForm ? "Login" : "Sign Up"}</FormTitle>
-        <form>
-          <InputBlock>
-            <Label htmlFor="username"> Username: </Label>
-            <Input
-              placeholder="Your Username"
-              type="text"
-              id="username"
-              onChange={(e) => setUsername(e.target.value)}
-              value={username}
-            />
-          </InputBlock>
-          <InputBlock>
-            <Label htmlFor="password"> Password: </Label>
-            <Input
-              placeholder="Your password"
-              type="password"
-              id="password"
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
-            />
-          </InputBlock>
-        </form>
-        <FormSubmit
-          onClick={
-            isLoginForm
-              ? (e) => submitLogin(e, username, password)
-              : (e) => submitRegister(e, username, password)
-          }
-        >
-          Submit
-        </FormSubmit>
+    <Dashboard>
+      <header style={{ backgroundColor: "#00022E", color: "#FC86AA" }}>
+        <FormTitle>Gordian Knot</FormTitle>
+      </header>
 
+      <Container>
+        <Form>
+          <FormTitle>{isLoginForm ? "Login" : "Registro"}</FormTitle>
+          <form>
+            <InputBlock>
+              <StyledTextField
+                placeholder="Nombre de usuario"
+                variant="outlined"
+                type="text"
+                id="username"
+                margin="dense"
+                onChange={(e) => setUsername(e.target.value)}
+                value={username}
+              />
+            </InputBlock>
+            <InputBlock>
+              <StyledTextField
+                placeholder="Contraseña"
+                type="password"
+                variant="outlined"
+                id="password"
+                margin="dense"
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
+              />
+            </InputBlock>
+          </form>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={
+              isLoginForm
+                ? (e) => submitLogin(e, username, password)
+                : (e) => submitRegister(e, username, password)
+            }
+          >
+            Enviar
+          </Button>
+
+          <BottomMessage>
+            Quieres&nbsp;
+            <Button
+              style={{ color: "#FC86AA" }}
+              onClick={() => setIsLoginForm(!isLoginForm)}
+            >
+              {isLoginForm ? "te registrar" : "hacer login"}
+            </Button>
+            &nbsp;?
+          </BottomMessage>
+        </Form>
+        {errorMessage ? (
+          <ErrorMessage>
+            <p>{errorMessage}</p>
+          </ErrorMessage>
+        ) : (
+          <ErrorMessage>&nbsp;</ErrorMessage>
+        )}
+      </Container>
+      <footer style={{ backgroundColor: "#00022E", color: "#FC86AA" }}>
         <BottomMessage>
-          Want to&nbsp;
-          <a href="#" onClick={() => setIsLoginForm(!isLoginForm)}>
-            {isLoginForm ? "Sign Up" : "Login"}
-          </a>
-          &nbsp;instead?
+          Desarollado por{" "}
+          <a href="https://linkedin.com/in/joao-emmerich">João Emmerich</a>
         </BottomMessage>
-      </Form>
-      {errorMessage ? (
-        <ErrorMessage>
-          <p>{errorMessage}</p>
-        </ErrorMessage>
-      ) : (
-        <ErrorMessage>&nbsp;</ErrorMessage>
-      )}
-    </Container>
+      </footer>
+    </Dashboard>
   );
 };
 

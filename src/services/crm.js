@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = "https://ufl1g.sse.codesandbox.io";
+const baseUrl = "https://qrci0.sse.codesandbox.io";
 
 const getCustomers = async (token) => {
   try {
@@ -36,7 +36,6 @@ const editCustomer = async (token, customer) => {
         headers: { Authorization: `Bearer: ${token}` }
       }
     );
-    console.log(edited.data, "this is edited:::: ");
   } catch (err) {
     console.log(err);
   }

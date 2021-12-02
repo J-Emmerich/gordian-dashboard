@@ -1,11 +1,13 @@
 import axios from "axios";
 
-const baseUrl = "https://ufl1g.sse.codesandbox.io";
+const baseUrl = "https://qrci0.sse.codesandbox.io";
 const path = "bugtracker";
 
-const getBugs = async () => {
+const getBugs = async (token) => {
   try {
-    const customers = await axios.get(`${baseUrl}/${path}`);
+    const customers = await axios.get(`${baseUrl}/${path}`, {
+      headers: { Authorization: `Bearer: ${token}` }
+    });
 
     return customers.data;
   } catch (err) {
@@ -18,7 +20,6 @@ const saveBug = async (token, customer) => {
     const response = await axios.post(`${baseUrl}/${path}`, customer, {
       headers: { Authorization: `Bearer: ${token}` }
     });
-    console.log("this is the response::::", response);
     return response.data;
   } catch (err) {
     console.log("Error sending data");
@@ -35,7 +36,6 @@ const editBug = async (token, customer) => {
         headers: { Authorization: `Bearer: ${token}` }
       }
     );
-    console.log(edited.data, "this is edited:::: ");
   } catch (err) {
     console.log(err);
   }
@@ -46,7 +46,6 @@ const deleteBug = async (token, id) => {
     const customer = await axios.delete(`${baseUrl}/${path}/${id}`, {
       headers: { Authorization: `Bearer: ${token}` }
     });
-    console.log("Deleted", customer);
   } catch (err) {
     console.log(err);
   }

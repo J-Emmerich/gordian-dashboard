@@ -12,19 +12,11 @@ const DocumentPDF = ({ match }) => {
   useEffect(
     (id) => {
       axios.get(`${baseUrl}/pdf/${match.params.id}`).then((response) => {
-        console.log(response);
-        console.log(response.data);
         setInvoice(response.data);
       });
     },
     [match.params]
   );
-
-  useEffect(() => console.log("this are the invoices:", invoice), [invoice]);
-
-  if (invoice) {
-    console.log("this is articles", invoice.articles);
-  }
 
   return (
     <main className="main">

@@ -6,9 +6,10 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import HomeIcon from "@material-ui/icons/Home";
 import DashboardIcon from "@material-ui/icons/Dashboard";
-import InfoIcon from "@material-ui/icons/Info";
 import PersonIcon from "@material-ui/icons/Person";
 import ReceiptIcon from "@material-ui/icons/Receipt";
+import BugReportIcon from "@material-ui/icons/BugReport";
+import SettingsIcon from "@material-ui/icons/Settings";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -19,22 +20,35 @@ function Nav() {
   return (
     <>
       <List component={Container}>
-        <ListItemLink to="/app" primary="Home" icon={<HomeIcon />} />
+        <ListItemLink
+          to="/app"
+          primary="Home"
+          icon={<HomeIcon color="primary" />}
+        />
         <ListItemLink
           to="/app/board"
           primary="Cuadro de Notas"
-          icon={<DashboardIcon />}
+          icon={<DashboardIcon color="primary" />}
         />
-        <ListItemLink to="/app/pdf" primary="Facturas" icon={<ReceiptIcon />} />
+        <ListItemLink
+          to="/app/pdf"
+          primary="Facturas"
+          icon={<ReceiptIcon color="primary" />}
+        />
         <ListItemLink
           to="/app/customer"
           primary="Clientes"
-          icon={<PersonIcon />}
+          icon={<PersonIcon color="primary" />}
         />
         <ListItemLink
           to="/app/bugtracker"
           primary="Bug Tracker"
-          icon={<InfoIcon />}
+          icon={<BugReportIcon color="error" />}
+        />
+        <ListItemLink
+          to="/app/ajustes"
+          primary="Ajustes"
+          icon={<SettingsIcon color="primary" />}
         />
       </List>
     </>

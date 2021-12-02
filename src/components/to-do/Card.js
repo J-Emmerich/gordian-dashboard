@@ -6,6 +6,7 @@ import AddTaskForm from "./AddTaskForm";
 import CardTitleForm from "./CardTitleForm";
 import { IconButton } from "@material-ui/core";
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
+import Button from "@material-ui/core/Button";
 
 const Container = styled.div`
   margin: 8px;
@@ -21,7 +22,7 @@ const TaskList = styled.div`
   padding: 8px;
   transition: background-color 0.5s ease;
   background-color: ${(props) =>
-    props.isDraggingOver ? "skyblue" : "inherit"};
+    props.isDraggingOver ? "#F1769A" : "inherit"};
   flex-grow: 1;
   min-height: 100px;
 `;
@@ -78,6 +79,7 @@ const Card = ({
               <RemoveCircleOutlineIcon fontSize="small" />
             </IconButton>
           </TitleContainer>
+          <hr />
           <Droppable droppableId={card.id} type="task">
             {(provided, snapshot) => (
               <TaskList
@@ -108,7 +110,9 @@ const Card = ({
               cardId={card.id}
             />
           ) : isNewCard ? null : (
-            <button onClick={addTask}>Add New Task</button>
+            <Button variant="contained" color="primary" onClick={addTask}>
+              Añadir tarea
+            </Button>
           )}
         </Container>
       )}

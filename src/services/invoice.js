@@ -2,7 +2,7 @@ import axios from "axios";
 import handleFileDownload from "../helpers/handle-file-download";
 
 // const baseUrl = "http://localhost:8080";
-const baseUrl = "https://ufl1g.sse.codesandbox.io";
+const baseUrl = "https://qrci0.sse.codesandbox.io";
 
 const getInvoices = async (token) => {
   try {
@@ -27,11 +27,13 @@ const getOneInvoice = async (token, id) => {
 };
 
 const saveInvoice = async (token, invoice) => {
+  console.log("this the invoice", invoice, "this the token", token);
   try {
     await axios.post(`${baseUrl}/pdf`, invoice, {
       headers: { Authorization: `Bearer: ${token}` }
     });
   } catch (err) {
+    console.log("has an error");
     console.log(err);
   }
 };
@@ -50,7 +52,6 @@ const deleteInvoice = async (token, id) => {
     const invoice = await axios.delete(`${baseUrl}/pdf/${id}`, {
       headers: { Authorization: `Bearer: ${token}` }
     });
-    console.log("Deleted", invoice);
   } catch (err) {
     console.log(err);
   }
@@ -63,7 +64,6 @@ const saveToPdf = async (token, id) => {
       responseType: "blob"
     });
     handleFileDownload(pdf, id);
-    console.log(pdf);
   } catch (err) {
     console.log(err);
   }

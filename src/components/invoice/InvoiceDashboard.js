@@ -202,6 +202,7 @@ const InvoiceDashboard = ({ token }) => {
               removeArticle={removeArticle}
               addAnotherArticle={addAnotherArticle}
               invoice={invoice}
+              closeModal={() => resetDashboardState()}
             />
           </div>
         </Modal>

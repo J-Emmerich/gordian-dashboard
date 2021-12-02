@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = "https://ufl1g.sse.codesandbox.io";
+const baseUrl = "https://qrci0.sse.codesandbox.io";
 const path = "dashboard";
 
 const saveBoardToDatabase = async (token, boardData) => {
@@ -11,7 +11,6 @@ const saveBoardToDatabase = async (token, boardData) => {
     return response.data;
   } catch (err) {
     console.log("Error sending data");
-    console.log(err);
   }
 };
 
