@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Switch, Route } from "react-router-dom";
+import React, { useState, useContext } from "react";
+import { Switch, Route, useLocation } from "react-router-dom";
 import { styles } from "./styleApp.js";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
@@ -8,10 +8,11 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Drawer from "@material-ui/core/Drawer";
 import IconButton from "@material-ui/core/IconButton";
+import Button from "@material-ui/core/Button";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core";
 import styled from "styled-components";
-
+import { UserContext } from "./services/userContext";
 // Components
 import Board from "./components/to-do/Board";
 import Nav from "./components/Nav";
@@ -28,11 +29,11 @@ const FixHeader = styled.div`
   height: 55px;
 `;
 
-export default function App({ token, user }) {
+export default function App({ token }) {
   const classes = useStyles();
 
   const [isOpened, setIsOpened] = useState(false);
-
+  const { user, logout } = useContext(UserContext);
   return (
     <div className={classes.root}>
       <FixHeader>
@@ -46,6 +47,14 @@ export default function App({ token, user }) {
               {isOpened ? <ChevronLeftIcon /> : <MenuIcon />}
             </IconButton>
             <Typography variant="h6">Gordian Knot</Typography>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => logout()}
+              style={{ marginLeft: "auto" }}
+            >
+              Logout{" "}
+            </Button>
           </Toolbar>
         </AppBar>
       </FixHeader>
@@ -66,21 +75,21 @@ export default function App({ token, user }) {
         <main className={classes.main}>
           <Switch>
             <Route path="/app/board">
-              <Board token={token} />
+              <Board token={token} user={user} />
             </Route>
             <Route path="/app/bugtracker">
-              <BugTrackerDashboard token={token} />
+              <BugTrackerDashboard token={token} user={user} />
             </Route>
             <Route path="/app/customer">
-              <CRMDashboard token={token} />
+              <CRMDashboard token={token} user={user} />
             </Route>
             <Route path="/app/pdf">
-              <InvoiceDashboard token={token} />
+              <InvoiceDashboard token={token} user={user} />
             </Route>
             <Route path="/app/ajustes">
-              <Settings user={user} token={token} />
+              <Settings token={token} user={user} />
             </Route>
-            <Route path="/app" exact>
+            <Route path="/app" user={user} exact>
               <Home />
             </Route>
           </Switch>

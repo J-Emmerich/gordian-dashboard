@@ -30,6 +30,7 @@ const Settings = ({ token, user }) => {
     };
     services.saveProject(token, project);
   };
+
   return (
     <div>
       <p>Estos son los ajustes.</p>
