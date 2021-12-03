@@ -33,7 +33,7 @@ export default function App({ token }) {
   const classes = useStyles();
 
   const [isOpened, setIsOpened] = useState(false);
-  const { user, logout } = useContext(UserContext);
+  const { user, logout, selectedProject } = useContext(UserContext);
   return (
     <div className={classes.root}>
       <FixHeader>
@@ -47,6 +47,10 @@ export default function App({ token }) {
               {isOpened ? <ChevronLeftIcon /> : <MenuIcon />}
             </IconButton>
             <Typography variant="h6">Gordian Knot</Typography>
+            <Typography variant="h6" style={{ marginLeft: "auto" }}> {selectedProject && selectedProject.projectName !== "" ? 
+            <p>Estas trabajando en: <span style={{color: "white"}}> {selectedProject.projectName} </span></p> : (<Button href="http://localhost:3000/app/ajustes" variant="contained"
+            color="secondary">Elegir Proyecto</Button>)} </Typography>
+            
             <Button
               variant="contained"
               color="secondary"

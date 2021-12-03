@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = "https://qrci0.sse.codesandbox.io";
+const baseUrl = "http://localhost:8080";
 
 const getCustomers = async (token) => {
   try {

@@ -1,7 +1,8 @@
 import axios from "axios";
 
-const baseUrl = "https://qrci0.sse.codesandbox.io";
+const baseUrl = "http://localhost:8080";
 const path = "project";
+
 
 const getProjects = async (token) => {
   try {
@@ -14,12 +15,25 @@ const getProjects = async (token) => {
   }
 };
 
-const saveProject = async (token, project) => {
-  console.log("this the project", project, "this the token", token);
+const getUser = async (token) => {
   try {
-    await axios.post(`${baseUrl}/${path}`, project, {
+    const invoices = await axios.get(`${baseUrl}/${path}/user`, {
       headers: { Authorization: `Bearer: ${token}` }
     });
+    return invoices.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const saveProject = async (token, project) => {
+
+  try {
+    const user = await axios.post(`${baseUrl}/${path}`, project, {
+      headers: { Authorization: `Bearer: ${token}` }
+    });
+    console.log(user)
+    return user.data
   } catch (err) {
     console.log("has an error");
     console.log(err);
@@ -46,7 +60,7 @@ const deleteProject = async (token, id) => {
   }
 };
 
-export default { getProjects, saveProject, editProject, deleteProject };
+export default { getProjects, saveProject, editProject, deleteProject, getUser };
 
 /*
 To-do Dashboard

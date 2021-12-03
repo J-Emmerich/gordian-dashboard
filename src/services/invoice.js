@@ -1,8 +1,8 @@
 import axios from "axios";
 import handleFileDownload from "../helpers/handle-file-download";
 
-// const baseUrl = "http://localhost:8080";
-const baseUrl = "https://qrci0.sse.codesandbox.io";
+const baseUrl = "http://localhost:8080";
+// const baseUrl = "https://qrci0.sse.codesandbox.io";
 
 const getInvoices = async (token) => {
   try {

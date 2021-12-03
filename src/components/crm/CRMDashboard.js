@@ -45,7 +45,7 @@ const Content = styled.section`
   margin-top: 20px;
 `;
 
-const CRMDashboard = ({ token }) => {
+const CRMDashboard = ({ token, user }) => {
   // Modal Inputs State
   const [customer, setCustomer] = useState(newCustomer);
   const [pets, setPets] = useState([pet]);
@@ -55,7 +55,7 @@ const CRMDashboard = ({ token }) => {
   const [customerList, setCustomerList] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [openModal, setOpenModal] = useState(false);
-
+console.log(user)
   useEffect(() => {
     setPets(petList);
   }, [petList]);

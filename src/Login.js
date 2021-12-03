@@ -7,7 +7,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import LoginForm from "./components/LoginForm";
 import App from "./App";
 import DocumentPDF from "./components/invoice/pdf-page/DocumentPDF";
-
+import { UserProvider } from "./services/userContext";
 const Login = () => {
   const [user, setUser] = useState();
 
@@ -19,6 +19,7 @@ const Login = () => {
 
   return (
     <div>
+        <UserProvider>
       <Router history={history}>
         <Switch>
           <PrivateRoute component={App} path="/app" user={user} />
@@ -28,6 +29,7 @@ const Login = () => {
           </Route>
         </Switch>
       </Router>
+          </UserProvider>
     </div>
   );
 };

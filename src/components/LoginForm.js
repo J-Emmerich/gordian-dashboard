@@ -4,6 +4,8 @@ import services from "../services/auth";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { UserContext } from "../services/userContext";
+import constants from "../constants/index";
+import {Redirect} from "react-router-dom"
 
 const Dashboard = styled.div`
   display: flex;
@@ -66,7 +68,8 @@ const LoginForm = ({ submitUser }) => {
   const [password, setPassword] = useState("");
 
   const { login } = useContext(UserContext);
-
+  const token = localStorage.getItem(constants.ACCESS_TOKEN);
+  console.log(token)
   const submitLogin = async (e, username, password) => {
     e.preventDefault();
     console.log("here", login);
@@ -93,8 +96,11 @@ const LoginForm = ({ submitUser }) => {
     }
   };
 
-  return (
-    <Dashboard>
+  return !token? 
+  (
+
+<Dashboard>
+
       <header style={{ backgroundColor: "#00022E", color: "#FC86AA" }}>
         <FormTitle>Gordian Knot</FormTitle>
       </header>
@@ -163,8 +169,8 @@ const LoginForm = ({ submitUser }) => {
           <a href="https://linkedin.com/in/joao-emmerich">João Emmerich</a>
         </BottomMessage>
       </footer>
-    </Dashboard>
-  );
+    </Dashboard>) : <Redirect to="/app" />
+  
 };
 
 export default LoginForm;
