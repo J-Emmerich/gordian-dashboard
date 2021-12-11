@@ -5,13 +5,14 @@ import CustDetails from "./CustDetails";
 import Articles from "./Articles";
 import Total from "./Total";
 import "./DocumentPDF.css";
-const baseUrl = "https://ufl1g.sse.codesandbox.io";
+const baseUrl = "http://localhost:8080";
 const DocumentPDF = ({ match }) => {
   const [invoice, setInvoice] = useState(null);
 
   useEffect(
     (id) => {
       axios.get(`${baseUrl}/pdf/${match.params.id}`).then((response) => {
+        console.log(response.data, "!!!!!!!! at the axios call!!!")
         setInvoice(response.data);
       });
     },

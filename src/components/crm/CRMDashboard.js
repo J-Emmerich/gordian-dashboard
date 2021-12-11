@@ -45,7 +45,7 @@ const Content = styled.section`
   margin-top: 20px;
 `;
 
-const CRMDashboard = ({ token, user }) => {
+const CRMDashboard = ({ token, user, selectedProject }) => {
   // Modal Inputs State
   const [customer, setCustomer] = useState(newCustomer);
   const [pets, setPets] = useState([pet]);
@@ -65,7 +65,7 @@ console.log(user)
   }, [customerSaved]);
 
   async function callGetCustomers() {
-    const customers = await services.getCustomers(token);
+    const customers = await services.getCustomers(token, selectedProject);
     setCustomerList(customers);
   }
   const resetDashboardState = () => {
@@ -119,7 +119,7 @@ console.log(user)
   const handleSubmit = async (event) => {
     event.preventDefault();
     const invoiceToSave = { ...customer, pets: pets };
-    await services.saveCustomer(token, invoiceToSave);
+    await services.saveCustomer(token, selectedProject, invoiceToSave);
     setCustomerSaved(!customerSaved);
     resetDashboardState();
   };
@@ -136,14 +136,14 @@ console.log(user)
   const handleEdit = async (e) => {
     e.preventDefault();
     const customerToSave = { ...customer, pets: pets };
-    await services.editCustomer(token, customerToSave);
+    await services.editCustomer(token, selectedProject, customerToSave);
     setCustomerSaved(!customerSaved);
     resetDashboardState();
   };
 
   const handlePdf = async (id) => {
     if (window.confirm("do you want to save it?")) {
-      await services.saveToPdf(token, id);
+      await services.saveToPdf(token, selectedProject, id);
     } else {
       console.log("so bad!");
     }
@@ -151,7 +151,7 @@ console.log(user)
 
   const deleteCustomer = async (id) => {
     if (window.confirm("Do you really want to delete the file?")) {
-      await services.deleteCustomer(token, id);
+      await services.deleteCustomer(token, selectedProject, id);
       await callGetCustomers();
       setCustomerSaved(!customerSaved);
       resetDashboardState();

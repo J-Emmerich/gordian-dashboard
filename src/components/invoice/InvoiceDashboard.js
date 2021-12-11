@@ -53,7 +53,7 @@ const Content = styled.section`
   margin-top: 20px;
 `;
 
-const InvoiceDashboard = ({ token }) => {
+const InvoiceDashboard = ({ token, selectedProject }) => {
   // Modal Inputs State
   const [invoice, setInvoice] = useState(newInvoice);
   const [articles, setArticles] = useState([article]);
@@ -70,7 +70,7 @@ const InvoiceDashboard = ({ token }) => {
 
   useEffect(() => {
     async function callGetInvoices() {
-      const invoices = await services.getInvoices(token);
+      const invoices = await services.getInvoices(token, selectedProject);
       setInvoiceList(invoices);
     }
 
@@ -130,7 +130,7 @@ const InvoiceDashboard = ({ token }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const invoiceToSave = { ...invoice, articles: articles };
-    await services.saveInvoice(token, invoiceToSave);
+    await services.saveInvoice(token, selectedProject, invoiceToSave);
     setInvoiceSaved(!invoiceSaved);
     resetDashboardState();
   };
@@ -147,14 +147,14 @@ const InvoiceDashboard = ({ token }) => {
   const handleEdit = async (e) => {
     e.preventDefault();
     const invoiceToSave = { ...invoice, articles: articles };
-    await services.editInvoice(token, invoiceToSave);
+    await services.editInvoice(token, selectedProject, invoiceToSave);
     setInvoiceSaved(!invoiceSaved);
     resetDashboardState();
   };
 
   const handlePdf = async (id) => {
     if (window.confirm("do you want to save it?")) {
-      await services.saveToPdf(token, id);
+      await services.saveToPdf(token, selectedProject, id);
     } else {
       console.log("so bad!");
     }
@@ -162,7 +162,7 @@ const InvoiceDashboard = ({ token }) => {
 
   const deleteInvoice = async (id) => {
     if (window.confirm("Do you really want to delete the file?")) {
-      await services.deleteInvoice(token, id);
+      await services.deleteInvoice(token, selectedProject, id);
       setInvoiceSaved(!invoiceSaved);
       resetDashboardState();
     } else {

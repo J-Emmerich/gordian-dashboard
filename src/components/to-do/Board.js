@@ -25,7 +25,7 @@ const BoardButtonsContainer = styled.div`
   margin: 20px;
 `;
 
-const Board = ({ token }) => {
+const Board = ({ token, selectedProject }) => {
   const [isSaved, setIsSaved] = useState(true);
   const [boardData, setBoardData] = useState(firstCard);
   const [isInsertingTask, setIsInsertingTask] = useState(false);

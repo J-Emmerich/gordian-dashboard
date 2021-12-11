@@ -2,7 +2,7 @@ import axios from "axios";
 
 const baseUrl = "http://localhost:8080";
 
-const getCustomers = async (token) => {
+const getCustomers = async (token, selectedProject) => {
   try {
     const customers = await axios.get(`${baseUrl}/customer`, {
       headers: { Authorization: `Bearer: ${token}` }
@@ -14,7 +14,7 @@ const getCustomers = async (token) => {
   }
 };
 
-const saveCustomer = async (token, customer) => {
+const saveCustomer = async (token, selectedProject, customer) => {
   try {
     const response = await axios.post(`${baseUrl}/customer`, customer, {
       headers: { Authorization: `Bearer: ${token}` }
@@ -27,7 +27,7 @@ const saveCustomer = async (token, customer) => {
   }
 };
 
-const editCustomer = async (token, customer) => {
+const editCustomer = async (token, selectedProject, customer) => {
   try {
     const edited = await axios.put(
       `${baseUrl}/customer/${customer._id}`,
@@ -41,7 +41,7 @@ const editCustomer = async (token, customer) => {
   }
 };
 
-const deleteCustomer = async (token, id) => {
+const deleteCustomer = async (token, selectedProject, id) => {
   try {
     const customer = await axios.delete(`${baseUrl}/customer/${id}`, {
       headers: { Authorization: `Bearer: ${token}` }

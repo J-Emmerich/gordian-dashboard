@@ -4,7 +4,7 @@ import handleFileDownload from "../helpers/handle-file-download";
 const baseUrl = "http://localhost:8080";
 // const baseUrl = "https://qrci0.sse.codesandbox.io";
 
-const getInvoices = async (token) => {
+const getInvoices = async (token, selectedProject) => {
   try {
     const invoices = await axios.get(`${baseUrl}/pdf`, {
       headers: { Authorization: `Bearer: ${token}` }
@@ -15,7 +15,7 @@ const getInvoices = async (token) => {
   }
 };
 
-const getOneInvoice = async (token, id) => {
+const getOneInvoice = async (token, selectedProject, id) => {
   try {
     const invoice = await axios.get(`${baseUrl}/pdf/${id}`, {
       headers: { Authorization: `Bearer: ${token}` }
@@ -26,7 +26,7 @@ const getOneInvoice = async (token, id) => {
   }
 };
 
-const saveInvoice = async (token, invoice) => {
+const saveInvoice = async (token, selectedProject, invoice) => {
   console.log("this the invoice", invoice, "this the token", token);
   try {
     await axios.post(`${baseUrl}/pdf`, invoice, {
@@ -37,7 +37,7 @@ const saveInvoice = async (token, invoice) => {
     console.log(err);
   }
 };
-const editInvoice = async (token, invoice) => {
+const editInvoice = async (token, selectedProject, invoice) => {
   try {
     await axios.put(`${baseUrl}/pdf/${invoice._id}`, invoice, {
       headers: { Authorization: `Bearer: ${token}` }
@@ -47,7 +47,7 @@ const editInvoice = async (token, invoice) => {
   }
 };
 
-const deleteInvoice = async (token, id) => {
+const deleteInvoice = async (token, selectedProject, id) => {
   try {
     const invoice = await axios.delete(`${baseUrl}/pdf/${id}`, {
       headers: { Authorization: `Bearer: ${token}` }
@@ -57,12 +57,13 @@ const deleteInvoice = async (token, id) => {
   }
 };
 
-const saveToPdf = async (token, id) => {
+const saveToPdf = async (token, selectedProject, id) => {
   try {
     const pdf = await axios.get(`${baseUrl}/pdf/download/${id}`, {
       headers: { Authorization: `Bearer: ${token}` },
       responseType: "blob"
     });
+    console.log("!!!! I receive this!!!!", pdf, "!!!! I receive this!!!!")
     handleFileDownload(pdf, id);
   } catch (err) {
     console.log(err);

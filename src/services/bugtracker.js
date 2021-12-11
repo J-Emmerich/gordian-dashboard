@@ -3,7 +3,7 @@ import axios from "axios";
 const baseUrl = "http://localhost:8080";
 const path = "bugtracker";
 
-const getBugs = async (token) => {
+const getBugs = async (token, selectedProject) => {
   try {
     const customers = await axios.get(`${baseUrl}/${path}`, {
       headers: { Authorization: `Bearer: ${token}` }
@@ -15,7 +15,7 @@ const getBugs = async (token) => {
   }
 };
 
-const saveBug = async (token, customer) => {
+const saveBug = async (token, selectedProject, customer) => {
   try {
     const response = await axios.post(`${baseUrl}/${path}`, customer, {
       headers: { Authorization: `Bearer: ${token}` }
@@ -27,7 +27,7 @@ const saveBug = async (token, customer) => {
   }
 };
 
-const editBug = async (token, customer) => {
+const editBug = async (token, selectedProject, customer) => {
   try {
     const edited = await axios.put(
       `${baseUrl}/${path}/${customer._id}`,
@@ -41,7 +41,7 @@ const editBug = async (token, customer) => {
   }
 };
 
-const deleteBug = async (token, id) => {
+const deleteBug = async (token, selectedProject, id) => {
   try {
     const customer = await axios.delete(`${baseUrl}/${path}/${id}`, {
       headers: { Authorization: `Bearer: ${token}` }

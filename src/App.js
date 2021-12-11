@@ -79,21 +79,21 @@ export default function App({ token }) {
         <main className={classes.main}>
           <Switch>
             <Route path="/app/board">
-              <Board token={token} user={user} />
+              <Board token={token} user={user} selectedProject={selectedProject} />
             </Route>
             <Route path="/app/bugtracker">
-              <BugTrackerDashboard token={token} user={user} />
+              <BugTrackerDashboard token={token} user={user} selectedProject={selectedProject}/>
             </Route>
             <Route path="/app/customer">
-              <CRMDashboard token={token} user={user} />
+              <CRMDashboard token={token} user={user} selectedProject={selectedProject} />
             </Route>
             <Route path="/app/pdf">
-              <InvoiceDashboard token={token} user={user} />
+              <InvoiceDashboard token={token} user={user} selectedProject={selectedProject}/>
             </Route>
             <Route path="/app/ajustes">
-              <Settings token={token} user={user} />
+              <Settings token={token} user={user} selectedProject={selectedProject} />
             </Route>
-            <Route path="/app" user={user} exact>
+            <Route path="/app" token={token} user={user} selectedProject={selectedProject} exact>
               <Home />
             </Route>
           </Switch>

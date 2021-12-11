@@ -44,7 +44,7 @@ const Content = styled.section`
   margin-top: 20px;
 `;
 
-const BugTrackerDashboard = ({ token }) => {
+const BugTrackerDashboard = ({ token, selectedProject }) => {
   // Modal Inputs State
   const [bug, setBug] = useState(newBug);
   const [comments, setPets] = useState([comment]);
@@ -64,7 +64,7 @@ const BugTrackerDashboard = ({ token }) => {
   }, [customerSaved]);
 
   async function callGetCustomers() {
-    const bugs = await services.getBugs(token);
+    const bugs = await services.getBugs(token, selectedProject);
 
     setBugList(bugs);
   }
@@ -119,7 +119,7 @@ const BugTrackerDashboard = ({ token }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const bugToSave = { ...bug, comments: comments };
-    await services.saveBug(token, bugToSave);
+    await services.saveBug(token, selectedProject, bugToSave);
     setCustomerSaved(!customerSaved);
     resetDashboardState();
   };
@@ -136,14 +136,14 @@ const BugTrackerDashboard = ({ token }) => {
   const handleEdit = async (e) => {
     e.preventDefault();
     const customerToSave = { ...bug, comments: comments };
-    await services.editBug(token, customerToSave);
+    await services.editBug(token, selectedProject, customerToSave);
     setCustomerSaved(!customerSaved);
     resetDashboardState();
   };
 
   const deleteCustomer = async (id) => {
     if (window.confirm("Do you really want to delete the file?")) {
-      await services.deleteBug(token, id);
+      await services.deleteBug(token, selectedProject, id);
       await callGetCustomers();
       setCustomerSaved(!customerSaved);
       resetDashboardState();
