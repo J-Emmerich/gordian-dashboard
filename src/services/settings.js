@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const baseUrl = "https://yc1gn.sse.codesandbox.io";
+
+const baseUrl = "https://qrci0.sse.codesandbox.io";
 const path = "project";
 
 const getProjects = async (token) => {
