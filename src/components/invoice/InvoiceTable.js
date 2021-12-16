@@ -71,8 +71,9 @@ const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
   };
 
   const formatDate = (date) => {
-    const formatedDate = dayjs(date).format("DD/MM/YYYY");
-    return dayjs(formatedDate, "DD/MM/YYYY").format();
+    const newDate = dayjs(date).format("DD-MM-YYYY");
+
+    return date;
   };
 
   const columns = useMemo(
@@ -84,10 +85,10 @@ const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
       },
       {
         Header: "Fecha",
-        accessor: (row) => formatDate(row.invoiceDate), //
+        accessor: (row) => row.invoiceDate, //
         sortBy: "datetime",
         Cell: (props) => {
-          return <>{dayjs(props.cell.value).format("DD/MM/YYYY")}</>;
+          return <>{formatDate(props.cell.value)}</>;
         }
       },
       {

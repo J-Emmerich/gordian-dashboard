@@ -26,8 +26,7 @@ const getOneInvoice = async (token, selectedProject, id) => {
   }
 };
 
-const saveInvoice = async (token, selectedProject, invoice) => {
-  console.log("this the invoice", invoice, "this the token", token);
+const saveInvoice = async (token, invoice) => {
   try {
     await axios.post(`${baseUrl}/pdf`, invoice, {
       headers: { Authorization: `Bearer: ${token}` }

@@ -1,16 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import ArticleInput from "./ArticleInput";
 import styled from "styled-components";
 import TextField from "@material-ui/core/TextField";
 
-import "dayjs";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+
 import DayJsUtils from "@date-io/dayjs";
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker
 } from "@material-ui/pickers";
 
+dayjs.extend(utc);
 const Form = styled.form`
   display: flex;
   flex-flow: column wrap;
@@ -75,15 +78,14 @@ const ModalForm = ({
   closeModal
 }) => {
   const [selectedDate, setSelectedDate] = useState(null);
+
   const handleDateChange = (date) => {
-    console.log(typeof date);
-    setSelectedDate(date);
-    if (date) {
-      const dateToSave = date.format("DD/MM/YYYY");
+    if (dayjs(date).isValid()) {
+      const UTCdate = dayjs(date).utc(true).format();
       const event = {
         target: {
           name: "invoiceDate",
-          value: dateToSave
+          value: UTCdate
         }
       };
       handleChange(event);
@@ -141,7 +143,7 @@ const ModalForm = ({
                 id="date-picker-inline"
                 placeholder="Fecha de la Factura"
                 value={selectedDate}
-                onChange={handleDateChange}
+                onChange={(date) => handleDateChange(date)}
                 KeyboardButtonProps={{
                   "aria-label": "change date"
                 }}

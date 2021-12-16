@@ -5,6 +5,7 @@ import services from "../../services/bugtracker";
 import { v4 as uuid } from "uuid";
 import styled from "styled-components";
 
+// Components
 import BugTable from "./BugTable";
 import AddBug from "./AddBug";
 
@@ -181,7 +182,7 @@ const BugTrackerDashboard = ({ token, selectedProject }) => {
               handleChange={handleChange}
               commentList={commentList}
               handleCommentChange={handleCommentChange}
-              handleSubmit={isEditing ? handleEdit : handleSubmit}
+              submitBugForm={isEditing ? handleEdit : handleSubmit}
               removeComment={removeComment}
               addComment={addComment}
               bug={bug}
