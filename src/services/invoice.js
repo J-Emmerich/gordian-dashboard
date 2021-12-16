@@ -2,7 +2,7 @@ import axios from "axios";
 import handleFileDownload from "../helpers/handle-file-download";
 
 // const baseUrl = "http://localhost:8080";
-const baseUrl = "https://qrci0.sse.codesandbox.io";
+const baseUrl = "https://yc1gn.sse.codesandbox.io";
 
 const getInvoices = async (token) => {
   try {
@@ -27,7 +27,6 @@ const getOneInvoice = async (token, id) => {
 };
 
 const saveInvoice = async (token, invoice) => {
-  console.log("this the invoice", invoice, "this the token", token);
   try {
     await axios.post(`${baseUrl}/pdf`, invoice, {
       headers: { Authorization: `Bearer: ${token}` }
