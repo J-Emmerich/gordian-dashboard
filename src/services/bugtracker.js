@@ -3,10 +3,10 @@ import axios from "axios";
 const baseUrl = "http://localhost:8080";
 const path = "bugtracker";
 
-const getBugs = async (token, selectedProject) => {
+const getBugs = async (token) => {
   try {
     const customers = await axios.get(`${baseUrl}/${path}`, {
-      headers: { Authorization: `Bearer: ${token}` }
+      headers: { Authorization: `Bearer: ${token}`}
     });
 
     return customers.data;
@@ -15,7 +15,7 @@ const getBugs = async (token, selectedProject) => {
   }
 };
 
-const saveBug = async (token, selectedProject, customer) => {
+const saveBug = async (token, customer) => {
   try {
     const response = await axios.post(`${baseUrl}/${path}`, customer, {
       headers: { Authorization: `Bearer: ${token}` }

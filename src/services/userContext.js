@@ -20,16 +20,16 @@ const UserProvider = ({ children }) => {
   const login = (response) => {
     localStorage.setItem(constants.ACCESS_TOKEN, response.token);
     localStorage.setItem(constants.LOGGED_USER, JSON.stringify(response.user));
-    if(response.user.workingProject){
-      localStorage.setItem(constants.SELECTED_PROJECT, JSON.stringify(response.user.workingProject));
-    } else {
-if(localStorage.getItem(constants.SELECTED_PROJECT)){
-  console.log("it's here")
-  localStorage.removeItem(constants.SELECTED_PROJECT);
-  
-}
-    }
     setUser(response.user);
+   if(response.user.currentProject && response.user.currentProject !== ""){
+     const foundProject = response.user.projects.find(project => {
+       console.log(project)
+      return project._id === response.user.currentProject;
+     })
+     console.log(foundProject, "I'm saving this as the selected project");
+     const projectToSave = {projectName: foundProject.projectName, projectId: foundProject._id}
+     setSelectedProject(projectToSave)
+   }
    
     history.push({ pathname: "/app" });
   };
@@ -37,7 +37,7 @@ if(localStorage.getItem(constants.SELECTED_PROJECT)){
   const logout = () => {
     localStorage.removeItem(constants.ACCESS_TOKEN);
     localStorage.removeItem(constants.LOGGED_USER);
-    localStorage.removeItem(constants.SELECTED_PROJECT);
+   
 
     setUser({});
     setSelectedProject({projectId: "", projectName: ""})
@@ -54,7 +54,7 @@ setUser(receivedUser);
 const updateWorkingProjectContext = (workingProject) => {
   const foundProject = user.projects.find(project => project.projectName === workingProject);
   const projectToSave = {projectName: foundProject.projectName, projectId: foundProject._id}
-  localStorage.setItem(constants.SELECTED_PROJECT, JSON.stringify(projectToSave));
+  
   setSelectedProject(projectToSave)
 }
 
