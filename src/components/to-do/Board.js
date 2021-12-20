@@ -25,25 +25,26 @@ const BoardButtonsContainer = styled.div`
   margin: 20px;
 `;
 
-const Board = ({ token, selectedProject }) => {
+const Board = ({ token }) => {
   const [isSaved, setIsSaved] = useState(true);
   const [boardData, setBoardData] = useState(firstCard);
   const [isInsertingTask, setIsInsertingTask] = useState(false);
   const [isInsertingCard, setIsInsertingCard] = useState(false);
   const [newTaskContent, setNewTaskContent] = useState("");
   const [newCardTitle, setNewCardTitle] = useState("New Card");
-  console.log(token, "this is token in board");
   useEffect(() => {
     const result = preventFirstCardBug(boardData);
     if (result) setIsInsertingCard(true);
   }, []);
-
+console.log(boardData)
   useEffect(() => {
     if (boardData.initialData === true) {
       async function fetchProject() {
         const data = await services.getProject(token);
-        if (data) {
-          setBoardData(data);
+        
+        if (data && data.length > 0) {
+
+          setBoardData(data[0]);
           setIsInsertingCard(false);
         }
       }
@@ -213,7 +214,8 @@ const Board = ({ token, selectedProject }) => {
         <Droppable type="card" droppableId="all-cards" direction="horizontal">
           {(provided) => (
             <Container {...provided.droppableProps} ref={provided.innerRef}>
-              {boardData.cardOrder.map((cardId, index) => {
+              {console.log(boardData)}
+              {boardData.cardOrder?.map((cardId, index) => {
                 const card = boardData.cards.find((card) => {
                   return card.id === cardId;
                 });

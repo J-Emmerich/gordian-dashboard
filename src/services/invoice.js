@@ -38,6 +38,7 @@ const saveInvoice = async (token, invoice) => {
 };
 const editInvoice = async (token, invoice) => {
   try {
+    console.log(invoice, "here on axios call")
     await axios.put(`${baseUrl}/pdf/${invoice._id}`, invoice, {
       headers: { Authorization: `Bearer: ${token}` }
     });
@@ -56,7 +57,7 @@ const deleteInvoice = async (token, id) => {
   }
 };
 
-const saveToPdf = async (token, selectedProject, id) => {
+const saveToPdf = async (token, id) => {
   try {
     const pdf = await axios.get(`${baseUrl}/pdf/download/${id}`, {
       headers: { Authorization: `Bearer: ${token}` },

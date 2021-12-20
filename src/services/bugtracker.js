@@ -27,7 +27,7 @@ const saveBug = async (token, customer) => {
   }
 };
 
-const editBug = async (token, selectedProject, customer) => {
+const editBug = async (token, customer) => {
   try {
     const edited = await axios.put(
       `${baseUrl}/${path}/${customer._id}`,
@@ -41,7 +41,7 @@ const editBug = async (token, selectedProject, customer) => {
   }
 };
 
-const deleteBug = async (token, selectedProject, id) => {
+const deleteBug = async (token, id) => {
   try {
     const customer = await axios.delete(`${baseUrl}/${path}/${id}`, {
       headers: { Authorization: `Bearer: ${token}` }
