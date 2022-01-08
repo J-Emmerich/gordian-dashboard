@@ -4,7 +4,7 @@ import handleFileDownload from "../helpers/handle-file-download";
 const baseUrl = "http://localhost:8080";
 // const baseUrl = "https://qrci0.sse.codesandbox.io";
 
-const getInvoices = async (token, selectedProject) => {
+const getInvoices = async (token) => {
   try {
     const invoices = await axios.get(`${baseUrl}/pdf`, {
       headers: { Authorization: `Bearer: ${token}` }
@@ -15,7 +15,7 @@ const getInvoices = async (token, selectedProject) => {
   }
 };
 
-const getOneInvoice = async (token, selectedProject, id) => {
+const getOneInvoice = async (token, id) => {
   try {
     const invoice = await axios.get(`${baseUrl}/pdf/${id}`, {
       headers: { Authorization: `Bearer: ${token}` }
@@ -36,8 +36,9 @@ const saveInvoice = async (token, invoice) => {
     console.log(err);
   }
 };
-const editInvoice = async (token, selectedProject, invoice) => {
+const editInvoice = async (token, invoice) => {
   try {
+    console.log(invoice, "here on axios call")
     await axios.put(`${baseUrl}/pdf/${invoice._id}`, invoice, {
       headers: { Authorization: `Bearer: ${token}` }
     });
@@ -46,7 +47,7 @@ const editInvoice = async (token, selectedProject, invoice) => {
   }
 };
 
-const deleteInvoice = async (token, selectedProject, id) => {
+const deleteInvoice = async (token, id) => {
   try {
     const invoice = await axios.delete(`${baseUrl}/pdf/${id}`, {
       headers: { Authorization: `Bearer: ${token}` }
@@ -56,7 +57,7 @@ const deleteInvoice = async (token, selectedProject, id) => {
   }
 };
 
-const saveToPdf = async (token, selectedProject, id) => {
+const saveToPdf = async (token, id) => {
   try {
     const pdf = await axios.get(`${baseUrl}/pdf/download/${id}`, {
       headers: { Authorization: `Bearer: ${token}` },

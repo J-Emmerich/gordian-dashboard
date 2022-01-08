@@ -55,7 +55,7 @@ const ModalForm = ({
   handleChange,
   commentList,
   handleCommentChange,
-  handleSubmit,
+  submitBugForm,
   addComment,
   removeComment,
   bug,
@@ -132,7 +132,7 @@ const ModalForm = ({
         <StyledButton
           variant="contained"
           color="primary"
-          onClick={handleSubmit}
+          onClick={submitBugForm}
         >
           Guardar
         </StyledButton>

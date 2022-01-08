@@ -60,7 +60,19 @@ const deleteProject = async (token, id) => {
   }
 };
 
-export default { getProjects, saveProject, editProject, deleteProject, getUser };
+const saveCurrentProject = async(token, projectId) => {
+  try {
+    console.log(projectId, "this is the project ID ****")
+const currentProject = await axios.put(`${baseUrl}/user`, projectId, {
+  headers: {Authorization: `Bearer: ${token}`}
+});
+return currentProject
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+export default { getProjects, saveProject, editProject, deleteProject, getUser, saveCurrentProject };
 
 /*
 To-do Dashboard

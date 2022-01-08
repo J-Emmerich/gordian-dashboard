@@ -65,7 +65,7 @@ const BugTrackerDashboard = ({ token, selectedProject }) => {
   }, [customerSaved]);
 
   async function callGetCustomers() {
-    const bugs = await services.getBugs(token, selectedProject);
+    const bugs = await services.getBugs(token);
 
     setBugList(bugs);
   }
@@ -120,7 +120,7 @@ const BugTrackerDashboard = ({ token, selectedProject }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const bugToSave = { ...bug, comments: comments };
-    await services.saveBug(token, selectedProject, bugToSave);
+    await services.saveBug(token, bugToSave);
     setCustomerSaved(!customerSaved);
     resetDashboardState();
   };
@@ -137,14 +137,14 @@ const BugTrackerDashboard = ({ token, selectedProject }) => {
   const handleEdit = async (e) => {
     e.preventDefault();
     const customerToSave = { ...bug, comments: comments };
-    await services.editBug(token, selectedProject, customerToSave);
+    await services.editBug(token, customerToSave);
     setCustomerSaved(!customerSaved);
     resetDashboardState();
   };
 
   const deleteCustomer = async (id) => {
     if (window.confirm("Do you really want to delete the file?")) {
-      await services.deleteBug(token, selectedProject, id);
+      await services.deleteBug(token, id);
       await callGetCustomers();
       setCustomerSaved(!customerSaved);
       resetDashboardState();
@@ -179,6 +179,7 @@ const BugTrackerDashboard = ({ token, selectedProject }) => {
         <Modal open={openModal} onClose={() => resetDashboardState()}>
           <div style={modalStyle}>
             <AddBug
+           
               handleChange={handleChange}
               commentList={commentList}
               handleCommentChange={handleCommentChange}
