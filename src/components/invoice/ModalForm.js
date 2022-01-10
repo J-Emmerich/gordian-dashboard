@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import {useForm, Controller} from "react-hook-form";
 import Button from "@material-ui/core/Button";
 import ArticleInput from "./ArticleInput";
 import styled from "styled-components";
@@ -14,6 +15,9 @@ import {
 } from "@material-ui/pickers";
 
 dayjs.extend(utc);
+
+
+
 const Form = styled.form`
   display: flex;
   flex-flow: column wrap;
@@ -71,13 +75,33 @@ const ModalForm = ({
   handleChange,
   articlesList,
   handleArticleChange,
-  handleSubmit,
+  onSubmit,
+  isEditing,
   removeArticle,
   addAnotherArticle,
   invoice,
   closeModal
 }) => {
   const [selectedDate, setSelectedDate] = useState(null);
+const {control, handleSubmit, reset, setValue} = useForm({defaultValues:{}});
+
+useEffect(()=>{
+  if(isEditing){
+    reset({
+      clientName: invoice.clientName,
+      invoiceNumber: invoice.invoiceNumber,
+      invoiceDate: invoice.invoiceDate,
+      orderNumber: invoice.orderNumber || "",
+      invoiceTotal: invoice.invoiceTotal,
+      invoiceSubTotal: invoice.invoiceSubTotal,
+      invoiceTax: invoice.invoiceTax,
+      _id: invoice._id,
+      projectId: invoice.projectId,
+      __v: invoice.__v
+    }, {keepDefaultValues: true})
+  }
+  setSelectedDate(invoice.invoiceDate);
+},[])
 
   const handleDateChange = (date) => {
     if (dayjs(date).isValid()) {
@@ -88,12 +112,13 @@ const ModalForm = ({
           value: UTCdate
         }
       };
+      setSelectedDate(date);
       handleChange(event);
     }
   };
   return (
     <div>
-      <Form>
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <Title>
           <h2>
             Factura n# <span>{invoice.invoiceNumber}</span>
@@ -102,34 +127,29 @@ const ModalForm = ({
         <hr />
         <Header>
           <fieldset>
-            <StyledTextField
-              onChange={handleChange}
-              value={invoice.clientName}
-              id="clientName"
-              name="clientName"
-              type="text"
-              placeholder="Nombre del cliente:"
-              variant="outlined"
-              margin="none"
-            />
+            <Controller 
+            name="clientName"
+            control={control}
+            rules={{required: "Campo requerido"}}
+            render={({field, fieldState: {error}})=><StyledTextField label="Nombre del cliente" variant="outlined"
+              margin="none" {...field} error={!!error} helperText={error? error.message : null} ></StyledTextField>}
+            >
+            </Controller>
+            <Controller
+            name="invoiceNumber"
+            control={control}
+            rules={{required: "Campo requerido"}}
+            render={({field, fieldState:{error}})=><StyledTextField label="Numero de la factura" variant="outlined" {...field} error={!!error} helperText={error? error.message : null}></StyledTextField>}
+            >
+            </Controller>
+          <Controller
+          name="orderNumber"
+          control={control}
+          render={({field, fieldState:{error}})=><StyledTextField {...field} label="Número del pedido" variant="outlined" error={!!error} helperText={error ? error.message : null} ></StyledTextField>}
+          >
 
-            <StyledTextField
-              onChange={handleChange}
-              value={invoice.invoiceNumber}
-              name="invoiceNumber"
-              id="invoiceNumber"
-              type="text"
-              placeholder="Número de la factura"
-              variant="outlined"
-            />
-            <StyledTextField
-              onChange={handleChange}
-              value={invoice.orderNumber}
-              name="orderNumber"
-              type="text"
-              placeholder="Número del pedido"
-              variant="outlined"
-            />
+          </Controller>
+           
           </fieldset>
           <hr />
           <div>
@@ -178,36 +198,35 @@ const ModalForm = ({
           <h2>Total</h2>
         </Title>
         <hr />
-        <StyledTextField
-          onChange={handleChange}
-          value={invoice.invoiceTotal}
-          name="invoiceTotal"
-          type="number"
-          placeholder="Total factura"
-          variant="outlined"
-        />
-        <StyledTextField
-          onChange={handleChange}
-          value={invoice.invoiceSubTotal}
-          name="invoiceSubTotal"
-          type="number"
-          placeholder="Base Imponible"
-          variant="outlined"
-        />
+        <Controller
+        name="invoiceTotal"
+        control={control}
+        rules={{required: "campo requerido"}}
+        render={({field, fieldState:{error}})=><StyledTextField type="number" label="Total Factura" variant="outlined" {...field} error={!!error} helperText={error? error.message : null}></StyledTextField>}
+        >
+        </Controller>
+        
+<Controller
+name="invoiceSubTotal"
+control={control}
+rules={{required: "campo requerido"}}
+        render={({field, fieldState:{error}})=><StyledTextField type="number" label="Base Imponible" variant="outlined" {...field} error={!!error} helperText={error? error.message : null}></StyledTextField>}
+        
+></Controller>
+<Controller
+name="invoiceTax"
+control={control}
+rules={{required: "campo requerido"}}
+        render={({field, fieldState:{error}})=><StyledTextField type="number" label="Importe del IVA" variant="outlined" {...field} error={!!error} helperText={error? error.message : null}></StyledTextField>}
+        
+></Controller>
 
-        <StyledTextField
-          onChange={handleChange}
-          value={invoice.invoiceTax}
-          name="invoiceTax"
-          type="number"
-          placeholder=" Importe del IVA"
-          variant="outlined"
-        />
+      
         <hr />
         <StyledButton
           variant="contained"
           color="primary"
-          onClick={handleSubmit}
+          type="submit"
         >
           Guardar Factura
         </StyledButton>

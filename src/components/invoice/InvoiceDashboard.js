@@ -127,10 +127,10 @@ const InvoiceDashboard = ({ token }) => {
   };
 
   // Save the articles list to the current invoice
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (filledInvoice, event) => {
     event.preventDefault();
-    const invoiceToSave = { ...invoice, articles: articles };
-    await services.saveInvoice(token, invoiceToSave);
+    console.log(filledInvoice);
+    await services.saveInvoice(token, filledInvoice);
     setInvoiceSaved(!invoiceSaved);
     resetDashboardState();
   };
@@ -138,16 +138,16 @@ const InvoiceDashboard = ({ token }) => {
 
   // Editing invoice
   const editInvoice = (invoiceReceived) => {
+    console.log(invoiceReceived, "this is on the edit invoice")
     setInvoice(invoiceReceived);
     setArticlesList(invoiceReceived.articles);
     setIsEditing(true);
     setOpenModal(true);
   };
 
-  const handleEdit = async (e) => {
-    e.preventDefault();
-    const invoiceToSave = { ...invoice, articles: articles };
-    await services.editInvoice(token, invoiceToSave);
+  const handleEdit = async (filledInvoice, event) => {
+    event.preventDefault();
+    await services.editInvoice(token, filledInvoice);
     setInvoiceSaved(!invoiceSaved);
     resetDashboardState();
   };
@@ -198,7 +198,8 @@ const InvoiceDashboard = ({ token }) => {
               handleChange={handleChange}
               articlesList={articlesList}
               handleArticleChange={handleArticleChange}
-              handleSubmit={isEditing ? handleEdit : handleSubmit}
+              onSubmit={isEditing ? handleEdit : handleSubmit}
+              isEditing={isEditing}
               removeArticle={removeArticle}
               addAnotherArticle={addAnotherArticle}
               invoice={invoice}
