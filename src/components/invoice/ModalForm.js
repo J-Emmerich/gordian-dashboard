@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {useForm, Controller} from "react-hook-form";
+import {useForm, Controller, useFieldArray} from "react-hook-form";
 import Button from "@material-ui/core/Button";
 import ArticleInput from "./ArticleInput";
 import styled from "styled-components";
@@ -17,7 +17,16 @@ import {
 dayjs.extend(utc);
 
 
-
+const FlexContainer = styled.div`
+  display: flex;
+  background-color: #eee;
+  margin: 10px;
+  flex-flow: column wrap;
+  & button {
+    align-self: center;
+    margin-bottom: 10px;
+  }
+`;
 const Form = styled.form`
   display: flex;
   flex-flow: column wrap;
@@ -84,7 +93,7 @@ const ModalForm = ({
 }) => {
   const [selectedDate, setSelectedDate] = useState(null);
 const {control, handleSubmit, reset, setValue} = useForm({defaultValues:{}});
-
+const {fields, append, remove, replace} = useFieldArray({control, name: 'articles'})
 useEffect(()=>{
   if(isEditing){
     reset({
@@ -99,6 +108,7 @@ useEffect(()=>{
       projectId: invoice.projectId,
       __v: invoice.__v
     }, {keepDefaultValues: true})
+    replace(invoice.articles)
   }
   setSelectedDate(invoice.invoiceDate);
 },[])
@@ -178,20 +188,56 @@ useEffect(()=>{
         </Title>
         <hr />
         <section>
-          {articlesList.map((article) => {
-            return (
-              <ArticleInput
-                key={article.articleId}
-                id={article.articleId}
-                article={article}
-                removeArticle={removeArticle}
-                onChange={handleArticleChange}
-              />
-            );
-          })}
+          {fields.map((item, index)=>
+          <FlexContainer key={item.id}>
+          <Controller
+            name={`articles[${index}].articleName`}
+            control={control}
+            rules={{required: "este campo es requerido"}}
+            render={({field, fieldState:{error}})=><StyledTextField helperText={error? error.message : null} error={!!error} label="Artículo" variant="outlined" {...field}></StyledTextField>}
+            ></Controller>
+          <Controller
+            name={`articles[${index}].pricePerUnit`}
+            control={control}
+            rules={{required: "este campo es requerido"}}
+            render={({field, fieldState:{error}})=><StyledTextField type="number" helperText={error? error.message : null} error={!!error} label="Precio por unidad" variant="outlined" {...field}></StyledTextField>}
+            ></Controller>
+          <Controller
+            name={`articles[${index}].quantity`}
+            control={control}
+            rules={{required: "este campo es requerido"}}
+            render={({field, fieldState:{error}})=><StyledTextField type="number" helperText={error? error.message : null} error={!!error} label="Cuantidad" variant="outlined" {...field}></StyledTextField>}
+            ></Controller>
+          <Controller
+            name={`articles[${index}].vat`}
+            control={control}
+            rules={{required: "este campo es requerido"}}
+            render={({field, fieldState:{error}})=><StyledTextField type="number" helperText={error? error.message : null} error={!!error} label="IVA" variant="outlined" {...field}></StyledTextField>}
+            ></Controller>
+          <Controller
+            name={`articles[${index}].totalPrice`}
+            control={control}
+            rules={{required: "este campo es requerido"}}
+            render={({field, fieldState:{error}})=><StyledTextField type="number" helperText={error? error.message : null} error={!!error} label="Precio Total" variant="outlined" {...field}></StyledTextField>}
+            ></Controller>
+           
+            <Button
+          variant="contained"
+          color="secondary"
+          onClick={() => remove(index)}
+        >
+          Eliminar artículo
+        </Button>
+            </FlexContainer>
+          )}
         </section>
-        <Button variant="contained" color="primary" onClick={addAnotherArticle}>
-          Añadir Artículo
+        
+        <Button variant="contained" color="primary" onClick={()=>{
+          console.log("click");
+          append({articleName: "", pricePerUnit: 0, quantity: 0, vat: 21, totalPrice: 0})
+        }}>
+        
+        Añadir Artículo
         </Button>
 
         <Title>
