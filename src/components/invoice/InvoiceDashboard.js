@@ -2,9 +2,8 @@ import React, { useState, useEffect } from "react";
 import Modal from "@material-ui/core/Modal";
 import Button from "@material-ui/core/Button";
 import services from "../../services/invoice";
-import { v4 as uuid } from "uuid";
 import styled from "styled-components";
-import ModalForm from "./ModalForm";
+import InvoiceForm from "./InvoiceForm";
 import InvoiceTable from "./InvoiceTable";
 
 const modalStyle = {
@@ -28,15 +27,6 @@ let newInvoice = {
   articles: ""
 };
 
-let article = {
-  articleId: "",
-  articleName: "",
-  pricePerUnit: "",
-  isIvaIncluded: "",
-  quantity: "",
-  totalPrice: "",
-  vat: ""
-};
 
 const Dashboard = styled.section`
   padding-top: 20px;
@@ -56,17 +46,12 @@ const Content = styled.section`
 const InvoiceDashboard = ({ token }) => {
   // Modal Inputs State
   const [invoice, setInvoice] = useState(newInvoice);
-  const [articles, setArticles] = useState([article]);
-  const [articlesList, setArticlesList] = useState([]);
   const [invoiceSaved, setInvoiceSaved] = useState(false);
   // Invoice List State
   const [invoiceList, setInvoiceList] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [openModal, setOpenModal] = useState(false);
 
-  useEffect(() => {
-    setArticles(articlesList);
-  }, [articlesList]);
 
   useEffect(() => {
     async function callGetInvoices() {
@@ -81,49 +66,6 @@ const InvoiceDashboard = ({ token }) => {
     setOpenModal(false);
     setIsEditing(false);
     setInvoice(newInvoice);
-    setArticles([article]);
-    setArticlesList([]);
-  };
-
-  // Invoice Handlers
-  const handleChange = (event) => {
-    let name = event.target.name;
-    let value = event.target.value;
-    const changedInvoice = { ...invoice, [name]: value };
-    setInvoice(changedInvoice);
-  };
-
-  const handleArticleChange = (event, id) => {
-    let name = event.target.name;
-    let value = event.target.value;
-
-    // Get the random uuid
-    // const id = event.target.parentNode.parentNode.id;
-    console.log(id);
-    // Find the correct article to change
-    const articleToChange = articles.find((article) => {
-      return article.articleId === id;
-    });
-
-    const newArticle = { ...articleToChange, [name]: value };
-    // if is the article you're changing save the new one
-    // otherwise keep the old
-    setArticlesList(
-      articles.map((article) => {
-        return article.articleId === id ? newArticle : article;
-      })
-    );
-  };
-
-  const addAnotherArticle = (event) => {
-    event.preventDefault();
-    const newId = uuid();
-    const newArticle = { ...article, articleId: newId };
-    setArticlesList(articlesList.concat([newArticle]));
-  };
-  const removeArticle = (event, id) => {
-    event.preventDefault();
-    setArticlesList(articles.filter((article) => article.articleId !== id));
   };
 
   // Save the articles list to the current invoice
@@ -194,14 +136,9 @@ const InvoiceDashboard = ({ token }) => {
         </Content>
         <Modal open={openModal} onClose={() => resetDashboardState()}>
           <div style={modalStyle}>
-            <ModalForm
-              handleChange={handleChange}
-              articlesList={articlesList}
-              handleArticleChange={handleArticleChange}
+            <InvoiceForm
               onSubmit={isEditing ? handleEdit : handleSubmit}
               isEditing={isEditing}
-              removeArticle={removeArticle}
-              addAnotherArticle={addAnotherArticle}
               invoice={invoice}
               closeModal={() => resetDashboardState()}
             />
