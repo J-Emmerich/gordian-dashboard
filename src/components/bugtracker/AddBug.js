@@ -5,6 +5,8 @@ import styled from "styled-components";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
+import {FormControl, FormHelperText} from "@material-ui/core";
+import {useForm, Controller, useFieldArray} from "react-hook-form";
 
 const Form = styled.form`
   display: flex;
@@ -62,50 +64,73 @@ const ModalForm = ({
   closeModal
 }) => {
   const [hiddenSelect, setHiddenSelect] = useState("default");
+  const {control, handleSubmit} = useForm({defaultValues:{} })
+
+  const onSubmit =(data, event) =>{
+    event.preventDefault();
+    console.log(data);
+  }
   return (
     <div>
-      <Form>
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <Title>
           <h2> Reportar Bug </h2>
         </Title>
         <hr />
-        <StyledTextField
-          onChange={handleChange}
-          value={bug.descripcion}
-          name="descripcion"
-          type="text"
-          placeholder="Descripción del Bug"
-          variant="outlined"
-        />
-
-        <StyledSelect
-          defaultValue={hiddenSelect}
-          onChange={handleChange}
-          name="estadoBug"
-          variant="outlined"
+        <Controller
+        name="descripcion"
+        control={control}
+        rules={{required: "Campo requerido"}}
+        render={({field, fieldState:{error}})=><StyledTextField {...field} error={!!error} helperText={error? error.message : null} label="Descripción del Bug"
+        variant="outlined"
+        ></StyledTextField>}
         >
-          <MenuItem value={hiddenSelect} disabled>
+          
+        </Controller>
+       
+       <Controller
+       name="estadoBug"
+       control={control}
+       defaultValue={hiddenSelect}
+       rules={{required: "Campo requerido",
+    validate: value => value !== "default" || "Tienes que elegir algo"}}
+       render={({field, fieldState:{error}})=><FormControl  error={!!error} ><StyledSelect variant="outlined" {...field} >
+<MenuItem value={hiddenSelect} disabled>
             Estado del Bug
           </MenuItem>
           <MenuItem value="Abierto">Abierto</MenuItem>
           <MenuItem value="En progresso">En progresso</MenuItem>
           <MenuItem value="Realizando Pruebas">Realizando Pruebas</MenuItem>
           <MenuItem value="OK">OK</MenuItem>
-        </StyledSelect>
-        <StyledSelect
-          defaultValue={hiddenSelect}
-          onChange={handleChange}
-          name="severidad"
-          variant="outlined"
-        >
-          <MenuItem value={hiddenSelect} disabled>
+       </StyledSelect>
+       <FormHelperText>{error? error.message : null}</FormHelperText>
+       </FormControl>}
+       >
+       </Controller>
+
+      <Controller
+      name="severidad"
+      control={control}
+      defaultValue={hiddenSelect}
+      rules={{required: "Campo requerido",
+    validate: value => value !== "default" || "Tienes que elegir algo"}}
+      render={({field, fieldState:{error}})=><FormControl  error={!!error} ><StyledSelect {...field} variant="outlined" helperText={error? error.message : null}>
+ <MenuItem value={hiddenSelect} disabled>
             Severidad del Bug
           </MenuItem>
           <MenuItem value="Poca">Poca</MenuItem>
           <MenuItem value="Cuando Puedas">Cuando Puedas</MenuItem>
           <MenuItem value="Importante">Importante</MenuItem>
           <MenuItem value="Urgente">Urgente</MenuItem>
-        </StyledSelect>
+      </StyledSelect>
+      <FormHelperText>{error? error.message: null}</FormHelperText>
+      </FormControl>  
+    }
+      
+      >
+
+      </Controller>
+     
         <hr />
         <Title>
           <h2>Comentarios</h2>
@@ -132,7 +157,7 @@ const ModalForm = ({
         <StyledButton
           variant="contained"
           color="primary"
-          onClick={submitBugForm}
+         type="submit"
         >
           Guardar
         </StyledButton>
