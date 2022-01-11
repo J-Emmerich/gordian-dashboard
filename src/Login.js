@@ -23,7 +23,7 @@ const Login = () => {
       <Router history={history}>
         <Switch>
           <PrivateRoute component={App} path="/app" user={user} />
-          <Route component={DocumentPDF} path="/topdf/:id" user={user} />
+          <PrivateRoute component={DocumentPDF} path="/topdf/:id" user={user} />
           <Route path="/">
             <LoginForm />
           </Route>
