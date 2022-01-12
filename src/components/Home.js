@@ -53,7 +53,7 @@ const Home = () => {
         </ListItem>
         <ListItem>
           <ListItemIcon>
-            <Checkbox disabled checked={true} />
+            <Checkbox disabled  />
           </ListItemIcon>
           <ListItemText>User Roles</ListItemText>
         </ListItem>
@@ -81,7 +81,7 @@ const Home = () => {
         </ListItem>
         <ListItem>
           <ListItemIcon>
-            <Checkbox disabled />
+            <Checkbox disabled checked={true}/>
           </ListItemIcon>
           <ListItemText>Validación de los formularios</ListItemText>
         </ListItem>

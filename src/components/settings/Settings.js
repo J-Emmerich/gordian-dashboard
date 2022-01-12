@@ -32,6 +32,7 @@ const Settings = ({ token, user }) => {
     }
     fetchUpdatedUser();
   }, [hasSaved]);
+
   const saveProject =async () => {
     const project = {
       projectName: projectName,
@@ -44,16 +45,26 @@ const Settings = ({ token, user }) => {
 
   };
 
+  const saveWorkingProject = async (currentProjectToSave) => {
+    
+      const project = user.projects.find(project => project.projectName === currentProjectToSave)
+      const newUser = await services.saveCurrentProject(token, project);
+     console.log(newUser)
+  
+  }
+
 const selectWorkingProject = (selectedProject) => {
 
   if(selectedProject !== "Cual proyecto quieres trabajar?") {
     setWorkingProject(selectedProject);
+   
   }
 
 }
 const updateWorkingProject = () => {
   if(workingProject !== "Cual proyecto quieres trabajar?") {
 updateWorkingProjectContext(workingProject);
+saveWorkingProject(workingProject);
   }
 }
   return (

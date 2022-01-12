@@ -18,7 +18,7 @@ import Board from "./components/to-do/Board";
 import Nav from "./components/Nav";
 import InvoiceDashboard from "./components/invoice/InvoiceDashboard";
 import CRMDashboard from "./components/crm/CRMDashboard";
-import BugTrackerDashboard from "./components/bugtracker/BugTrackerDashboard";
+import BugTrackerDashboard from "./components/bugtracker/BugtrackerDashboard";
 import Home from "./components/Home";
 import Settings from "./components/settings/Settings";
 
@@ -34,6 +34,7 @@ export default function App({ token }) {
 
   const [isOpened, setIsOpened] = useState(false);
   const { user, logout, selectedProject } = useContext(UserContext);
+  console.log("this is the user passed down from")
   return (
     <div className={classes.root}>
       <FixHeader>

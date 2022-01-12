@@ -2,12 +2,11 @@ import React, { useState, useEffect } from "react";
 import Modal from "@material-ui/core/Modal";
 import Button from "@material-ui/core/Button";
 import services from "../../services/bugtracker";
-import { v4 as uuid } from "uuid";
 import styled from "styled-components";
 
 // Components
-import BugTable from "./BugTable";
-import AddBug from "./AddBug";
+import BugtrackerTable from "./BugtrackerTable";
+import BugtrackerForm from "./BugtrackerForm";
 
 const modalStyle = {
   backgroundColor: "white",
@@ -45,27 +44,24 @@ const Content = styled.section`
   margin-top: 20px;
 `;
 
-const BugTrackerDashboard = ({ token, selectedProject }) => {
+const BugTrackerDashboard = ({ token }) => {
   // Modal Inputs State
   const [bug, setBug] = useState(newBug);
-  const [comments, setPets] = useState([comment]);
-  const [commentList, setCommentList] = useState([]);
   const [customerSaved, setCustomerSaved] = useState(false);
   // Invoice List State
   const [bugList, setBugList] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [openModal, setOpenModal] = useState(false);
 
-  useEffect(() => {
-    setPets(commentList);
-  }, [commentList]);
+  
 
   useEffect(() => {
-    callGetCustomers();
+    callGetBugs();
+    console.log(bugList, "bugList")
   }, [customerSaved]);
 
-  async function callGetCustomers() {
-    const bugs = await services.getBugs(token, selectedProject);
+  async function callGetBugs() {
+    const bugs = await services.getBugs(token);
 
     setBugList(bugs);
   }
@@ -73,79 +69,34 @@ const BugTrackerDashboard = ({ token, selectedProject }) => {
     setOpenModal(false);
     setIsEditing(false);
     setCustomerSaved(!customerSaved);
-    setBug(newBug);
-    setPets([comment]);
-    setCommentList([]);
-  };
-
-  // Bug Handlers
-  const handleChange = (event) => {
-    let name = event.target.name;
-    let value = event.target.value;
-    const changedBug = { ...bug, [name]: value };
-    setBug(changedBug);
-  };
-
-  const handleCommentChange = (event, id) => {
-    let name = event.target.name;
-    let value = event.target.value;
-
-    // Find the correct comment to change
-    const petToChange = comments.find((comment) => {
-      return comment.commentId === id;
-    });
-
-    const newComment = { ...petToChange, [name]: value };
-    // if is the comment you're changing save the new one
-    // otherwise keep the old
-    setCommentList(
-      comments.map((comment) => {
-        return comment.commentId === id ? newComment : comment;
-      })
-    );
-  };
-
-  const addComment = (event) => {
-    event.preventDefault();
-    const newId = uuid();
-    const newComment = { ...comment, commentId: newId };
-    setCommentList(commentList.concat([newComment]));
-  };
-  const removeComment = (event, id) => {
-    event.preventDefault();
-    setCommentList(comments.filter((comment) => comment.commentId !== id));
   };
 
   // Save the articles list to the current customer
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (bugFormInput, event) => {
     event.preventDefault();
-    const bugToSave = { ...bug, comments: comments };
-    await services.saveBug(token, selectedProject, bugToSave);
+    await services.saveBug(token, bugFormInput);
     setCustomerSaved(!customerSaved);
     resetDashboardState();
   };
-  // End of customer Handlers
 
   // Editing customer
-  const editCustomer = (customerReceived) => {
-    setBug(customerReceived);
-    setCommentList(customerReceived.comments);
+  const editCustomer = (bugReceivedFromTable) => {
+    setBug(bugReceivedFromTable);
     setIsEditing(true);
     setOpenModal(true);
   };
 
-  const handleEdit = async (e) => {
-    e.preventDefault();
-    const customerToSave = { ...bug, comments: comments };
-    await services.editBug(token, selectedProject, customerToSave);
+  const handleEdit = async (bugFormInput, event) => {
+    event.preventDefault();
+    await services.editBug(token, bugFormInput);
     setCustomerSaved(!customerSaved);
     resetDashboardState();
   };
 
   const deleteCustomer = async (id) => {
     if (window.confirm("Do you really want to delete the file?")) {
-      await services.deleteBug(token, selectedProject, id);
-      await callGetCustomers();
+      await services.deleteBug(token, id);
+      await callGetBugs();
       setCustomerSaved(!customerSaved);
       resetDashboardState();
     } else {
@@ -154,8 +105,9 @@ const BugTrackerDashboard = ({ token, selectedProject }) => {
   };
 
   const callTable = () => {
+    console.log("calledTable")
     return (
-      <BugTable
+      <BugtrackerTable
         data={bugList}
         handleClick={editCustomer}
         deleteCustomer={deleteCustomer}
@@ -178,13 +130,9 @@ const BugTrackerDashboard = ({ token, selectedProject }) => {
         <Content>{bugList ? callTable() : null}</Content>
         <Modal open={openModal} onClose={() => resetDashboardState()}>
           <div style={modalStyle}>
-            <AddBug
-              handleChange={handleChange}
-              commentList={commentList}
-              handleCommentChange={handleCommentChange}
+            <BugtrackerForm
+              isEditing={isEditing}
               submitBugForm={isEditing ? handleEdit : handleSubmit}
-              removeComment={removeComment}
-              addComment={addComment}
               bug={bug}
               closeModal={() => resetDashboardState()}
             />

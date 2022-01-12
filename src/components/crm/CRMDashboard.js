@@ -6,7 +6,7 @@ import { v4 as uuid } from "uuid";
 import styled from "styled-components";
 
 import CRMTable from "./CRMTable";
-import AddClient from "./AddClient";
+import AddClient from "./CRMForm";
 
 const modalStyle = {
   backgroundColor: "white",
@@ -45,27 +45,22 @@ const Content = styled.section`
   margin-top: 20px;
 `;
 
-const CRMDashboard = ({ token, user, selectedProject }) => {
+const CRMDashboard = ({ token, user }) => {
   // Modal Inputs State
   const [customer, setCustomer] = useState(newCustomer);
-  const [pets, setPets] = useState([pet]);
-  const [petList, setPetList] = useState([]);
   const [customerSaved, setCustomerSaved] = useState(false);
   // Invoice List State
   const [customerList, setCustomerList] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [openModal, setOpenModal] = useState(false);
-console.log(user)
-  useEffect(() => {
-    setPets(petList);
-  }, [petList]);
+
 
   useEffect(() => {
     callGetCustomers();
   }, [customerSaved]);
 
   async function callGetCustomers() {
-    const customers = await services.getCustomers(token, selectedProject);
+    const customers = await services.getCustomers(token);
     setCustomerList(customers);
   }
   const resetDashboardState = () => {
@@ -73,53 +68,14 @@ console.log(user)
     setIsEditing(false);
     setCustomerSaved(!customerSaved);
     setCustomer(newCustomer);
-    setPets([pet]);
-    setPetList([]);
+
   };
 
-  // Invoice Handlers
-  const handleChange = (event) => {
-    let name = event.target.name;
-    let value = event.target.value;
-    const changedInvoice = { ...customer, [name]: value };
-    setCustomer(changedInvoice);
-  };
-
-  const handlePetChange = (event, id) => {
-    let name = event.target.name;
-    let value = event.target.value;
-
-    // Find the correct pet to change
-    const petToChange = pets.find((pet) => {
-      return pet.petId === id;
-    });
-
-    const newPet = { ...petToChange, [name]: value };
-    // if is the pet you're changing save the new one
-    // otherwise keep the old
-    setPetList(
-      pets.map((pet) => {
-        return pet.petId === id ? newPet : pet;
-      })
-    );
-  };
-
-  const addAnotherPet = (event) => {
-    event.preventDefault();
-    const newId = uuid();
-    const newPet = { ...pet, petId: newId };
-    setPetList(petList.concat([newPet]));
-  };
-  const removePet = (event, id) => {
-    event.preventDefault();
-    setPetList(pets.filter((pet) => pet.petId !== id));
-  };
 
   // Save the articles list to the current customer
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (customerToSave, event) => {
     event.preventDefault();
-    const invoiceToSave = { ...customer, pets: pets };
-    await services.saveCustomer(token, selectedProject, invoiceToSave);
+    await services.saveCustomer(token, customerToSave);
     setCustomerSaved(!customerSaved);
     resetDashboardState();
   };
@@ -128,22 +84,20 @@ console.log(user)
   // Editing customer
   const editCustomer = (customerReceived) => {
     setCustomer(customerReceived);
-    setPetList(customerReceived.pets);
     setIsEditing(true);
     setOpenModal(true);
   };
 
-  const handleEdit = async (e) => {
+  const handleEdit = async (customerToSave, e) => {
     e.preventDefault();
-    const customerToSave = { ...customer, pets: pets };
-    await services.editCustomer(token, selectedProject, customerToSave);
+    await services.editCustomer(token, customerToSave);
     setCustomerSaved(!customerSaved);
     resetDashboardState();
   };
 
   const handlePdf = async (id) => {
     if (window.confirm("do you want to save it?")) {
-      await services.saveToPdf(token, selectedProject, id);
+      await services.saveToPdf(token, id);
     } else {
       console.log("so bad!");
     }
@@ -151,7 +105,7 @@ console.log(user)
 
   const deleteCustomer = async (id) => {
     if (window.confirm("Do you really want to delete the file?")) {
-      await services.deleteCustomer(token, selectedProject, id);
+      await services.deleteCustomer(token, id);
       await callGetCustomers();
       setCustomerSaved(!customerSaved);
       resetDashboardState();
@@ -187,13 +141,9 @@ console.log(user)
         <Modal open={openModal} onClose={() => resetDashboardState()}>
           <div style={modalStyle}>
             <AddClient
-              handleChange={handleChange}
-              petList={petList}
-              handlePetChange={handlePetChange}
-              handleSubmit={isEditing ? handleEdit : handleSubmit}
-              removePet={removePet}
-              addPet={addAnotherPet}
+              submitCRMForm={isEditing ? handleEdit : handleSubmit}
               customer={customer}
+              isEditing={isEditing}
               closeModal={() => resetDashboardState()}
             />
           </div>
