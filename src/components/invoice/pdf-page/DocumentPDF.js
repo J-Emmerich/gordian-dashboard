@@ -4,17 +4,25 @@ import Header from "./Header";
 import CustDetails from "./CustDetails";
 import Articles from "./Articles";
 import Total from "./Total";
+import constants from "../../../constants/index";
 import "./DocumentPDF.css";
 const baseUrl = "http://localhost:8080";
 const DocumentPDF = ({ match }) => {
   const [invoice, setInvoice] = useState(null);
 
   useEffect(
-    (id) => {
-      axios.get(`${baseUrl}/pdf/${match.params.id}`).then((response) => {
-        console.log(response.data, "!!!!!!!! at the axios call!!!")
-        setInvoice(response.data);
-      });
+    
+    () => {
+      const token = localStorage.getItem(constants.ACCESS_TOKEN);
+
+      if(token){
+
+        axios.get(`${baseUrl}/pdf/${match.params.id}`, {
+          headers: { Authorization: `Bearer: ${token}` }}).then((response) => {
+            console.log(response.data)
+            setInvoice(response.data);
+          });
+        }
     },
     [match.params]
   );
