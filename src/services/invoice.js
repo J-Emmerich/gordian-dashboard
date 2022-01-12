@@ -1,8 +1,7 @@
 import axios from "axios";
 import handleFileDownload from "../helpers/handle-file-download";
 
-const baseUrl = "http://localhost:8080";
-// const baseUrl = "https://qrci0.sse.codesandbox.io";
+const baseUrl = "https://gordianknot.xyz";
 
 const getInvoices = async (token) => {
   try {
@@ -38,7 +37,7 @@ const saveInvoice = async (token, invoice) => {
 };
 const editInvoice = async (token, invoice) => {
   try {
-    console.log(invoice, "here on axios call")
+
     await axios.put(`${baseUrl}/pdf/${invoice._id}`, invoice, {
       headers: { Authorization: `Bearer: ${token}` }
     });
@@ -63,7 +62,7 @@ const saveToPdf = async (token, id) => {
       headers: { Authorization: `Bearer: ${token}` },
       responseType: "blob"
     });
-    console.log("!!!! I receive this!!!!", pdf, "!!!! I receive this!!!!")
+
     handleFileDownload(pdf, id);
   } catch (err) {
     console.log(err);

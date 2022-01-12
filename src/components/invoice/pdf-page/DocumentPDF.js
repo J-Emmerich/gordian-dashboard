@@ -6,7 +6,8 @@ import Articles from "./Articles";
 import Total from "./Total";
 import constants from "../../../constants/index";
 import "./DocumentPDF.css";
-const baseUrl = "http://localhost:8080";
+const baseUrl = "https://gordianknot.xyz";
+
 const DocumentPDF = ({ match }) => {
   const [invoice, setInvoice] = useState(null);
 
