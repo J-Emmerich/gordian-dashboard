@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const baseUrl = "https://gordianknot.xyz";
+// const baseUrl = "https://gordianknot.xyz/api";
+const baseUrl = "http://localhost:3001/api";
 
 const getCustomers = async (token) => {
   try {
@@ -19,7 +20,6 @@ const saveCustomer = async (token, customer) => {
     const response = await axios.post(`${baseUrl}/customer`, customer, {
       headers: { Authorization: `Bearer: ${token}` }
     });
-    console.log("this is the response::::", response);
     return response.data;
   } catch (err) {
     console.log("Error sending data");
@@ -46,7 +46,6 @@ const deleteCustomer = async (token, id) => {
     const customer = await axios.delete(`${baseUrl}/customer/${id}`, {
       headers: { Authorization: `Bearer: ${token}` }
     });
-    console.log("Deleted", customer);
   } catch (err) {
     console.log(err);
   }

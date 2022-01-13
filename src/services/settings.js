@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const baseUrl = "https://gordianknot.xyz";
+// const baseUrl = "https://gordianknot.xyz/api";
+const baseUrl = "http://localhost:3001/api";
 const path = "project";
 
 
@@ -62,7 +63,6 @@ const deleteProject = async (token, id) => {
 
 const saveCurrentProject = async(token, projectId) => {
   try {
-    console.log(projectId, "this is the project ID ****")
 const currentProject = await axios.put(`${baseUrl}/user`, projectId, {
   headers: {Authorization: `Bearer: ${token}`}
 });

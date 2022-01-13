@@ -36,7 +36,6 @@ const Board = ({ token }) => {
     const result = preventFirstCardBug(boardData);
     if (result) setIsInsertingCard(true);
   }, []);
-console.log(boardData)
   useEffect(() => {
     if (boardData.initialData === true) {
       async function fetchProject() {
@@ -214,7 +213,6 @@ console.log(boardData)
         <Droppable type="card" droppableId="all-cards" direction="horizontal">
           {(provided) => (
             <Container {...provided.droppableProps} ref={provided.innerRef}>
-              {console.log(boardData)}
               {boardData.cardOrder?.map((cardId, index) => {
                 const card = boardData.cards.find((card) => {
                   return card.id === cardId;

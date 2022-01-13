@@ -34,7 +34,7 @@ export default function App({ token }) {
 
   const [isOpened, setIsOpened] = useState(false);
   const { user, logout, selectedProject } = useContext(UserContext);
-  console.log("this is the user passed down from")
+
   return (
     <div className={classes.root}>
       <FixHeader>

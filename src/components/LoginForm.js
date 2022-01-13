@@ -69,10 +69,10 @@ const LoginForm = ({ submitUser }) => {
 
   const { login } = useContext(UserContext);
   const token = localStorage.getItem(constants.ACCESS_TOKEN);
-  console.log(token)
+
   const submitLogin = async (e, username, password) => {
     e.preventDefault();
-    console.log("here", login);
+
     try {
       const user = await services.loginNewUser(username, password);
       login(user);

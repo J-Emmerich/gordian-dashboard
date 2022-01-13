@@ -223,7 +223,6 @@ isEditing,
          })}
          </section>
          <StyledButton variant="contained" color="primary" onClick={()=>{
-           console.log("clicked")
            append({petName: " ", petType: " ", comment: " "})
           }}>
           Añadir Mascota

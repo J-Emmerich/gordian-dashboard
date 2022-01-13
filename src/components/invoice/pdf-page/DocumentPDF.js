@@ -6,7 +6,8 @@ import Articles from "./Articles";
 import Total from "./Total";
 import constants from "../../../constants/index";
 import "./DocumentPDF.css";
-const baseUrl = "https://gordianknot.xyz";
+const baseUrl = "https://gordianknot.xyz/api";
+
 
 const DocumentPDF = ({ match }) => {
   const [invoice, setInvoice] = useState(null);
@@ -14,13 +15,11 @@ const DocumentPDF = ({ match }) => {
   useEffect(
     
     () => {
-      const token = localStorage.getItem("ACCESS_TOKEN");
-console.log("Do I have a token=?")
+      const token = localStorage.getItem(constants.ACCESS_TOKEN);
       if(token){
-console.log("I have a token", token)
+
         axios.get(`${baseUrl}/pdf/${match.params.id}`, {
           headers: { Authorization: `Bearer: ${token}` }}).then((response) => {
-            console.log(response.data)
             setInvoice(response.data);
           });
         }

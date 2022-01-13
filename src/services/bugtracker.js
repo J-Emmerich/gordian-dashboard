@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const baseUrl = "https://gordianknot.xyz";
+// const baseUrl = "https://gordianknot.xyz/api";
+const baseUrl = "http://localhost:3001/api";
 const path = "bugtracker";
 
 const getBugs = async (token) => {

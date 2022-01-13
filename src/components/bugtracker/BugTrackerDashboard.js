@@ -57,7 +57,6 @@ const BugTrackerDashboard = ({ token }) => {
 
   useEffect(() => {
     callGetBugs();
-    console.log(bugList, "bugList")
   }, [customerSaved]);
 
   async function callGetBugs() {
@@ -105,7 +104,6 @@ const BugTrackerDashboard = ({ token }) => {
   };
 
   const callTable = () => {
-    console.log("calledTable")
     return (
       <BugtrackerTable
         data={bugList}

@@ -23,11 +23,9 @@ const Settings = ({ token, user }) => {
   const [workingProject, setWorkingProject] = useState();
  const {updateUser, updateWorkingProjectContext} = useContext(UserContext);
  const [hiddenSelect, setHiddenSelect] = useState("default");
- console.log(user, "here on settings")
   useEffect(() => {
     async function fetchUpdatedUser() {
       const projects = await services.getUser(token);
-      console.log(projects, "this was fetched from user projects");
       updateUser(projects);
     }
     fetchUpdatedUser();
@@ -39,7 +37,6 @@ const Settings = ({ token, user }) => {
       projectUsers: [{ userId: user._id, role: "admin" }]
     };
    const returned = await services.saveProject(token, project);
-   console.log("this was returned", returned)
    setProjectName("");
    setHasSaved(!hasSaved);
 
@@ -49,7 +46,6 @@ const Settings = ({ token, user }) => {
     
       const project = user.projects.find(project => project.projectName === currentProjectToSave)
       const newUser = await services.saveCurrentProject(token, project);
-     console.log(newUser)
   
   }
 

@@ -71,7 +71,6 @@ const InvoiceDashboard = ({ token }) => {
   // Save the articles list to the current invoice
   const handleSubmit = async (filledInvoice, event) => {
     event.preventDefault();
-    console.log(filledInvoice);
     await services.saveInvoice(token, filledInvoice);
     setInvoiceSaved(!invoiceSaved);
     resetDashboardState();
@@ -80,9 +79,7 @@ const InvoiceDashboard = ({ token }) => {
 
   // Editing invoice
   const editInvoice = (invoiceReceived) => {
-    console.log(invoiceReceived, "this is on the edit invoice")
     setInvoice(invoiceReceived);
-    setArticlesList(invoiceReceived.articles);
     setIsEditing(true);
     setOpenModal(true);
   };

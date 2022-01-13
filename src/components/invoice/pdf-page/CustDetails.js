@@ -8,8 +8,6 @@ const CustDetails = ({ invoice }) => {
     orderNumber,
     clientName
   } = invoice;
-console.log(invoiceDate, "here at customer details")
-console.log(invoice, "here at customer details")
   return (
     <section className="cust-details-container">
       <div className="cust-details">
