@@ -1,8 +1,7 @@
 import axios from "axios";
 import handleFileDownload from "../helpers/handle-file-download";
 
-// const baseUrl = "https://gordianknot.xyz/api";
-const baseUrl = "http://localhost:3001/api";
+const baseUrl = "https://gordianknot.xyz/api";
 
 const getInvoices = async (token) => {
   try {
