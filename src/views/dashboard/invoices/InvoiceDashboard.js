@@ -117,7 +117,6 @@ const InvoiceDashboard = ({ token }) => {
     }
   };
   const callTable = () => {
-    console.log(invoiceList);
     
     return (
       <InvoiceTable

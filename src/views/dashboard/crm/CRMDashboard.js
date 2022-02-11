@@ -60,8 +60,17 @@ const CRMDashboard = ({ token, user }) => {
   }, [customerSaved]);
 
   async function callGetCustomers() {
-    const customers = await services.getCustomers(token);
-    setCustomerList(customers);
+    
+    try {
+      const customers = await services.getCustomers(token);
+      if(customers && customers?.length !== undefined){
+        setCustomerList(customers);
+      }
+    }
+  catch(error) {
+    setCustomerList([])
+    console.log(error)
+  }
   }
   const resetDashboardState = () => {
     setOpenModal(false);

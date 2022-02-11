@@ -8,8 +8,7 @@ const registerNewUser = async (username, password) => {
       username,
       password
     });
-
-    return user.data;
+    return user.data.data;
   } catch (error) {
     throw new Error(error.response.data.msg);
   }
@@ -21,7 +20,7 @@ const loginNewUser = async (username, password) => {
       username,
       password
     });
-    return user.data;
+    return user.data.data;
   } catch (error) {
     throw new Error(error.response.data.msg);
   }
