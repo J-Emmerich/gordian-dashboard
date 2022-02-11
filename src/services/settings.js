@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = "http://localhost:8080";
+const baseUrl = process.env.REACT_APP_API_ENDPOINT || "/api";
 const path = "project";
 
 
@@ -62,7 +62,6 @@ const deleteProject = async (token, id) => {
 
 const saveCurrentProject = async(token, projectId) => {
   try {
-    console.log(projectId, "this is the project ID ****")
 const currentProject = await axios.put(`${baseUrl}/user`, projectId, {
   headers: {Authorization: `Bearer: ${token}`}
 });
