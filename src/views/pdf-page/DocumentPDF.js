@@ -16,7 +16,6 @@ const DocumentPDF = ({ match }) => {
     
     () => {
       const token = localStorage.getItem(constants.ACCESS_TOKEN);
-      console.log(token)
       if(token){
  getInvoiceData(token, match.params.id);
         }
