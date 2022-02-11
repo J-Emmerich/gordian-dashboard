@@ -1,15 +1,14 @@
 import axios from "axios";
 import handleFileDownload from "../helpers/handle-file-download";
 
-const baseUrl = "http://localhost:8080";
-// const baseUrl = "https://qrci0.sse.codesandbox.io";
-
+const baseUrl = process.env.REACT_APP_API_ENDPOINT || "/api";
+const path = "invoice";
 const getInvoices = async (token) => {
   try {
-    const invoices = await axios.get(`${baseUrl}/pdf`, {
+    const invoices = await axios.get(`${baseUrl}/${path}`, {
       headers: { Authorization: `Bearer: ${token}` }
     });
-    return invoices.data;
+    return invoices.data.data;
   } catch (err) {
     console.log(err);
   }
@@ -17,10 +16,10 @@ const getInvoices = async (token) => {
 
 const getOneInvoice = async (token, id) => {
   try {
-    const invoice = await axios.get(`${baseUrl}/pdf/${id}`, {
+    const invoice = await axios.get(`${baseUrl}/${path}/${id}`, {
       headers: { Authorization: `Bearer: ${token}` }
     });
-    return invoice.data;
+    return invoice.data.data;
   } catch (err) {
     console.log(err);
   }
@@ -28,7 +27,7 @@ const getOneInvoice = async (token, id) => {
 
 const saveInvoice = async (token, invoice) => {
   try {
-    await axios.post(`${baseUrl}/pdf`, invoice, {
+    await axios.post(`${baseUrl}/${path}`, invoice, {
       headers: { Authorization: `Bearer: ${token}` }
     });
   } catch (err) {
@@ -38,8 +37,8 @@ const saveInvoice = async (token, invoice) => {
 };
 const editInvoice = async (token, invoice) => {
   try {
-    console.log(invoice, "here on axios call")
-    await axios.put(`${baseUrl}/pdf/${invoice._id}`, invoice, {
+
+    await axios.put(`${baseUrl}/${path}/${invoice._id}`, invoice, {
       headers: { Authorization: `Bearer: ${token}` }
     });
   } catch (err) {
@@ -49,7 +48,7 @@ const editInvoice = async (token, invoice) => {
 
 const deleteInvoice = async (token, id) => {
   try {
-    const invoice = await axios.delete(`${baseUrl}/pdf/${id}`, {
+    const invoice = await axios.delete(`${baseUrl}/${path}/${id}`, {
       headers: { Authorization: `Bearer: ${token}` }
     });
   } catch (err) {
@@ -59,11 +58,11 @@ const deleteInvoice = async (token, id) => {
 
 const saveToPdf = async (token, id) => {
   try {
-    const pdf = await axios.get(`${baseUrl}/pdf/download/${id}`, {
+    const pdf = await axios.get(`${baseUrl}/${path}/download/${id}`, {
       headers: { Authorization: `Bearer: ${token}` },
       responseType: "blob"
     });
-    console.log("!!!! I receive this!!!!", pdf, "!!!! I receive this!!!!")
+
     handleFileDownload(pdf, id);
   } catch (err) {
     console.log(err);
