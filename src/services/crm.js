@@ -8,7 +8,7 @@ const getCustomers = async (token) => {
       headers: { Authorization: `Bearer: ${token}` }
     });
 
-    return customers.data;
+    return customers.data.data;
   } catch (err) {
     console.log(err);
   }
@@ -19,7 +19,7 @@ const saveCustomer = async (token, customer) => {
     const response = await axios.post(`${baseUrl}/customer`, customer, {
       headers: { Authorization: `Bearer: ${token}` }
     });
-    return response.data;
+    return response.data.data;
   } catch (err) {
     console.log("Error sending data");
     console.log(err);
