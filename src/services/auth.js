@@ -1,8 +1,7 @@
 import axios from "axios";
 
-const baseUrl = "https://gordianknot.xyz/api";
+const baseUrl = process.env.REACT_APP_API_ENDPOINT || "/api";
 const path = "auth";
-
 const registerNewUser = async (username, password) => {
   try {
     const user = await axios.post(`${baseUrl}/${path}/register`, {
