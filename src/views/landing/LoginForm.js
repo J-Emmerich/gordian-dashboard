@@ -1,18 +1,24 @@
 import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import services from "../../services/auth";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 import { UserContext } from "../../services/userContext";
 import constants from "../../constants/index";
-import {Redirect} from "react-router-dom"
+import {Redirect, Link} from "react-router-dom"
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import Box from '@mui/material/Box';
+import CssBaseline from '@mui/material/CssBaseline';
+
 
 const Dashboard = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 `;
-const Container = styled.div`
+const ____Container____ = styled.div`
   display: flex;
   flex-flow: column wrap;
   justify-content: center;
@@ -105,7 +111,14 @@ const LoginForm = ({ submitUser }) => {
         <FormTitle>Gordian Knot</FormTitle>
       </header>
 
-      <Container>
+      <Container component="main" maxWidth="xs">
+        <Box sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}>
+        <CssBaseline />
         <Form>
           <FormTitle>{isLoginForm ? "Login" : "Registro"}</FormTitle>
           <form>
@@ -131,6 +144,7 @@ const LoginForm = ({ submitUser }) => {
                 value={password}
               />
             </InputBlock>
+           
           </form>
           <Button
             variant="contained"
@@ -144,24 +158,20 @@ const LoginForm = ({ submitUser }) => {
             Enviar
           </Button>
 
-          <BottomMessage>
-            Quieres&nbsp;
-            <Button
-              style={{ color: "#FC86AA" }}
-              onClick={() => setIsLoginForm(!isLoginForm)}
-            >
-              {isLoginForm ? "te registrar" : "hacer login"}
-            </Button>
-            &nbsp;?
-          </BottomMessage>
+          <Grid container>
+              <Grid item xs>
+                
+                 <Link to="/forgotpassword"> Forgot password?</Link>
+             
+              </Grid>
+              <Grid item>
+                <Button href="#" >
+                  {"Don't have an account? Sign Up"}
+                </Button>
+              </Grid>
+            </Grid>
         </Form>
-        {errorMessage ? (
-          <ErrorMessage>
-            <p>{errorMessage}</p>
-          </ErrorMessage>
-        ) : (
-          <ErrorMessage>&nbsp;</ErrorMessage>
-        )}
+       </Box>
       </Container>
       <footer style={{ backgroundColor: "#00022E", color: "#FC86AA" }}>
         <BottomMessage>

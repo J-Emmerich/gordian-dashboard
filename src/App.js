@@ -4,6 +4,8 @@ import history from "./helpers/history";
 import PrivateRoute from "./navigation/PrivateRoute";
 import Dashboard from "./views/dashboard/Dashboard";
 import LoginForm from "./views/landing/LoginForm"
+import ForgotPasswordForm from "./views/landing/ForgotPasswordForm"
+import ResetPasswordForm from "./views/landing/ResetPasswordForm"
 import DocumentPDF from "./views/pdf-page/DocumentPDF";
 import { UserProvider } from "./services/userContext";
 const App = () => {
@@ -16,6 +18,8 @@ const App = () => {
         <Switch>
           <PrivateRoute component={Dashboard} path="/app" user={user} />
           <PrivateRoute component={DocumentPDF} path="/topdf/:id" user={user} />
+          <Route path="/forgotpassword" component={ForgotPasswordForm}/>
+          <Route path="/passwordreset/:resetToken" component={ResetPasswordForm}/>
           <Route path="/">
             <LoginForm />
           </Route>
