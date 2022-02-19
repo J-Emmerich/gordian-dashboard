@@ -148,7 +148,7 @@ const LoginForm = ({ submitUser }) => {
           </form>
           <Button
             variant="contained"
-            color="primary"
+            color="secondary"
             onClick={
               isLoginForm
                 ? (e) => submitLogin(e, username, password)
@@ -165,7 +165,7 @@ const LoginForm = ({ submitUser }) => {
              
               </Grid>
               <Grid item>
-                <Button href="#" >
+                <Button variant="contained" href="#" >
                   {"Don't have an account? Sign Up"}
                 </Button>
               </Grid>

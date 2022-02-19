@@ -1,9 +1,12 @@
+import { createTheme } from '@mui/material/styles'
 
+const baseTheme = createTheme({
+    palette : {
+        primary: {main: "#332a50ff"},
+        secondary: {main: "#d30c7bff"},
+        background: {main: "#dde0bdff"},
+        text: {main: "738290ff"}
+    }
+})
 
-
-
-/* CSS HEX */
---space-cadet: #332a50ff;
---magenta-dye: #d30c7bff;
---pale-spring-bud: #dde0bdff;
---slate-gray: #738290ff;
+export default baseTheme;
