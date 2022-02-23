@@ -1,19 +1,25 @@
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import LandingNavigation from '../../navigation/LandingNavigation';
-
+import Header from '../../components/Header'
+import Hero from '../../components/Hero'
+import Footer from '../../components/Footer'
+import {Element} from 'react-scroll';
+import Features from '../../components/Features'
+import About from '../../components/About'
+import data from '../../services/featuresData.json'
+import CTA from '../../components/CTA';
 const Landing = () => {
 return (
     <Box sx={{display: 'flex', flexDirection: 'column', minHeight: '100vh'}}>
-<LandingNavigation />
-<Container sx={{backgroundColor: "green"}}>
+        
+<Header />
+    <Hero title="CRM Sin Complicación" description="Transforma tu negocio, gestiona todo lo que ocurre en tu empresa en un solo software."/>
+<Element name="section2">
+    <Features features={data}/>
+    </Element>       
+    <About />
+    <CTA />
+<Footer />
 
-<div>Hello is landing</div>
-</Container>
-<Box component='footer' sx={{mt: 'auto', backgroundColor: "purple"}}>
-    <Typography variant='h2' component='p'>This is a Sticky footer</Typography>
-</Box>
 
     </Box>
 )

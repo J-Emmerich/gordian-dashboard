@@ -1,0 +1,27 @@
+import Grid from '@mui/material/Grid'
+import Card from './Card'
+import Container from '@mui/material/Container'
+import { Typography } from '@mui/material'
+
+
+
+
+
+const Features = ({features}) => {
+    return (
+        <Container sx={{pt: 10}}>
+            <Typography mt={5} sx={{textAlign: 'center'}} component="h2" variant="h2">Todo lo que necesitas para tu negocio</Typography>
+        <Grid container spacing={5} mt={15}>
+            
+            {features.map(feature => (
+                <>
+                <Card feature={feature}/>
+                
+                </>
+                ))}
+        </Grid>
+                </Container>
+    )
+}
+
+export default Features;
