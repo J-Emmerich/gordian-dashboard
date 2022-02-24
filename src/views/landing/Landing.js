@@ -1,12 +1,12 @@
 import Box from '@mui/material/Box';
-import Header from '../../components/Header'
-import Hero from '../../components/Hero'
-import Footer from '../../components/Footer'
+import Header from './components/Header'
+import Hero from './components/Hero'
+import Footer from './components/Footer'
 import {Element} from 'react-scroll';
-import Features from '../../components/Features'
-import About from '../../components/About'
+import Features from './components/Features'
+import About from './components/About'
 import data from '../../services/featuresData.json'
-import CTA from '../../components/CTA';
+import CTA from './components/CTA';
 const Landing = () => {
 return (
     <Box sx={{display: 'flex', flexDirection: 'column', minHeight: '100vh'}}>

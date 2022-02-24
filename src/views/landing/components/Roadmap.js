@@ -4,12 +4,16 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Checkbox from "@mui/material/Checkbox";
 import Grid from '@mui/material/Grid'
+import useMediaQuery from '@mui/material/useMediaQuery'
+import {useTheme} from '@mui/system'
 const Roadmap = () => {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.down('md'))
   return (
 
-    <Grid container sx={{ml: 10}}>
-<Grid item>
-<List xs={12} md={6}>
+    <Grid container sx={[{ml: 10}, matches && {ml: 0}]}>
+<Grid item xs={12} md={6}>
+<List >
 
 <ListItem>
   <ListItemIcon>
@@ -25,10 +29,6 @@ const Roadmap = () => {
   </ListItemIcon>
   <ListItemText>Dashboard con estadísticas</ListItemText>
 </ListItem>
-</List>
-</Grid>
-<Grid item>
-<List xs={12} md={6}>
 <ListItem>
   <ListItemIcon>
     <Checkbox disabled />
@@ -37,6 +37,10 @@ const Roadmap = () => {
     Subir ficheros / Gestionar contratos de los clientes
   </ListItemText>
 </ListItem>
+</List>
+</Grid>
+<Grid item  xs={12} md={6}>
+<List>
 <ListItem>
   <ListItemIcon>
     <Checkbox disabled checked={true}/>

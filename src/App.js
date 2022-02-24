@@ -4,8 +4,8 @@ import history from "./helpers/history";
 import PrivateRoute from "./navigation/PrivateRoute";
 import Dashboard from "./views/dashboard/Dashboard";
 
-import ForgotPasswordForm from "./views/landing/ForgotPasswordForm"
-import ResetPasswordForm from "./views/landing/ResetPasswordForm"
+import ForgotPasswordForm from "./views/landing/components/ForgotPasswordForm"
+import ResetPasswordForm from "./views/landing/components/ResetPasswordForm"
 import DocumentPDF from "./views/pdf-page/DocumentPDF";
 import { UserProvider } from "./services/userContext";
 import { ThemeProvider } from "styled-components"
@@ -15,7 +15,7 @@ const App = () => {
   const [user, setUser] = useState();
 
   return (
-    <div>
+    <>
       <ThemeProvider theme={baseTheme}>
 
         <UserProvider>
@@ -32,7 +32,7 @@ const App = () => {
       </Router>
           </UserProvider>
       </ThemeProvider>
-    </div>
+    </>
   );
 };
 

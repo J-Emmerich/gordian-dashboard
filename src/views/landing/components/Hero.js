@@ -4,17 +4,21 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import Fade from '@mui/material/Fade';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import{ ReactComponent as HeroSVG} from '../assets/gordian-hero-min.svg';
-
-
+import{ ReactComponent as HeroSVG} from '../../../assets/gordian-hero-min-view.svg';
 import { scroller } from 'react-scroll';
+import useMediaQuery from '@mui/material/useMediaQuery'
+import {useTheme} from '@mui/system'
+
+
 const Hero = ({ title, description}) => {
+    const theme = useTheme();
+    const matches = useMediaQuery(theme.breakpoints.down('md'))
     return (
-<Container sx={{pt: 10, flexDirection: 'column'}}>
+<Container sx={[{pt: 1, flexDirection: 'column', mt: 5}, matches && {mt: 6, alignItems: 'center', flexWrap: 'wrap'}]}>
 <Fade timeout={2000} in >
-    <Box sx={[{display: 'flex', alignItems: 'center' }]}>
+    <Box sx={[{display: 'flex', alignItems: 'center'}, matches && {flexDirection: 'column', mt: 3}]}>
 <Box sx={{display: 'flex', flexDirection: 'column'}}>
-        <Typography component="h2" variant="h2">
+        <Typography component="h2" variant="h2" >
             {title}
         </Typography>
         <Typography component="p" variant="body"  sx={{mt: 5}}>

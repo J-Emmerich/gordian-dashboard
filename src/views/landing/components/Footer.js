@@ -12,7 +12,7 @@ const  FooterBox = styled('footer')(
 const Footer = () => {
     return (
         <FooterBox>
-    <Typography textAlign="center" variant='subtitle' component='p' color="#FFF">Este proyecto fue desarrollado por <Link color="#fff" href="https://linkedin.com/in/joao-emmerich">Joao Emmerich</Link></Typography>
+    <Typography textAlign="center" variant='subtitle' component='p' color="#FFF">Este proyecto fue desarrollado por <Link color="#fff" href="https://joaoemmerich.com">Joao Emmerich</Link></Typography>
 </FooterBox>
     )
 }

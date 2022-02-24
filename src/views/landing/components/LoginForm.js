@@ -1,10 +1,10 @@
 import React, { useState, useContext } from "react";
 import styled from "styled-components";
-import services from "../../services/auth";
+import services from "../../../services/auth";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import { UserContext } from "../../services/userContext";
-import constants from "../../constants/index";
+import { UserContext } from "../../../services/userContext";
+import constants from "../../../constants/index";
 import {Redirect, Link} from "react-router-dom"
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
