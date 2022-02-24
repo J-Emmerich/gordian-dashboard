@@ -11,7 +11,7 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import Modal from '@mui/material/Modal';
+import {NavLink} from 'react-router-dom'; 
 
 import { useTheme } from '@mui/material/styles';
 
@@ -121,9 +121,11 @@ export default function LoginForm() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <NavLink to="/login">
+
                   Already have an account? Sign in
-                </Link>
+                </NavLink>
+                
               </Grid>
             </Grid>
           </Box>

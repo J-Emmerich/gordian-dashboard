@@ -1,94 +1,80 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import * as React from 'react';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+
+import Box from '@mui/material/Box';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { useTheme } from '@mui/material/styles';
 
 
-const ResetPasswordForm = ({ history, match }) => {
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-
-  const resetPasswordHandler = async (e) => {
-    e.preventDefault();
-
-    const config = {
-      header: {
-        "Content-Type": "application/json",
-      },
-    };
-
-    if (password !== confirmPassword) {
-      setPassword("");
-      setConfirmPassword("");
-      setTimeout(() => {
-        setError("");
-      }, 5000);
-      return setError("Passwords don't match");
-    }
-
-    try {
-      const { data } = await axios.put(
-        `/api/auth/resetpassword/${match.params.resetToken}`,
-        {
-          password,
-        },
-        config
-      );
-
-      console.log(data);
-      setSuccess(data.data.msg);
-    } catch (error) {
-      setError(error.response.data.error);
-      setTimeout(() => {
-        setError("");
-      }, 5000);
-    }
+export default function ResetPasswordForm() {
+    const theme = useTheme();
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    // eslint-disable-next-line no-console
+    console.log({
+      email: data.get('email'),
+      password: data.get('password'),
+    });
   };
 
   return (
-    <div className="resetpassword-screen">
-      <form
-        onSubmit={resetPasswordHandler}
-        className="resetpassword-screen__form"
-      >
-        <h3 className="resetpassword-screen__title">Forgot Password</h3>
-        {error && <span className="error-message">{error} </span>}
-        {success && (
-          <span className="success-message">
-            {success} <Link to="/login">Login</Link>
-          </span>
-        )}
-        <div className="form-group">
-          <label htmlFor="password">New Password:</label>
-          <input
-            type="password"
-            required
-            id="password"
-            placeholder="Enter new password"
-            autoComplete="true"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="confirmpassword">Confirm New Password:</label>
-          <input
-            type="password"
-            required
-            id="confirmpassword"
-            placeholder="Confirm new password"
-            autoComplete="true"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-        </div>
-        <button type="submit" className="btn btn-primary">
-          Reset Password
-        </button>
-      </form>
-    </div>
-  );
-};
+   
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+          Nueva Contraseña
+          </Typography>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Contraseña"
+             
+              autoFocus
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email4"
+              label="Repita Contraseña"
+              name="email"
+              autoComplete="email"
+              autoFocus
+            />
 
-export default ResetPasswordForm;
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+             Cambiar contraseña
+            </Button>
+           
+          </Box>
+        </Box>
+     
+      </Container>
+
+  );
+}

@@ -25,7 +25,7 @@ const Hero = ({ title, description}) => {
         {description}
         </Typography>
         <Box  sx={{mt: 5, textAlign: "center"}}>
-        <Button variant='contained' component={NavLink} to="/login">Crear cuenta demo</Button>
+        <Button variant='contained' component={NavLink} to="/register">Crear cuenta demo</Button>
         </Box>
     </Box>
     <Box sx={{flexGrow: 1, width: "100%"}}>

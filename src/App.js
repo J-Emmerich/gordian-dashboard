@@ -11,7 +11,8 @@ import { UserProvider } from "./services/userContext";
 import { ThemeProvider } from "styled-components"
 import baseTheme from "./styles/theme";
 import Landing from "./views/landing/Landing";
-import LoginForm from "./views/landing/components/NewLoginForm";
+import RegisterForm from "./views/landing/components/RegisterForm";
+import LoginForm from "./views/landing/components/LoginForm";
 
 const App = () => {
   const [user, setUser] = useState();
@@ -28,6 +29,7 @@ const App = () => {
           <Route path="/forgotpassword" component={ForgotPasswordForm}/>
           <Route path="/passwordreset/:resetToken" component={ResetPasswordForm}/>
           <Route path="/login" component={LoginForm} />
+          <Route path="/register" component={RegisterForm} />
           <Route path="/">
             <Landing />
           </Route>

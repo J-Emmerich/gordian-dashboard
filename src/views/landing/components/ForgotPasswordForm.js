@@ -1,68 +1,73 @@
-import { useState } from "react";
-import axios from "axios";
+import * as React from 'react';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+
+import Box from '@mui/material/Box';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { useTheme } from '@mui/material/styles';
 
 
-const ForgotPasswordForm = () => {
-  const [email, setEmail] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
 
-  const forgotPasswordHandler = async (e) => {
-    e.preventDefault();
 
-    const config = {
-      header: {
-        "Content-Type": "application/json",
-      },
-    };
-
-    try {
-      const { data } = await axios.post(
-        "/api/auth/forgotpassword",
-        { email },
-        config
-      );
-
-      setSuccess(data.data);
-    } catch (error) {
-      setError(error.response.data.error);
-      setEmail("");
-      setTimeout(() => {
-        setError("");
-      }, 5000);
-    }
+export default function ForgotPassword() {
+    const theme = useTheme();
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    // eslint-disable-next-line no-console
+    console.log({
+      email: data.get('email'),
+      password: data.get('password'),
+    });
   };
 
   return (
-    <div className="forgotpassword-screen">
-      <form
-        onSubmit={forgotPasswordHandler}
-        className="forgotpassword-screen__form"
-      >
-        <h3 className="forgotpassword-screen__title">Forgot Password</h3>
-        {error && <span className="error-message">{error}</span>}
-        {success && <span className="success-message">{success}</span>}
-        <div className="form-group">
-          <p className="forgotpassword-screen__subtext">
-            Please enter the email address you register your account with. We
-            will send you reset password confirmation to this email
-          </p>
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            required
-            id="email"
-            placeholder="Email address"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <button type="submit" className="btn btn-primary">
-          Send Email
-        </button>
-      </form>
-    </div>
-  );
-};
+   
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+          Recuperar contraseña
+          </Typography>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+            />
 
-export default ForgotPasswordForm;
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Send Email
+            </Button>
+           
+          </Box>
+        </Box>
+     
+      </Container>
+
+  );
+}

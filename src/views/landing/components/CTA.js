@@ -17,7 +17,7 @@ const CTA = () => {
        
         <Box textAlign={"center"} paddingY={5}>
 
-<Button variant='contained' component={NavLink} to="/login">Crear Cuenta demo</Button>
+<Button variant='contained' component={NavLink} to="/register">Crear Cuenta demo</Button>
         </Box>
     </Box>
         </Fade>

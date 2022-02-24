@@ -1,186 +1,112 @@
-import React, { useState, useContext } from "react";
-import styled from "styled-components";
-import services from "../../../services/auth";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import { UserContext } from "../../../services/userContext";
-import constants from "../../../constants/index";
-import {Redirect, Link} from "react-router-dom"
+import * as React from 'react';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import Box from '@mui/material/Box';
-import CssBaseline from '@mui/material/CssBaseline';
+import { useTheme } from '@mui/material/styles';
+import { NavLink } from 'react-router-dom';
+
+function Copyright(props) {
+  return (
+    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+      {'Copyright © '}
+      <Link color="inherit" href="https://mui.com/">
+        Your Website
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
 
 
-const Dashboard = styled.div`
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-`;
-const ____Container____ = styled.div`
-  display: flex;
-  flex-flow: column wrap;
-  justify-content: center;
-  flex-grow: 1;
-`;
-
-const Form = styled.div`
-  margin: 40px auto;
-  font-family: "Segoe UI", sans-serif;
-  padding: 25px 28px;
-  border-radius: 4px;
-  border: 1px solid #302d2d;
-  display: flex;
-  flex-flow: column wrap;
-`;
-const FormTitle = styled.p`
-  text-align: center;
-  font-size: 28px;
-  margin-bottom: 20px;
-  font-weight: 400;
-`;
-
-const BottomMessage = styled.p`
-  text-align: center;
-  > a {
-    color: #fc86aa;
-  }
-`;
-const StyledTextField = styled(TextField)`
-  & input,
-  textarea,
-  select,
-  option {
-    padding: 20px;
-  }
-`;
-const ErrorMessage = styled.div`
-  flex-grow: 0;
-  text-align: center;
-  color: white;
-  font-size: 14px;
-  padding: 5px;
-  width: 90%;
-`;
-const InputBlock = styled.div`
-  display: block;
-  margin-bottom: 20px;
-`;
-const LoginForm = ({ submitUser }) => {
-  const [isLoginForm, setIsLoginForm] = useState(true);
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-
-  const { login } = useContext(UserContext);
-  const token = localStorage.getItem(constants.ACCESS_TOKEN);
-
-  const submitLogin = async (e, username, password) => {
-    e.preventDefault();
-
-    try {
-      const user = await services.loginNewUser(username, password);
-      login(user);
-    } catch (err) {
-      setErrorMessage(err.message);
-      setTimeout(() => {
-        setErrorMessage(null);
-      }, 2000);
-    }
-  };
-  const submitRegister = async (e, username, password) => {
-    try {
-      e.preventDefault();
-      const user = await services.registerNewUser(username, password);
-      login(user);
-    } catch (err) {
-      setErrorMessage(err.message);
-      setTimeout(() => {
-        setErrorMessage(null);
-      }, 4000);
-    }
+export default function SignIn() {
+    const theme = useTheme();
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    // eslint-disable-next-line no-console
+    console.log({
+      email: data.get('email'),
+      password: data.get('password'),
+    });
   };
 
-  return !token? 
-  (
-
-<Dashboard>
-
-      <header style={{ backgroundColor: "#00022E", color: "#FC86AA" }}>
-        <FormTitle>Gordian Knot</FormTitle>
-      </header>
-
+  return (
+   
       <Container component="main" maxWidth="xs">
-        <Box sx={{
+        <CssBaseline />
+        <Box
+          sx={{
             marginTop: 8,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-          }}>
-        <CssBaseline />
-        <Form>
-          <FormTitle>{isLoginForm ? "Login" : "Registro"}</FormTitle>
-          <form>
-            <InputBlock>
-              <StyledTextField
-                placeholder="Nombre de usuario"
-                variant="outlined"
-                type="text"
-                id="username"
-                margin="dense"
-                onChange={(e) => setUsername(e.target.value)}
-                value={username}
-              />
-            </InputBlock>
-            <InputBlock>
-              <StyledTextField
-                placeholder="Contraseña"
-                type="password"
-                variant="outlined"
-                id="password"
-                margin="dense"
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
-              />
-            </InputBlock>
-           
-          </form>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={
-              isLoginForm
-                ? (e) => submitLogin(e, username, password)
-                : (e) => submitRegister(e, username, password)
-            }
-          >
-            Enviar
-          </Button>
-
-          <Grid container>
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign In
+            </Button>
+            <Grid container>
               <Grid item xs>
-                
-                 <Link to="/forgotpassword"> Forgot password?</Link>
-             
+              <NavLink to="/forgotpassword" variant="body2">
+                  Forgot password?
+                </NavLink>
               </Grid>
               <Grid item>
-                <Button variant="contained" href="#" >
+                <NavLink to="/register" variant="body2">
                   {"Don't have an account? Sign Up"}
-                </Button>
+                </NavLink>
               </Grid>
             </Grid>
-        </Form>
-       </Box>
+          </Box>
+        </Box>
+        <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
-      <footer style={{ backgroundColor: "#00022E", color: "#FC86AA" }}>
-        <BottomMessage>
-          Desarollado por{" "}
-          <a href="https://linkedin.com/in/joao-emmerich">João Emmerich</a>
-        </BottomMessage>
-      </footer>
-    </Dashboard>) : <Redirect to="/app" />
-  
-};
 
-export default LoginForm;
+  );
+}
