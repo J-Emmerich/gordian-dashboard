@@ -8,7 +8,7 @@ import{ ReactComponent as HeroSVG} from '../../../assets/gordian-hero-min-view.s
 import { scroller } from 'react-scroll';
 import useMediaQuery from '@mui/material/useMediaQuery'
 import {useTheme} from '@mui/system'
-
+import { NavLink } from 'react-router-dom';
 
 const Hero = ({ title, description}) => {
     const theme = useTheme();
@@ -25,7 +25,7 @@ const Hero = ({ title, description}) => {
         {description}
         </Typography>
         <Box  sx={{mt: 5, textAlign: "center"}}>
-        <Button variant='contained'>Crear cuenta demo</Button>
+        <Button variant='contained' component={NavLink} to="/login">Crear cuenta demo</Button>
         </Box>
     </Box>
     <Box sx={{flexGrow: 1, width: "100%"}}>

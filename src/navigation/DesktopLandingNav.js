@@ -4,8 +4,9 @@ import Button from '@mui/material/Button';
 import styled from 'styled-components'
 import FingerprintIcon from '@mui/icons-material/Fingerprint';
 import Typography from '@mui/material/Typography';
-
 import Container from '@mui/material/Container';
+import { scroller } from 'react-scroll';
+import { NavLink } from "react-router-dom";
 const StyledButton = styled(Button)`
 ${({theme}) => `
 background-image: linear-gradient(120deg, ${theme.palette.secondary.main} 0%, ${theme.palette.primary.main} 100%);
@@ -30,13 +31,23 @@ return (
 
 <Box component="nav" sx={{display: 'flex', alignContent:'center'}}>
 
-    <StyledButton >Caracteristicas</StyledButton>
+    <StyledButton onClick={()=>{
+scroller.scrollTo('section2', {
+  duration: 1500,
+  delay: 100,
+  smooth: true,
+})} } >Caracteristicas</StyledButton>
     <Divider variant="middle" orientation="vertical" flexItem component="span" />
-    <StyledButton>Código</StyledButton>
+    <StyledButton component="a" href="https://github.com/j-emmerich/Gordian-Knot">Código</StyledButton>
     <Divider orientation="vertical" flexItem component="span"  />
-    <StyledButton>Sobre Gordian Knot</StyledButton>
+    <StyledButton onClick={()=>{
+scroller.scrollTo('roadmap', {
+  duration: 1500,
+  delay: 100,
+  smooth: true,
+})} }>Roadmap</StyledButton>
     <Box sx={{ml: 'auto', pl: 15}}>
-    <StyledButton>Mi Cuenta</StyledButton>
+    <StyledButton component={NavLink} to="/login">Mi Cuenta</StyledButton>
     </Box>
 </Box>
 </Container>

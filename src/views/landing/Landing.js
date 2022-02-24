@@ -15,8 +15,10 @@ return (
     <Hero title="CRM Sin Complicación" description="Transforma tu negocio, gestiona todo lo que ocurre en tu empresa en un solo software."/>
 <Element name="section2">
     <Features features={data}/>
-    </Element>       
+    </Element> 
+    <Element name="roadmap">
     <About />
+        </Element>      
     <CTA />
 <Footer />
 

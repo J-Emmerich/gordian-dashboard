@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import Fade from '@mui/material/Fade';
-import Link from '@mui/material/Link'
+import {NavLink} from 'react-router-dom';
 
 const CTA = () => {
     return (
@@ -17,7 +17,7 @@ const CTA = () => {
        
         <Box textAlign={"center"} paddingY={5}>
 
-<Button variant='contained'>Crear Cuenta demo</Button>
+<Button variant='contained' component={NavLink} to="/login">Crear Cuenta demo</Button>
         </Box>
     </Box>
         </Fade>
