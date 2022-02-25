@@ -1,109 +1,44 @@
-import React, { useState, useContext } from "react";
-import { Switch, Route, useLocation } from "react-router-dom";
-import { styles } from "./styleApp.js";
-import MenuIcon from "@material-ui/icons/Menu";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import Drawer from "@material-ui/core/Drawer";
-import IconButton from "@material-ui/core/IconButton";
-import Button from "@material-ui/core/Button";
-import clsx from "clsx";
-import { makeStyles } from "@material-ui/core";
-import styled from "styled-components";
-import { UserContext } from "./services/userContext";
-// Components
-import Board from "./components/to-do/Board";
-import Nav from "./components/Nav";
-import InvoiceDashboard from "./components/invoice/InvoiceDashboard";
-import CRMDashboard from "./components/crm/CRMDashboard";
-import BugTrackerDashboard from "./components/bugtracker/BugTrackerDashboard";
-import Home from "./components/Home";
-import Settings from "./components/settings/Settings";
+import React, { useState } from "react";
+import { Router, Route, Switch } from "react-router-dom";
+import history from "./helpers/history";
+import PrivateRoute from "./navigation/PrivateRoute";
+import Dashboard from "./views/dashboard/Dashboard";
 
-const useStyles = makeStyles(styles);
+import ForgotPasswordForm from "./views/landing/components/ForgotPasswordForm"
+import ResetPasswordForm from "./views/landing/components/ResetPasswordForm"
+import DocumentPDF from "./views/pdf-page/DocumentPDF";
+import { UserProvider } from "./services/userContext";
+import { ThemeProvider } from "styled-components"
+import baseTheme from "./styles/theme";
+import Landing from "./views/landing/Landing";
+import RegisterForm from "./views/landing/components/RegisterForm";
+import LoginForm from "./views/landing/components/LoginForm";
 
-//This component is to fix the App bar standing over the other components.
-const FixHeader = styled.div`
-  height: 55px;
-`;
+const App = () => {
+  const [user, setUser] = useState();
 
-export default function App({ token }) {
-  const classes = useStyles();
-
-  const [isOpened, setIsOpened] = useState(false);
-  const { user, logout, selectedProject } = useContext(UserContext);
-  console.log("this is the user passed down from")
   return (
-    <div className={classes.root}>
-      <FixHeader>
-        <AppBar className={classes.appBar}>
-          <Toolbar>
-            <IconButton
-              color="inherit"
-              onClick={() => setIsOpened(!isOpened)}
-              className={classes.icon}
-            >
-              {isOpened ? <ChevronLeftIcon /> : <MenuIcon />}
-            </IconButton>
-            <Typography variant="h6">Gordian Knot</Typography>
-            <Typography variant="h6" style={{ marginLeft: "auto" }}> {selectedProject && selectedProject.projectName !== "" ? 
-            <p>Estas trabajando en: <span style={{color: "white"}}> {selectedProject.projectName} </span></p> : (<Button href="http://localhost:3000/app/ajustes" variant="contained"
-            color="secondary">Elegir Proyecto</Button>)} </Typography>
-            
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={() => logout()}
-              style={{ marginLeft: "auto" }}
-            >
-              Logout{" "}
-            </Button>
-          </Toolbar>
-        </AppBar>
-      </FixHeader>
+    <>
+      <ThemeProvider theme={baseTheme}>
 
-      <div className={classes.container}>
-        {/* Drawer is like NavBar */}
-        <Drawer
-          variant="permanent"
-          classes={{
-            paper: clsx(classes.drawer, {
-              [classes.closed]: !isOpened,
-              [classes.opened]: isOpened
-            })
-          }}
-        >
-          <Nav />
-        </Drawer>
-        <main className={classes.main}>
-          <Switch>
-            <Route path="/app/board">
-              <Board token={token} user={user} selectedProject={selectedProject} />
-            </Route>
-            <Route path="/app/bugtracker">
-              <BugTrackerDashboard token={token} user={user} selectedProject={selectedProject}/>
-            </Route>
-            <Route path="/app/customer">
-              <CRMDashboard token={token} user={user} selectedProject={selectedProject} />
-            </Route>
-            <Route path="/app/pdf">
-              <InvoiceDashboard token={token} user={user} selectedProject={selectedProject}/>
-            </Route>
-            <Route path="/app/ajustes">
-              <Settings token={token} user={user} selectedProject={selectedProject} />
-            </Route>
-            <Route path="/app" token={token} user={user} selectedProject={selectedProject} exact>
-              <Home />
-            </Route>
-          </Switch>
-        </main>
-      </div>
-
-      <footer className={classes.footer}>
-        <Typography variant="h6"></Typography>
-      </footer>
-    </div>
+        <UserProvider>
+      <Router history={history}>
+        <Switch>
+          <PrivateRoute component={Dashboard} path="/app" user={user} />
+          <PrivateRoute component={DocumentPDF} path="/topdf/:id" user={user} />
+          <Route path="/forgotpassword" component={ForgotPasswordForm}/>
+          <Route path="/passwordreset/:resetToken" component={ResetPasswordForm}/>
+          <Route path="/login" component={LoginForm} />
+          <Route path="/register" component={RegisterForm} />
+          <Route path="/">
+            <Landing />
+          </Route>
+        </Switch>
+      </Router>
+          </UserProvider>
+      </ThemeProvider>
+    </>
   );
-}
+};
+
+export default App;
