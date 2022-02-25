@@ -50,7 +50,7 @@ const {username, password} = data;
 
      } catch (error) {
        setOpen(true)
-       setSuccess("")
+     
  setError(error.response.data.error);
     }
   };

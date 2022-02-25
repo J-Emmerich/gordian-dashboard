@@ -44,7 +44,7 @@ export default function LoginForm() {
       try {
         e.preventDefault();
         const {username, password, email} = data;
-        const user = await services.registerNewUser(username, password);
+        const user = await services.registerNewUser(username, password, email);
         login(user);
        } catch (error) {
          setOpen(true)
