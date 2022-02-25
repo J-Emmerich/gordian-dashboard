@@ -1,0 +1,10 @@
+[
+    {
+        "title": "CRM Sin Complicación",
+        "description": ""
+    },
+    {
+        "title": "Sobre Gordian Knot",
+        "description": "Este es un proyecto en desarrollo. Es una webapp para gestionar pequeñas empresas y equipos. Esta hecho con MERN stack, en el front end utilizo Material UI como libreria y Styled-Components para el estilo. El testing es con Jest, utiliza Puppetter para el renderizado de pdf y react-beautiful-dnd para la lista de tareas. Lo creé para ayudar en la organización y gestión de la empresa que soy co-fundador, Furmidable Family."
+    }
+]
