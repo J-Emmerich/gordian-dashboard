@@ -1,7 +1,9 @@
 # Gordian Dashboard
 
 This is the front end of Gordian-Knot WebApp. 
-Gordian Knot is a ERP-CRM for small-business that is still on prototype stage. 
+Gordian Knot is a ERP-CRM for small-business that is still on prototype stage.
+You can check the roadmap and bugtracker on the backend repository:
+https://github.com/j-emmerich/Gordian-Knot
 -
 #
 1. You can save invoices and download as PDF 
