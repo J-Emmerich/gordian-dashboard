@@ -7,7 +7,7 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import{ ReactComponent as HeroSVG} from '../../../assets/gordian-hero-min-view.svg';
 import { scroller } from 'react-scroll';
 import useMediaQuery from '@mui/material/useMediaQuery'
-import {useTheme} from '@mui/system'
+import {useTheme} from 'styled-components'
 import { NavLink } from 'react-router-dom';
 
 const Hero = ({ title, description}) => {

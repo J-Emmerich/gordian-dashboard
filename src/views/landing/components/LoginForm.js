@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState, useContext} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,15 +11,21 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import {NavLink} from 'react-router-dom'; 
+import {useForm, Controller} from "react-hook-form";
+import services from "../../../services/auth";
+import { UserContext } from "../../../services/userContext";
 import { useTheme } from '@mui/material/styles';
-import { NavLink } from 'react-router-dom';
-
+import CloseIcon from '@mui/icons-material/Close'
+import IconButton from '@mui/material/IconButton'
+import Collapse from "@mui/material/Collapse"
+import Alert from '@mui/material/Alert';
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="https://joaoemmerich.com">
+        Joao Emmerich
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -28,20 +34,29 @@ function Copyright(props) {
 }
 
 
-export default function SignIn() {
-    const theme = useTheme();
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
 
+export default function LoginForm() {
+    const theme = useTheme();
+    const { login } = useContext(UserContext);
+    const [open, setOpen] = useState(false)
+    const [error, setError] = useState("");
+  
+  const submitLogin = async (data, e) => {
+    e.preventDefault();
+const {username, password} = data;
+    try {
+      const user = await services.loginNewUser(username, password);
+      login(user);
+
+     } catch (error) {
+       setOpen(true)
+       setSuccess("")
+ setError(error.response.data.error);
+    }
+  };
+  const {control, handleSubmit} = useForm({defaultValues:{}});
   return (
-   
+
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -56,57 +71,92 @@ export default function SignIn() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Entrar
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
+          <Box sx={{ width: '100%' }}>
+          <Container>
+      <Collapse in={open}>
+       {error && 
+        <Alert
+        severity="error"
+          action={
+            <IconButton
+              aria-label="close"
+              color="error"
+              size="small"
+              onClick={() => {
+                setError("")
+                setOpen(false);
+              }}
+
+           
+            >
+              <CloseIcon fontSize="inherit" />
+            </IconButton>
+          }
+          sx={{ mb: 2 }}
+        >
+          {error}
+        </Alert> }
+      
+
+      </Collapse>
+        </Container>
+        </Box>
+          <Box component="form" onSubmit={handleSubmit(submitLogin)} sx={{ mt: 3 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} >
+              <Controller
+        name="username"
+        control={control}
+        rules={{required: "Campo requerido",
+        minLength: {value: 6, message: "El nombre de usuario tiene que tener mínimo de 6 letras" }}}
+        render={({field, fieldState: {error}})=><TextField margin='normal' fullWidth autoFocus helperText={error? error.message : null} error={!!error} {...field} variant="outlined" label="Nombre de usuario"></TextField>}>
+        </Controller>
+              </Grid>
+            
+            
+              <Grid item xs={12}>
+              <Controller
+        name="password"
+        control={control}
+        rules={{required: "Campo requerido"}}
+        render={({field, fieldState: {error}})=><TextField margin='normal' fullWidth helperText={error? error.message : null} error={!!error} {...field} variant="outlined" label="Password" type="password"></TextField>}>
+        </Controller>
+        
+              </Grid>
+             
+            </Grid>
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+          Entrar
             </Button>
-            <Grid container>
-              <Grid item xs>
-              <NavLink to="/forgotpassword" variant="body2">
-                  Forgot password?
+            <Grid container justifyContent="flex-end">
+              <Grid item>
+                <NavLink to="/forgotpassword">
+                  Olvidado la contraseña?
+
                 </NavLink>
+                
               </Grid>
               <Grid item>
-                <NavLink to="/register" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                <NavLink to="/register">
+                  No tienes una cuenta? Registrar
+
                 </NavLink>
+                
               </Grid>
             </Grid>
+            
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
-      </Container>
+        <Copyright sx={{ mt: 5 }} />
+      
+        </Container>
 
-  );
+  )
 }

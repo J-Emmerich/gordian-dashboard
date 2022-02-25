@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState, useContext} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,15 +12,20 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {NavLink} from 'react-router-dom'; 
-
+import {useForm, Controller} from "react-hook-form";
+import services from "../../../services/auth";
+import { UserContext } from "../../../services/userContext";
 import { useTheme } from '@mui/material/styles';
-
+import CloseIcon from '@mui/icons-material/Close'
+import IconButton from '@mui/material/IconButton'
+import Collapse from "@mui/material/Collapse"
+import Alert from '@mui/material/Alert';
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="https://joaoemmerich.com">
+        Joao Emmerich
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -32,16 +37,25 @@ function Copyright(props) {
 
 export default function LoginForm() {
     const theme = useTheme();
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
-
+    const { login } =useContext(UserContext);
+    const [open, setOpen] = useState(false)
+    const [error, setError] = useState("");
+    const submitRegister = async (data, e) => {
+      try {
+        e.preventDefault();
+        const {username, password, email} = data;
+        const user = await services.registerNewUser(username, password);
+        login(user);
+       } catch (error) {
+         setOpen(true)
+   setError(error.response.data.error);
+   setTimeout(() => {
+    setError("");
+    setOpen(false)
+  }, 3000);
+      }
+    };
+  const {control, handleSubmit, watch} = useForm({defaultValues:{}});
   return (
 
       <Container component="main" maxWidth="xs">
@@ -60,55 +74,76 @@ export default function LoginForm() {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box sx={{ width: '100%' }}>
+          <Container>
+      <Collapse in={open}>
+       {error && 
+        <Alert
+        severity="error"
+          action={
+            <IconButton
+              aria-label="close"
+              color="error"
+              size="small"
+              onClick={() => {
+                setError("")
+                setOpen(false);
+              }}
+
+           
+            >
+              <CloseIcon fontSize="inherit" />
+            </IconButton>
+          }
+          sx={{ mb: 2 }}
+        >
+          {error}
+        </Alert> }
+
+
+      </Collapse>
+        </Container>
+        </Box>
+          <Box component="form" onSubmit={handleSubmit(submitRegister)} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="given-name"
-                  name="firstName"
-                  required
-                  fullWidth
-                  id="firstName"
-                  label="First Name"
-                  autoFocus
-                />
+              <Grid item xs={12} >
+              <Controller
+        name="username"
+        control={control}
+        rules={{required: "Campo requerido",
+        minLength: {value: 6, message: "El nombre de usuario tiene que tener mínimo de 6 letras" }}}
+        render={({field, fieldState: {error}})=><TextField margin='normal' fullWidth autoFocus helperText={error? error.message : null} error={!!error} {...field} variant="outlined" label="Nombre de usuario"></TextField>}>
+        </Controller>
               </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
-                />
+            
+              <Grid item xs={12}>
+              <Controller
+        name="email"
+        control={control}
+        rules={{required: "Campo requerido",
+        pattern: {value: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+        message: "Formato del correo no es valido."}}}
+        render={({field, fieldState: {error}})=><TextField margin='normal' fullWidth helperText={error? error.message : null} error={!!error} {...field} variant="outlined" label="Correo Electronico"></TextField>}>
+        </Controller>
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                />
+              <Controller
+        name="password"
+        control={control}
+        rules={{required: "Campo requerido"}}
+        render={({field, fieldState: {error}})=><TextField margin='normal' fullWidth helperText={error? error.message : null} error={!!error} {...field} variant="outlined" label="Password" type="password"></TextField>}>
+        </Controller>
+        
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
+              <Controller
+        name="passwordRepeat"
+        control={control}
+        rules={{required: "Campo requerido",
+        validate: value => value === watch('password') || "Contraseñas diferentes"
+      }}
+        render={({field, fieldState: {error}})=><TextField margin='normal' fullWidth helperText={error? error.message : null} error={!!error} {...field} variant="outlined" label="Repetir Password" type="password"></TextField>}>
+        </Controller>
               </Grid>
             </Grid>
             <Button
@@ -122,8 +157,8 @@ export default function LoginForm() {
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <NavLink to="/login">
+                  Ya tienes una cuenta? Accessar
 
-                  Already have an account? Sign in
                 </NavLink>
                 
               </Grid>
@@ -131,6 +166,7 @@ export default function LoginForm() {
           </Box>
         </Box>
         <Copyright sx={{ mt: 5 }} />
+       
         </Container>
 
   )
