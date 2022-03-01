@@ -12,7 +12,7 @@ return (
     <Box sx={{display: 'flex', flexDirection: 'column', minHeight: '100vh'}}>
         
 <Header />
-    <Hero title="CRM Sin Complicación" description="Transforma tu negocio, gestiona todo lo que ocurre en tu empresa en un solo software."/>
+    <Hero  />
 <Element name="section2">
     <Features features={data}/>
     </Element> 
