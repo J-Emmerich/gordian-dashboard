@@ -23,10 +23,9 @@ const UserProvider = ({ children }) => {
     setUser(response.user);
    if(response.user.currentProject && response.user.currentProject !== ""){
      const foundProject = response.user.projects.find(project => {
-       console.log(project)
       return project._id === response.user.currentProject;
      })
-     console.log(foundProject, "I'm saving this as the selected project");
+
      const projectToSave = {projectName: foundProject.projectName, projectId: foundProject._id}
      setSelectedProject(projectToSave)
    }
