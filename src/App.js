@@ -15,7 +15,7 @@ import RegisterForm from "./views/landing/components/RegisterForm";
 import LoginForm from "./views/landing/components/LoginForm";
 
 const App = () => {
-  const [user, setUser] = useState();
+  
 
   return (
     <>
@@ -24,8 +24,8 @@ const App = () => {
         <UserProvider>
       <Router history={history}>
         <Switch>
-          <PrivateRoute component={Dashboard} path="/app" user={user} />
-          <PrivateRoute component={DocumentPDF} path="/topdf/:id" user={user} />
+          <PrivateRoute component={Dashboard} path="/app"/>
+          <PrivateRoute children={<DocumentPDF />} path="/topdf/:id" />
           <Route path="/forgotpassword" component={ForgotPasswordForm}/>
           <Route path="/passwordreset/:resetToken" component={ResetPasswordForm}/>
           <Route path="/login" component={LoginForm} />

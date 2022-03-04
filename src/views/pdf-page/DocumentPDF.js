@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import {useParams} from 'react-router-dom';
 import Header from "./components/Header";
 import CustDetails from "./components/CustDetails";
 import Articles from "./components/Articles";
@@ -9,18 +9,19 @@ import "./DocumentPDF.css";
 import services from "../../services/pdf"
 
 
-const DocumentPDF = ({ match }) => {
+const DocumentPDF = () => {
   const [invoice, setInvoice] = useState(null);
+const {id} = useParams();
 
   useEffect(
     
     () => {
       const token = localStorage.getItem(constants.ACCESS_TOKEN);
       if(token){
- getInvoiceData(token, match.params.id);
+ getInvoiceData(token, id);
         }
     },
-    [match.params]
+    [id]
   );
 
   const getInvoiceData = async (token, id) => {
