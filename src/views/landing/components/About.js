@@ -16,7 +16,7 @@ const About = () => {
 const showSVG = (mobile) => {
   return(
 
-      <Box sx={{flexGrow: 1, width: "100%", mr: 10}, mobile && {mt: 3, width: '80%'}}>
+      <Box sx={[{flexGrow: 1, width: "100%", mr: 10}, mobile && {mt: 3, width: '80%'}]}>
          <AboutSVG width={"100%"} />
         </Box>
       )

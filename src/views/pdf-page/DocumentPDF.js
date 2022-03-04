@@ -26,10 +26,12 @@ const {id} = useParams();
 
   const getInvoiceData = async (token, id) => {
     try {
+      console.log("this id", id)
+      console.log("this token", token)
       const invoiceData = await services.getInvoiceData(token, id)  
 setInvoice(invoiceData);   
     } catch (error) {
-      console.log(error)
+      console.log('*****************',error, '*****************')
     }
   }
   return (

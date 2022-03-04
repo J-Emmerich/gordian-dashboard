@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
-import { Switch, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
+import constants from "../../constants/index";
 import { styles } from "../../styleApp.js";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
@@ -28,9 +29,9 @@ const FixHeader = styled.div`
   height: 55px;
 `;
 
-export default function Dashboard({ token }) {
+export default function Dashboard() {
   const classes = useStyles();
-
+  const token = localStorage.getItem(constants.ACCESS_TOKEN);
   const [isOpened, setIsOpened] = useState(false);
   const { user, logout, selectedProject } = useContext(UserContext);
 
@@ -77,20 +78,12 @@ export default function Dashboard({ token }) {
           <Nav />
         </Drawer>
         <main className={classes.main}>
-          <Switch>
-            <Route path="/app/customer">
-              <CRMDashboard token={token} user={user} selectedProject={selectedProject} />
-            </Route>
-            <Route path="/app/pdf">
-              <InvoiceDashboard token={token} user={user} selectedProject={selectedProject}/>
-            </Route>
-            <Route path="/app/ajustes">
-              <Settings token={token} user={user} selectedProject={selectedProject} />
-            </Route>
-            <Route path="/app" token={token} user={user} selectedProject={selectedProject} exact>
-              <Home />
-            </Route>
-          </Switch>
+          <Routes>
+            <Route path="/clientes" element={<CRMDashboard token={token} user={user} selectedProject={selectedProject} />} />
+            <Route path="/facturas" element={ <InvoiceDashboard token={token} user={user} selectedProject={selectedProject} />}/>
+            <Route path="/ajustes" element={<Settings token={token} user={user} selectedProject={selectedProject} />} />
+            <Route index element={<Home token={token} user={user} selectedProject={selectedProject} />} />
+          </Routes>
         </main>
       </div>
 

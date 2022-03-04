@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { Router, Route, Switch } from "react-router-dom";
-import history from "./helpers/history";
+import { Route, Routes } from "react-router-dom";
 import PrivateRoute from "./navigation/PrivateRoute";
 import Dashboard from "./views/dashboard/Dashboard";
 
@@ -14,6 +13,7 @@ import Landing from "./views/landing/Landing";
 import RegisterForm from "./views/landing/components/RegisterForm";
 import LoginForm from "./views/landing/components/LoginForm";
 
+
 const App = () => {
   
 
@@ -22,19 +22,24 @@ const App = () => {
       <ThemeProvider theme={baseTheme}>
 
         <UserProvider>
-      <Router history={history}>
-        <Switch>
-          <PrivateRoute component={Dashboard} path="/app"/>
-          <PrivateRoute children={<DocumentPDF />} path="/topdf/:id" />
-          <Route path="/forgotpassword" component={ForgotPasswordForm}/>
-          <Route path="/passwordreset/:resetToken" component={ResetPasswordForm}/>
-          <Route path="/login" component={LoginForm} />
-          <Route path="/register" component={RegisterForm} />
-          <Route path="/">
-            <Landing />
-          </Route>
-        </Switch>
-      </Router>
+     
+
+        <Routes>
+          
+          <Route element={<PrivateRoute>
+            <Dashboard />
+            </PrivateRoute>
+            } path="/app/*"  />
+          <Route element={<PrivateRoute>
+            <DocumentPDF />
+            </PrivateRoute>} path="/topdf/:id" />
+          <Route path="/forgotpassword" element={<ForgotPasswordForm />}/>
+          <Route path="/passwordreset/:resetToken" element={<ResetPasswordForm />}/>
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/register" element={<RegisterForm />} />
+          <Route path="/"  element={<Landing />} />
+          </Routes>
+
           </UserProvider>
       </ThemeProvider>
     </>

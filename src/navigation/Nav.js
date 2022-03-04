@@ -1,69 +1,56 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import HomeIcon from "@material-ui/icons/Home";
-import PersonIcon from "@material-ui/icons/Person";
-import ReceiptIcon from "@material-ui/icons/Receipt";
-import SettingsIcon from "@material-ui/icons/Settings";
-import styled from "styled-components";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemButton  from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
+import HomeIcon from '@mui/icons-material/Home'
+import PersonIcon from "@mui/icons-material/Person";
+import ReceiptIcon from "@mui/icons-material/Receipt";
+import SettingsIcon from "@mui/icons-material/Settings";
 
-const Container = styled.div`
-  overflow: hidden;
-`;
 
 function Nav() {
   return (
     <>
-      <List component={Container}>
-        <ListItemLink
-          to="/app"
-          primary="Home"
-          icon={<HomeIcon color="primary" />}
-        />
-    
-        <ListItemLink
-          to="/app/pdf"
-          primary="Facturas"
-          icon={<ReceiptIcon color="primary" />}
-        />
-        <ListItemLink
-          to="/app/customer"
-          primary="Clientes"
-          icon={<PersonIcon color="primary" />}
-        />
-       
-        <ListItemLink
-          to="/app/ajustes"
-          primary="Ajustes"
-          icon={<SettingsIcon color="primary" />}
-        />
+      <List>
+<ListItem >
+  <ListItemButton component={NavLink} to='../app'>
+
+  <ListItemIcon><HomeIcon /></ListItemIcon>
+   <ListItemText primary="Home"/>
+  </ListItemButton>
+    </ListItem>   
+  
+
+<ListItem>
+  <ListItemButton component={NavLink} to="facturas">
+
+  <ListItemIcon><ReceiptIcon /></ListItemIcon>
+   <ListItemText primary="Facturas"/>
+  </ListItemButton>
+    </ListItem>   
+
+<ListItem >
+  <ListItemButton component={NavLink} to="clientes">
+
+  <ListItemIcon><PersonIcon /></ListItemIcon>
+   <ListItemText primary="Clientes"/>
+  </ListItemButton>
+    </ListItem>   
+
+<ListItem >
+  <ListItemButton component={NavLink} to="ajustes">
+
+  <ListItemIcon><SettingsIcon /></ListItemIcon>
+   <ListItemText primary="Ajustes"/>
+  </ListItemButton>
+    </ListItem>   
       </List>
     </>
   );
 }
 
-function ListItemLink(props) {
-  const { icon, primary, to } = props;
-
-  const renderLink = React.useMemo(
-    () =>
-      React.forwardRef((itemProps, ref) => (
-        <NavLink activeClassName="active-nav-link" to={to} {...itemProps} />
-      )),
-    [to]
-  );
-
-  return (
-    <li>
-      <ListItem button component={renderLink}>
-        {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
-        <ListItemText primary={primary} />
-      </ListItem>
-    </li>
-  );
-}
 
 export default Nav;

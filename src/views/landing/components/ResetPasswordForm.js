@@ -1,4 +1,11 @@
 import React, {useContext, useState} from 'react';
+import {useForm, Controller} from "react-hook-form";
+import services from "../../../services/auth";
+import { useTheme } from '@mui/material/styles';
+import axios from 'axios'
+import {useParams} from 'react-router-dom';
+
+// Material UI Imports
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,26 +18,25 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-
-import {useForm, Controller} from "react-hook-form";
-import services from "../../../services/auth";
-import { useTheme } from '@mui/material/styles';
-import axios from 'axios'
-
 import CloseIcon from '@mui/icons-material/Close'
 import IconButton from '@mui/material/IconButton'
 import Collapse from "@mui/material/Collapse"
 import Alert from '@mui/material/Alert';
 
 
-export default function ResetPasswordForm({match }) {
+
+
+
+
+export default function ResetPasswordForm() {
     const theme = useTheme();
     const [open, setOpen] = useState(false)
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
+    const { resetToken } = useParams();
+    console.log("*****", resetToken, "******")
     const resetPasswordHandler = async (data, e) => {
       const {password} = data;
-      console.log(password)
       e.preventDefault();
       const config = {
         header: {
@@ -39,7 +45,7 @@ export default function ResetPasswordForm({match }) {
       };
       try {
         const { data } = await axios.put(
-          `/api/auth/resetpassword/${match.params.resetToken}`,
+          `/api/auth/resetpassword/${resetToken}`,
             {password}, config
           
         );

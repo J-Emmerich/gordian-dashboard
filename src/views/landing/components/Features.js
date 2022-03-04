@@ -14,11 +14,8 @@ const Features = ({features}) => {
             <Typography mt={5} sx={{textAlign: 'center'}} component="h2" variant="h2">Todo lo que necesitas para tu negocio</Typography>
         <Grid container spacing={5} mt={15}>
             
-            {features.map(feature => (
-                <>
-                <Card feature={feature}/>
-                
-                </>
+            {features.map((feature) => (
+                <Card feature={feature} key={feature.name}/>
                 ))}
         </Grid>
                 </Container>
