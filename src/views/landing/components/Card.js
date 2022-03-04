@@ -11,7 +11,7 @@ const Card = ({feature}) => {
     const theme = useTheme();
     const matches = useMediaQuery(theme.breakpoints.down('md'))
     return (
-<Grid item xs={12} sm={6} md={4} alignItems='center'>
+<Grid item xs={12} sm={6} md={4} alignItems='center' key={feature.name}>
 <Paper elevation={0}  >
     <Typography component='h3' variant='h4' textAlign={'center'}>{feature.name}</Typography>
 <Box sx={[{display: 'flex', mt: 5, gap: 2}, matches && {flexDirection: 'column', alignItems: 'center', flexWrap: 'wrap'}  ]}>

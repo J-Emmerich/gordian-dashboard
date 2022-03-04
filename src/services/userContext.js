@@ -1,5 +1,5 @@
 import React, { useState, createContext, useEffect } from "react";
-import { Route, Redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import constants from "../constants/index";
 import history from "../helpers/history";
 
@@ -7,6 +7,7 @@ const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState({});
+  const navigate = useNavigate();
   const [selectedProject, setSelectedProject] = useState()
   useEffect(() => {
     if (localStorage.getItem(constants.LOGGED_USER)) {
@@ -29,8 +30,8 @@ const UserProvider = ({ children }) => {
      const projectToSave = {projectName: foundProject.projectName, projectId: foundProject._id}
      setSelectedProject(projectToSave)
    }
+   navigate('../app', {replace: true})
    
-    history.push({ pathname: "/app" });
   };
 
   const logout = () => {
@@ -40,7 +41,8 @@ const UserProvider = ({ children }) => {
 
     setUser({});
     setSelectedProject({projectId: "", projectName: ""})
-    history.push({ pathname: "/" });
+   navigate('../', {replace: true});
+   
   };
 
   const updateUser = (receivedUser) => {
