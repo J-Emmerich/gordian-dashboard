@@ -6,6 +6,7 @@ import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { FormControl, FormHelperText } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 const FlexContainer = styled.div`
   display: flex;
   background-color: #eee;
@@ -72,7 +73,12 @@ isEditing,
   const [hiddenSelect, setHiddenSelect] = useState("default");
   const {control, handleSubmit, reset, setValue} = useForm({defaultValues:{}});
   const {fields, append, remove, replace} = useFieldArray({control, name: 'pets'})
+  let navigate = useNavigate();
 
+const handleCancel = () => {
+   navigate("../clientes", { replace: true });
+}
+ 
   useEffect(()=>{
     if(isEditing){
       reset({
@@ -238,7 +244,7 @@ isEditing,
         <StyledButton
           variant="contained"
           color="secondary"
-          onClick={closeModal}
+          onClick={isEditing ? closeModal : handleCancel}
         >
           Cancelar
         </StyledButton>

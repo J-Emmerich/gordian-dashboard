@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import services from "../../../services/crm";
 import { v4 as uuid } from "uuid";
 import styled from "styled-components";
-
+import {Link} from 'react-router-dom';
 import CRMTable from "./components/CRMTable";
 import AddClient from "./components/CRMForm";
 
@@ -92,6 +92,7 @@ const CRMDashboard = ({ token, user }) => {
 
   // Editing customer
   const editCustomer = (customerReceived) => {
+    console.log(customerReceived);
     setCustomer(customerReceived);
     setIsEditing(true);
     setOpenModal(true);
@@ -141,7 +142,8 @@ const CRMDashboard = ({ token, user }) => {
           <Button
             variant="contained"
             color="primary"
-            onClick={() => setOpenModal(true)}
+            component={Link}
+            to='anadirnuevo'
           >
             Nuevo Cliente
           </Button>

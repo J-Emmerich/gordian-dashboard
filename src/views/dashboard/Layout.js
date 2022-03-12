@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Routes, Route, NavLink} from "react-router-dom";
+import { Routes, Route, NavLink, Outlet} from "react-router-dom";
 import constants from "../../constants/index";
 import { UserContext } from "../../services/userContext";
 // Components
@@ -9,6 +9,8 @@ import InvoiceDashboard from "./invoices/InvoiceDashboard";
 import CRMDashboard from "./crm/CRMDashboard";
 import Home from "./Home";
 import Settings from "./settings/Settings";
+import AddClient from "./crm/AddClient";
+
 
 import MuiAppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -192,11 +194,15 @@ export default function Layout() {
   <Container>
 
 <Routes>
-            <Route path="/clientes" element={<CRMDashboard token={token} user={user} selectedProject={selectedProject} />} />
-            <Route path="/facturas" element={ <InvoiceDashboard token={token} user={user} selectedProject={selectedProject} />}/>
-            <Route path="/ajustes" element={<Settings token={token} user={user} selectedProject={selectedProject} />} />
-            <Route index element={<Home token={token} user={user} selectedProject={selectedProject} />} />
+            <Route path="/clientes" element={<CRMDashboard token={token}  />}>
+              </Route>
+              <Route path='/clientes/anadirnuevo' element={<AddClient token={token}/>} />
+            <Route path="/facturas" element={ <InvoiceDashboard token={token} />}/>
+            <Route path="/ajustes" element={<Settings token={token}  />} />
+            <Route index element={<Home token={token} user={user} />} />
           </Routes>
+
+          <Outlet />
   </Container>
 </main>
           </Box>
