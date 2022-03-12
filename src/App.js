@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import PrivateRoute from "./navigation/PrivateRoute";
-import Dashboard from "./views/dashboard/Dashboard";
+import Layout from "./views/dashboard/Layout";
 
 import ForgotPasswordForm from "./views/landing/components/ForgotPasswordForm"
 import ResetPasswordForm from "./views/landing/components/ResetPasswordForm"
@@ -27,7 +27,7 @@ const App = () => {
         <Routes>
           
           <Route element={<PrivateRoute>
-            <Dashboard />
+            <Layout />
             </PrivateRoute>
             } path="/app/*"  />
           <Route element={<PrivateRoute>

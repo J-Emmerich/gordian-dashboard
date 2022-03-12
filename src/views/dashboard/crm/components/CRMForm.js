@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import Button from "@material-ui/core/Button";
+import Button from "@mui/material/Button";
 import {useForm, Controller, useFieldArray} from "react-hook-form";
 import styled from "styled-components";
-import TextField from "@material-ui/core/TextField";
-import MenuItem from "@material-ui/core/MenuItem";
-import Select from "@material-ui/core/Select";
-import { FormControl, FormHelperText } from "@material-ui/core";
+import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import { FormControl, FormHelperText } from "@mui/material";
 const FlexContainer = styled.div`
   display: flex;
   background-color: #eee;

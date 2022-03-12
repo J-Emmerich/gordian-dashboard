@@ -10,8 +10,8 @@ import LastPage from "@material-ui/icons/LastPage";
 import FirstPage from "@material-ui/icons/FirstPage";
 import NavigateNext from "@material-ui/icons/NavigateNext";
 import NavigateBefore from "@material-ui/icons/NavigateBefore";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 

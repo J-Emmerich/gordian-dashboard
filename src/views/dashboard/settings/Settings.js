@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
 import {UserContext} from "../../../services/userContext"
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 import styled from "styled-components";
 import services from "../../../services/settings";
 
