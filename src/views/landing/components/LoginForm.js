@@ -138,7 +138,7 @@ const {username, password} = data;
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <NavLink to="/forgotpassword">
-                  Olvidado la contraseña?
+                  Has olvidado la contraseña?
 
                 </NavLink>
                 

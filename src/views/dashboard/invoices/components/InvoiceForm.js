@@ -7,11 +7,10 @@ import TextField from "@mui/material/TextField";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 
-import DayJsUtils from "@date-io/dayjs";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker
-} from "@material-ui/pickers";
+
+import DateAdapter from '@mui/lab/AdapterDayjs';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import MobileDatePicker from '@mui/lab/MobileDatePicker';
 
 dayjs.extend(utc);
 
@@ -74,7 +73,7 @@ const StyledTextField = styled(TextField)`
   }
 `;
 
-const StyledDate = styled(KeyboardDatePicker)`
+const StyledDate = styled(MobileDatePicker)`
   & input {
     padding: 20px;
   }
@@ -156,7 +155,7 @@ useEffect(()=>{
           </fieldset>
           <hr />
           <div>
-            <MuiPickersUtilsProvider utils={DayJsUtils}>
+            <LocalizationProvider dateAdapter={DateAdapter}>
               <StyledDate
                 autoOk
                 inputVariant="standard"
@@ -166,13 +165,14 @@ useEffect(()=>{
                 id="date-picker-inline"
                 placeholder="Fecha de la Factura"
                 value={selectedDate? selectedDate : dayjs.utc()}
+                renderInput={(params) => <TextField {...params} />}
                 onChange={(date) => handleDateChange(date)}
                 KeyboardButtonProps={{
                   "aria-label": "change date"
                 }}
                 name="invoiceDate"
               />
-            </MuiPickersUtilsProvider>
+            </LocalizationProvider>
           </div>
         </Header>
 

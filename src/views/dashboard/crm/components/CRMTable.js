@@ -4,34 +4,43 @@ import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 import styled from "styled-components";
 
-import PictureAsPdfIcon from "@material-ui/icons/PictureAsPdf";
-import DeleteIcon from "@material-ui/icons/Delete";
-import LastPage from "@material-ui/icons/LastPage";
-import FirstPage from "@material-ui/icons/FirstPage";
-import NavigateNext from "@material-ui/icons/NavigateNext";
-import NavigateBefore from "@material-ui/icons/NavigateBefore";
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import DeleteIcon from "@mui/icons-material/Delete";
+import LastPage from "@mui/icons-material/LastPage";
+import FirstPage from "@mui/icons-material/FirstPage";
+import NavigateNext from "@mui/icons-material/NavigateNext";
+import NavigateBefore from "@mui/icons-material/NavigateBefore";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+
+import MuiTable from '@mui/material/Table';
+import MuiTableBody from '@mui/material/TableBody';
+import MuiTableCell from '@mui/material/TableCell';
+import MuiTableContainer from '@mui/material/TableContainer';
+import MuiTableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+
+
 
 dayjs.extend(advancedFormat); // Plugin to format date
 
-const Table = styled.table`
+const Table = styled(MuiTable)`
   border-collapse: collapse;
   border-radius: 1em;
   overflow: hidden;
   width: 100%;
 `;
 
-const TableHeader = styled.thead`
+const TableHeader = styled(MuiTableHead)`
   background-color: #eee;
   & th {
     padding: 20px;
   }
 `;
 
-const Container = styled.div`
+const Container = styled(MuiTableContainer)`
   padding-top: 15px;
   .react-td,
   .save-to-pdf,
@@ -131,9 +140,9 @@ const CRMTable = ({ data, handleClick, deleteCustomer }) => {
       <Table className="-highlight" {...getTableProps()}>
         <TableHeader>
           {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
+            <TableRow {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                <MuiTableCell {...column.getHeaderProps(column.getSortByToggleProps())}>
                   <div>
                     {column.render("Header")}
                     <span>
@@ -148,24 +157,24 @@ const CRMTable = ({ data, handleClick, deleteCustomer }) => {
                       )}
                     </span>
                   </div>
-                </th>
+                </MuiTableCell>
               ))}
-            </tr>
+            </TableRow>
           ))}
         </TableHeader>
 
-        <tbody className="rt-tbody" {...getTableBodyProps()}>
+        <MuiTableBody className="rt-tbody" {...getTableBodyProps()}>
           {page.map((row) => {
             prepareRow(row);
             return (
-              <tr key={row.original._id}>
+              <TableRow key={row.original._id}>
                 {row.cells.map((cell) => {
                   if (
                     cell.column.Header !== "Download" &&
                     cell.column.Header !== "Delete"
                   ) {
                     return (
-                      <td
+                      <MuiTableCell
                         className="react-td"
                         {...cell.getCellProps()}
                         onMouseEnter={(e) => {
@@ -179,18 +188,18 @@ const CRMTable = ({ data, handleClick, deleteCustomer }) => {
                         }}
                       >
                         {cell.render("Cell")}
-                      </td>
+                      </MuiTableCell>
                     );
                   } else {
                     return (
-                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                      <MuiTableCell {...cell.getCellProps()}>{cell.render("Cell")}</MuiTableCell>
                     );
                   }
                 })}
-              </tr>
+              </TableRow>
             );
           })}
-        </tbody>
+        </MuiTableBody>
       </Table>
       <Pagination>
         <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
