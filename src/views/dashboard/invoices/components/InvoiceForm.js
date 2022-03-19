@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from "react";
-import {useForm, Controller, useFieldArray} from "react-hook-form";
+import { useForm, Controller, useFieldArray } from "react-hook-form";
 import Button from "@mui/material/Button";
 import styled from "styled-components";
 import TextField from "@mui/material/TextField";
-
+import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 
-
-import DateAdapter from '@mui/lab/AdapterDayjs';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import MobileDatePicker from '@mui/lab/MobileDatePicker';
+import DateAdapter from "@mui/lab/AdapterDayjs";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import MobileDatePicker from "@mui/lab/MobileDatePicker";
 
 dayjs.extend(utc);
-
 
 const FlexContainer = styled.div`
   display: flex;
@@ -78,33 +76,42 @@ const StyledDate = styled(MobileDatePicker)`
     padding: 20px;
   }
 `;
-const InvoiceForm = ({
-  onSubmit,
-  isEditing,
-  invoice,
-  closeModal
-}) => {
+const InvoiceForm = ({ onSubmit, isEditing, invoice, closeModal }) => {
   const [selectedDate, setSelectedDate] = useState(null);
-const {control, handleSubmit, reset, setValue} = useForm({defaultValues:{}});
-const {fields, append, remove, replace} = useFieldArray({control, name: 'articles'})
-useEffect(()=>{
-  if(isEditing){
-    reset({
-      clientName: invoice.clientName,
-      invoiceNumber: invoice.invoiceNumber,
-      invoiceDate: invoice.invoiceDate,
-      orderNumber: invoice.orderNumber || "",
-      invoiceTotal: invoice.invoiceTotal,
-      invoiceSubTotal: invoice.invoiceSubTotal,
-      invoiceTax: invoice.invoiceTax,
-      _id: invoice._id,
-      projectId: invoice.projectId,
-      __v: invoice.__v
-    }, {keepDefaultValues: true})
-    replace(invoice.articles)
-  }
-  setSelectedDate(invoice.invoiceDate);
-},[])
+  const navigate = useNavigate();
+
+  const { control, handleSubmit, reset, setValue } = useForm({
+    defaultValues: {}
+  });
+  const { fields, append, remove, replace } = useFieldArray({
+    control,
+    name: "articles"
+  });
+  useEffect(() => {
+    if (isEditing) {
+      reset(
+        {
+          clientName: invoice.clientName,
+          invoiceNumber: invoice.invoiceNumber,
+          invoiceDate: invoice.invoiceDate,
+          orderNumber: invoice.orderNumber || "",
+          invoiceTotal: invoice.invoiceTotal,
+          invoiceSubTotal: invoice.invoiceSubTotal,
+          invoiceTax: invoice.invoiceTax,
+          _id: invoice._id,
+          projectId: invoice.projectId,
+          __v: invoice.__v
+        },
+        { keepDefaultValues: true }
+      );
+      replace(invoice.articles);
+    }
+    setSelectedDate(invoice?.invoiceDate);
+  }, []);
+
+  const handleCancel = () => {
+    navigate("../facturas", { replace: true });
+  };
 
   const handleDateChange = (date) => {
     if (dayjs(date).isValid()) {
@@ -123,35 +130,54 @@ useEffect(()=>{
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Title>
           <h2>
-            Factura n# <span>{invoice.invoiceNumber}</span>
+            Factura n# <span>{invoice?.invoiceNumber}</span>
           </h2>
         </Title>
         <hr />
         <Header>
           <fieldset>
-            <Controller 
-            name="clientName"
-            control={control}
-            rules={{required: "Campo requerido"}}
-            render={({field, fieldState: {error}})=><StyledTextField label="Nombre del cliente" variant="outlined"
-              margin="none" {...field} error={!!error} helperText={error? error.message : null} ></StyledTextField>}
-            >
-            </Controller>
             <Controller
-            name="invoiceNumber"
-            control={control}
-            rules={{required: "Campo requerido"}}
-            render={({field, fieldState:{error}})=><StyledTextField label="Numero de la factura" variant="outlined" {...field} error={!!error} helperText={error? error.message : null}></StyledTextField>}
-            >
-            </Controller>
-          <Controller
-          name="orderNumber"
-          control={control}
-          render={({field, fieldState:{error}})=><StyledTextField {...field} label="Número del pedido" variant="outlined" error={!!error} helperText={error ? error.message : null} ></StyledTextField>}
-          >
-
-          </Controller>
-           
+              name="clientName"
+              control={control}
+              rules={{ required: "Campo requerido" }}
+              render={({ field, fieldState: { error } }) => (
+                <StyledTextField
+                  label="Nombre del cliente"
+                  variant="outlined"
+                  margin="none"
+                  {...field}
+                  error={!!error}
+                  helperText={error ? error.message : null}
+                ></StyledTextField>
+              )}
+            ></Controller>
+            <Controller
+              name="invoiceNumber"
+              control={control}
+              rules={{ required: "Campo requerido" }}
+              render={({ field, fieldState: { error } }) => (
+                <StyledTextField
+                  label="Numero de la factura"
+                  variant="outlined"
+                  {...field}
+                  error={!!error}
+                  helperText={error ? error.message : null}
+                ></StyledTextField>
+              )}
+            ></Controller>
+            <Controller
+              name="orderNumber"
+              control={control}
+              render={({ field, fieldState: { error } }) => (
+                <StyledTextField
+                  {...field}
+                  label="Número del pedido"
+                  variant="outlined"
+                  error={!!error}
+                  helperText={error ? error.message : null}
+                ></StyledTextField>
+              )}
+            ></Controller>
           </fieldset>
           <hr />
           <div>
@@ -164,7 +190,7 @@ useEffect(()=>{
                 margin="normal"
                 id="date-picker-inline"
                 placeholder="Fecha de la Factura"
-                value={selectedDate? selectedDate : dayjs.utc()}
+                value={selectedDate ? selectedDate : dayjs.utc()}
                 renderInput={(params) => <TextField {...params} />}
                 onChange={(date) => handleDateChange(date)}
                 KeyboardButtonProps={{
@@ -181,56 +207,109 @@ useEffect(()=>{
         </Title>
         <hr />
         <section>
-          {fields.map((item, index)=>
-          <FlexContainer key={item.id}>
-          <Controller
-            name={`articles[${index}].articleName`}
-            control={control}
-            rules={{required: "este campo es requerido"}}
-            render={({field, fieldState:{error}})=><StyledTextField helperText={error? error.message : null} error={!!error} label="Artículo" variant="outlined" {...field}></StyledTextField>}
-            ></Controller>
-          <Controller
-            name={`articles[${index}].pricePerUnit`}
-            control={control}
-            rules={{required: "este campo es requerido"}}
-            render={({field, fieldState:{error}})=><StyledTextField type="number" helperText={error? error.message : null} error={!!error} label="Precio por unidad" variant="outlined" {...field}></StyledTextField>}
-            ></Controller>
-          <Controller
-            name={`articles[${index}].quantity`}
-            control={control}
-            rules={{required: "este campo es requerido"}}
-            render={({field, fieldState:{error}})=><StyledTextField type="number" helperText={error? error.message : null} error={!!error} label="Cuantidad" variant="outlined" {...field}></StyledTextField>}
-            ></Controller>
-          <Controller
-            name={`articles[${index}].vat`}
-            control={control}
-            rules={{required: "este campo es requerido"}}
-            render={({field, fieldState:{error}})=><StyledTextField type="number" helperText={error? error.message : null} error={!!error} label="IVA" variant="outlined" {...field}></StyledTextField>}
-            ></Controller>
-          <Controller
-            name={`articles[${index}].totalPrice`}
-            control={control}
-            rules={{required: "este campo es requerido"}}
-            render={({field, fieldState:{error}})=><StyledTextField type="number" helperText={error? error.message : null} error={!!error} label="Precio Total" variant="outlined" {...field}></StyledTextField>}
-            ></Controller>
-           
-            <Button
-          variant="contained"
-          color="secondary"
-          onClick={() => remove(index)}
-        >
-          Eliminar artículo
-        </Button>
+          {fields.map((item, index) => (
+            <FlexContainer key={item.id}>
+              <Controller
+                name={`articles[${index}].articleName`}
+                control={control}
+                rules={{ required: "este campo es requerido" }}
+                render={({ field, fieldState: { error } }) => (
+                  <StyledTextField
+                    helperText={error ? error.message : null}
+                    error={!!error}
+                    label="Artículo"
+                    variant="outlined"
+                    {...field}
+                  ></StyledTextField>
+                )}
+              ></Controller>
+              <Controller
+                name={`articles[${index}].pricePerUnit`}
+                control={control}
+                rules={{ required: "este campo es requerido" }}
+                render={({ field, fieldState: { error } }) => (
+                  <StyledTextField
+                    type="number"
+                    helperText={error ? error.message : null}
+                    error={!!error}
+                    label="Precio por unidad"
+                    variant="outlined"
+                    {...field}
+                  ></StyledTextField>
+                )}
+              ></Controller>
+              <Controller
+                name={`articles[${index}].quantity`}
+                control={control}
+                rules={{ required: "este campo es requerido" }}
+                render={({ field, fieldState: { error } }) => (
+                  <StyledTextField
+                    type="number"
+                    helperText={error ? error.message : null}
+                    error={!!error}
+                    label="Cuantidad"
+                    variant="outlined"
+                    {...field}
+                  ></StyledTextField>
+                )}
+              ></Controller>
+              <Controller
+                name={`articles[${index}].vat`}
+                control={control}
+                rules={{ required: "este campo es requerido" }}
+                render={({ field, fieldState: { error } }) => (
+                  <StyledTextField
+                    type="number"
+                    helperText={error ? error.message : null}
+                    error={!!error}
+                    label="IVA"
+                    variant="outlined"
+                    {...field}
+                  ></StyledTextField>
+                )}
+              ></Controller>
+              <Controller
+                name={`articles[${index}].totalPrice`}
+                control={control}
+                rules={{ required: "este campo es requerido" }}
+                render={({ field, fieldState: { error } }) => (
+                  <StyledTextField
+                    type="number"
+                    helperText={error ? error.message : null}
+                    error={!!error}
+                    label="Precio Total"
+                    variant="outlined"
+                    {...field}
+                  ></StyledTextField>
+                )}
+              ></Controller>
+
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => remove(index)}
+              >
+                Eliminar artículo
+              </Button>
             </FlexContainer>
-          )}
+          ))}
         </section>
-        
-        <Button variant="contained" color="primary" onClick={()=>{
-          console.log("click");
-          append({articleName: "", pricePerUnit: 0, quantity: 0, vat: 21, totalPrice: 0})
-        }}>
-        
-        Añadir Artículo
+
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => {
+            console.log("click");
+            append({
+              articleName: "",
+              pricePerUnit: 0,
+              quantity: 0,
+              vat: 21,
+              totalPrice: 0
+            });
+          }}
+        >
+          Añadir Artículo
         </Button>
 
         <Title>
@@ -238,41 +317,60 @@ useEffect(()=>{
         </Title>
         <hr />
         <Controller
-        name="invoiceTotal"
-        control={control}
-        rules={{required: "campo requerido"}}
-        render={({field, fieldState:{error}})=><StyledTextField type="number" label="Total Factura" variant="outlined" {...field} error={!!error} helperText={error? error.message : null}></StyledTextField>}
-        >
-        </Controller>
-        
-<Controller
-name="invoiceSubTotal"
-control={control}
-rules={{required: "campo requerido"}}
-        render={({field, fieldState:{error}})=><StyledTextField type="number" label="Base Imponible" variant="outlined" {...field} error={!!error} helperText={error? error.message : null}></StyledTextField>}
-        
-></Controller>
-<Controller
-name="invoiceTax"
-control={control}
-rules={{required: "campo requerido"}}
-        render={({field, fieldState:{error}})=><StyledTextField type="number" label="Importe del IVA" variant="outlined" {...field} error={!!error} helperText={error? error.message : null}></StyledTextField>}
-        
-></Controller>
+          name="invoiceTotal"
+          control={control}
+          rules={{ required: "campo requerido" }}
+          render={({ field, fieldState: { error } }) => (
+            <StyledTextField
+              type="number"
+              label="Total Factura"
+              variant="outlined"
+              {...field}
+              error={!!error}
+              helperText={error ? error.message : null}
+            ></StyledTextField>
+          )}
+        ></Controller>
 
-      
+        <Controller
+          name="invoiceSubTotal"
+          control={control}
+          rules={{ required: "campo requerido" }}
+          render={({ field, fieldState: { error } }) => (
+            <StyledTextField
+              type="number"
+              label="Base Imponible"
+              variant="outlined"
+              {...field}
+              error={!!error}
+              helperText={error ? error.message : null}
+            ></StyledTextField>
+          )}
+        ></Controller>
+        <Controller
+          name="invoiceTax"
+          control={control}
+          rules={{ required: "campo requerido" }}
+          render={({ field, fieldState: { error } }) => (
+            <StyledTextField
+              type="number"
+              label="Importe del IVA"
+              variant="outlined"
+              {...field}
+              error={!!error}
+              helperText={error ? error.message : null}
+            ></StyledTextField>
+          )}
+        ></Controller>
+
         <hr />
-        <StyledButton
-          variant="contained"
-          color="primary"
-          type="submit"
-        >
+        <StyledButton variant="contained" color="primary" type="submit">
           Guardar Factura
         </StyledButton>
         <StyledButton
           variant="contained"
           color="secondary"
-          onClick={closeModal}
+          onClick={handleCancel}
         >
           Cancelar
         </StyledButton>

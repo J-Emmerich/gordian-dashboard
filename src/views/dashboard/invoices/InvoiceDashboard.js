@@ -1,32 +1,11 @@
 import React, { useState, useEffect } from "react";
-import Modal from "@mui/material/Modal";
+
 import Button from "@mui/material/Button";
 import services from "../../../services/invoice";
 import styled from "styled-components";
-import InvoiceForm from "./components/InvoiceForm";
+
 import InvoiceTable from "./components/InvoiceTable";
-
-const modalStyle = {
-  backgroundColor: "white",
-  position: "absolute",
-  width: "50%",
-  height: "70%",
-  left: "20%",
-  top: "15%",
-  overflowY: "auto"
-};
-
-let newInvoice = {
-  invoiceNumber: "",
-  invoiceDate: "",
-  orderNumber: "",
-  invoiceTotal: "",
-  invoiceSubTotal: "",
-  invoiceTax: "",
-  clientName: "",
-  articles: ""
-};
-
+import { useNavigate, Link } from "react-router-dom";
 
 const Dashboard = styled.section`
   padding-top: 20px;
@@ -45,13 +24,12 @@ const Content = styled.section`
 
 const InvoiceDashboard = ({ token }) => {
   // Modal Inputs State
-  const [invoice, setInvoice] = useState(newInvoice);
+
   const [invoiceSaved, setInvoiceSaved] = useState(false);
   // Invoice List State
   const [invoiceList, setInvoiceList] = useState([]);
-  const [isEditing, setIsEditing] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
 
+  const navigate = useNavigate();
 
   useEffect(() => {
     callGetInvoices();
@@ -60,43 +38,18 @@ const InvoiceDashboard = ({ token }) => {
   const callGetInvoices = async () => {
     try {
       const invoices = await services.getInvoices(token);
-      if(invoices && invoices?.length !== undefined){
+      if (invoices && invoices?.length !== undefined) {
         setInvoiceList(invoices);
       }
-      
-      
     } catch (error) {
-      setInvoiceList([])
-      console.log(error)
+      setInvoiceList([]);
+      console.log(error);
     }
-  }
-  const resetDashboardState = () => {
-    setOpenModal(false);
-    setIsEditing(false);
-    setInvoice(newInvoice);
   };
-
-  // Save the articles list to the current invoice
-  const handleSubmit = async (filledInvoice, event) => {
-    event.preventDefault();
-    await services.saveInvoice(token, filledInvoice);
-    setInvoiceSaved(!invoiceSaved);
-    resetDashboardState();
-  };
-  // End of invoice Handlers
 
   // Editing invoice
   const editInvoice = (invoiceReceived) => {
-    setInvoice(invoiceReceived);
-    setIsEditing(true);
-    setOpenModal(true);
-  };
-
-  const handleEdit = async (filledInvoice, event) => {
-    event.preventDefault();
-    await services.editInvoice(token, filledInvoice);
-    setInvoiceSaved(!invoiceSaved);
-    resetDashboardState();
+    navigate("editarcliente", { state: invoiceReceived });
   };
 
   const handlePdf = async (id) => {
@@ -111,20 +64,18 @@ const InvoiceDashboard = ({ token }) => {
     if (window.confirm("Do you really want to delete the file?")) {
       await services.deleteInvoice(token, id);
       setInvoiceSaved(!invoiceSaved);
-      resetDashboardState();
     } else {
       console.log("so bad!");
     }
   };
   const callTable = () => {
-    
     return (
       <InvoiceTable
-      data={invoiceList}
-      handleClick={editInvoice}
-      saveToPdf={handlePdf}
-      deleteInvoice={deleteInvoice}
-    />
+        data={invoiceList}
+        handleClick={editInvoice}
+        saveToPdf={handlePdf}
+        deleteInvoice={deleteInvoice}
+      />
     );
   };
   return (
@@ -134,25 +85,13 @@ const InvoiceDashboard = ({ token }) => {
           <Button
             variant="contained"
             color="primary"
-            onClick={() => setOpenModal(true)}
+            component={Link}
+            to="anadirnuevo"
           >
             Nueva Factura
           </Button>
         </DashboardHeader>
-        <Content>
-          {invoiceList ?
-            callTable() : null}
-        </Content>
-        <Modal open={openModal} onClose={() => resetDashboardState()}>
-          <div style={modalStyle}>
-            <InvoiceForm
-              onSubmit={isEditing ? handleEdit : handleSubmit}
-              isEditing={isEditing}
-              invoice={invoice}
-              closeModal={() => resetDashboardState()}
-            />
-          </div>
-        </Modal>
+        <Content>{invoiceList ? callTable() : null}</Content>
       </div>
     </Dashboard>
   );

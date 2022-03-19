@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const baseUrl = process.env.REACT_APP_API_ENDPOINT || "/api";
+const baseUrl =
+  process.env.REACT_APP_API_ENDPOINT || "https://3r0658.sse.codesandbox.io/api";
 const path = "setting";
-
 
 const getProjects = async (token) => {
   try {
@@ -27,13 +27,12 @@ const getUser = async (token) => {
 };
 
 const saveProject = async (token, project) => {
-
   try {
     const user = await axios.post(`${baseUrl}/${path}`, project, {
       headers: { Authorization: `Bearer: ${token}` }
     });
- 
-    return user.data.data
+
+    return user.data.data;
   } catch (err) {
     console.log("has an error");
     console.log(err);
@@ -60,15 +59,22 @@ const deleteProject = async (token, id) => {
   }
 };
 
-const saveCurrentProject = async(token, projectId) => {
+const saveCurrentProject = async (token, projectId) => {
   try {
-const currentProject = await axios.put(`${baseUrl}/${path}`, projectId, {
-  headers: {Authorization: `Bearer: ${token}`}
-});
-return currentProject
+    const currentProject = await axios.put(`${baseUrl}/${path}`, projectId, {
+      headers: { Authorization: `Bearer: ${token}` }
+    });
+    return currentProject;
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
-}
+};
 
-export default { getProjects, saveProject, editProject, deleteProject, getUser, saveCurrentProject };
+export default {
+  getProjects,
+  saveProject,
+  editProject,
+  deleteProject,
+  getUser,
+  saveCurrentProject
+};

@@ -1,34 +1,9 @@
 import React, { useState, useEffect } from "react";
-import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import services from "../../../services/crm";
-import { v4 as uuid } from "uuid";
 import styled from "styled-components";
-import {Link} from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
 import CRMTable from "./components/CRMTable";
-import AddClient from "./components/CRMForm";
-
-const modalStyle = {
-  backgroundColor: "white",
-  position: "absolute",
-  width: "50%",
-  height: "70%",
-  left: "20%",
-  top: "15%",
-  overflowY: "auto"
-};
-
-let newCustomer = {
-  name: "",
-  estadoContrato: "No Firmado",
-  modeloContrato: "12 + IVA"
-};
-
-let pet = {
-  petType: "",
-  petName: "",
-  petId: ""
-};
 
 const Dashboard = styled.section`
   padding-top: 20px;
@@ -47,62 +22,34 @@ const Content = styled.section`
 
 const CRMDashboard = ({ token, user }) => {
   // Modal Inputs State
-  const [customer, setCustomer] = useState(newCustomer);
   const [customerSaved, setCustomerSaved] = useState(false);
   // Invoice List State
   const [customerList, setCustomerList] = useState([]);
-  const [isEditing, setIsEditing] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
 
+  const navigate = useNavigate();
 
   useEffect(() => {
     callGetCustomers();
   }, [customerSaved]);
 
   async function callGetCustomers() {
-    
     try {
       const customers = await services.getCustomers(token);
-      if(customers && customers?.length !== undefined){
+      if (customers && customers?.length !== undefined) {
         setCustomerList(customers);
       }
+    } catch (error) {
+      setCustomerList([]);
+      console.log(error);
     }
-  catch(error) {
-    setCustomerList([])
-    console.log(error)
-  }
   }
   const resetDashboardState = () => {
-    setOpenModal(false);
-    setIsEditing(false);
     setCustomerSaved(!customerSaved);
-    setCustomer(newCustomer);
-
   };
-
-
-  // Save the articles list to the current customer
-  const handleSubmit = async (customerToSave, event) => {
-    event.preventDefault();
-    await services.saveCustomer(token, customerToSave);
-    setCustomerSaved(!customerSaved);
-    resetDashboardState();
-  };
-  // End of customer Handlers
 
   // Editing customer
   const editCustomer = (customerReceived) => {
-    console.log(customerReceived);
-    setCustomer(customerReceived);
-    setIsEditing(true);
-    setOpenModal(true);
-  };
-
-  const handleEdit = async (customerToSave, e) => {
-    e.preventDefault();
-    await services.editCustomer(token, customerToSave);
-    setCustomerSaved(!customerSaved);
-    resetDashboardState();
+    navigate("editarcliente", { state: customerReceived });
   };
 
   const handlePdf = async (id) => {
@@ -143,22 +90,12 @@ const CRMDashboard = ({ token, user }) => {
             variant="contained"
             color="primary"
             component={Link}
-            to='anadirnuevo'
+            to="anadirnuevo"
           >
             Nuevo Cliente
           </Button>
         </DashboardHeader>
         <Content>{customerList ? callTable() : null}</Content>
-        <Modal open={openModal} onClose={() => resetDashboardState()}>
-          <div style={modalStyle}>
-            <AddClient
-              submitCRMForm={isEditing ? handleEdit : handleSubmit}
-              customer={customer}
-              isEditing={isEditing}
-              closeModal={() => resetDashboardState()}
-            />
-          </div>
-        </Modal>
       </div>
     </Dashboard>
   );
