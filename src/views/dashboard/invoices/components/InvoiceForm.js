@@ -76,10 +76,10 @@ const StyledDate = styled(MobileDatePicker)`
     padding: 20px;
   }
 `;
-const InvoiceForm = ({ onSubmit, isEditing, invoice, closeModal }) => {
+const InvoiceForm = ({ onSubmit, isEditing, invoice }) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const navigate = useNavigate();
-
+console.log(invoice, "on form")
   const { control, handleSubmit, reset, setValue } = useForm({
     defaultValues: {}
   });

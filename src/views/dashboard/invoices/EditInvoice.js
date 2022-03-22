@@ -8,7 +8,6 @@ const EditInvoice = ({ token }) => {
 
   const handleEdit = async (filledInvoice, event) => {
     event.preventDefault();
-    console.log("ha");
     await services.editInvoice(token, filledInvoice);
     navigate("../facturas", { replace: true });
   };
