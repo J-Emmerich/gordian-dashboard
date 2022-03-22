@@ -2,7 +2,7 @@ import axios from "axios";
 import handleFileDownload from "../helpers/handle-file-download";
 
 const baseUrl =
-  process.env.REACT_APP_API_ENDPOINT || "https://3r0658.sse.codesandbox.io/api";
+  process.env.REACT_APP_API_ENDPOINT || "/api";
 const path = "invoice";
 const getInvoices = async (token) => {
   try {

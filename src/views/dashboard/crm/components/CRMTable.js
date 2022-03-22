@@ -127,25 +127,17 @@ const CRMTable = ({ data, handleClick, deleteCustomer }) => {
   const TablePaginationActions = (props) => {
     const { count, page, rowsPerPage, onPageChange } = props;
 
-    const handleBackButtonClick = (event) => {
-      onPageChange(previousPage());
-    };
-
-    const handleNextButtonClick = (event) => {
-      onPageChange(nextPage());
-    };
-
     return (
       <Box sx={{ flexShrink: 0, ml: 2.5 }}>
         <IconButton
-          onClick={handleBackButtonClick}
+          onClick={()=>previousPage()}
           disabled={page === 0}
           aria-label="previous page"
         >
           <KeyboardArrowLeft />
         </IconButton>
         <IconButton
-          onClick={handleNextButtonClick}
+          onClick={()=>nextPage()}
           disabled={page >= Math.ceil(count / rowsPerPage) - 1}
           aria-label="next page"
         >
@@ -244,6 +236,7 @@ const CRMTable = ({ data, handleClick, deleteCustomer }) => {
             }}
             ActionsComponent={TablePaginationActions}
             onRowsPerPageChange={(e) => setPageSize(e.target.value)}
+            sx={{overflow: 'visible'}}
           />
         </TableFooter>
       </Table>
