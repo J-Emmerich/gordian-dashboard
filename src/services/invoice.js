@@ -1,7 +1,8 @@
 import axios from "axios";
 import handleFileDownload from "../helpers/handle-file-download";
 
-const baseUrl = process.env.REACT_APP_API_ENDPOINT || "/api";
+const baseUrl =
+  process.env.REACT_APP_API_ENDPOINT || "/api";
 const path = "invoice";
 const getInvoices = async (token) => {
   try {
@@ -37,7 +38,6 @@ const saveInvoice = async (token, invoice) => {
 };
 const editInvoice = async (token, invoice) => {
   try {
-
     await axios.put(`${baseUrl}/${path}/${invoice._id}`, invoice, {
       headers: { Authorization: `Bearer: ${token}` }
     });

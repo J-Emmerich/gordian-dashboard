@@ -4,34 +4,44 @@ import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 import styled from "styled-components";
 
-import PictureAsPdfIcon from "@material-ui/icons/PictureAsPdf";
-import DeleteIcon from "@material-ui/icons/Delete";
-import LastPage from "@material-ui/icons/LastPage";
-import FirstPage from "@material-ui/icons/FirstPage";
-import NavigateNext from "@material-ui/icons/NavigateNext";
-import NavigateBefore from "@material-ui/icons/NavigateBefore";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+
+import IconButton from "@mui/material/IconButton";
+import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
+import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
+
+import Box from "@mui/material/Box";
+import MuiTable from "@mui/material/Table";
+import MuiTableBody from "@mui/material/TableBody";
+import MuiTableCell from "@mui/material/TableCell";
+import MuiTableContainer from "@mui/material/TableContainer";
+import MuiTableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import TableFooter from "@mui/material/TableFooter";
+import TablePagination from "@mui/material/TablePagination";
+
+
 
 dayjs.extend(advancedFormat); // Plugin to format date
 
-const Table = styled.table`
+const Table = styled(MuiTable)`
   border-collapse: collapse;
   border-radius: 1em;
   overflow: hidden;
   width: 100%;
 `;
 
-const TableHeader = styled.thead`
+const TableHeader = styled(MuiTableHead)`
   background-color: #eee;
   & th {
     padding: 20px;
   }
 `;
 
-const Container = styled.div`
+const Container = styled(MuiTableContainer)`
   padding-top: 15px;
   .react-td,
   .save-to-pdf,
@@ -60,6 +70,9 @@ const Container = styled.div`
 const Pagination = styled.div`
   width: 100%;
 `;
+
+
+
 
 const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
   const [filterInput, setFilterInput] = useState("");
@@ -151,8 +164,33 @@ const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
     state: { pageIndex, pageSize }
   } = useTable({ columns, data }, useFilters, useSortBy, usePagination);
 
+  const TablePaginationActions = (props) => {
+    const { count, page, rowsPerPage, onPageChange } = props;
+
+  
+
+    return (
+      <Box sx={{ flexShrink: 0, ml: 2.5 }}>
+        <IconButton
+          onClick={()=>  previousPage()}
+          disabled={page === 0}
+          aria-label="previous page"
+        >
+          <KeyboardArrowLeft />
+        </IconButton>
+        <IconButton
+          onClick={()=>nextPage()}
+          disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+          aria-label="next page"
+        >
+          <KeyboardArrowRight />
+        </IconButton>
+      </Box>
+    );
+  };
+
   return (
-    <Container>
+    <Container >
       <input
         value={filterInput}
         onChange={handleFilterChange}
@@ -161,9 +199,9 @@ const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
       <Table {...getTableProps()}>
         <TableHeader>
           {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
+            <TableRow {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                <MuiTableCell {...column.getHeaderProps(column.getSortByToggleProps())}>
                   <div>
                     {column.render("Header")}
                     <span>
@@ -178,24 +216,24 @@ const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
                       )}
                     </span>
                   </div>
-                </th>
+                </MuiTableCell>
               ))}
-            </tr>
+            </TableRow>
           ))}
         </TableHeader>
 
-        <tbody className="rt-tbody" {...getTableBodyProps()}>
+        <MuiTableBody className="rt-tbody" {...getTableBodyProps()}>
           {page.map((row) => {
             prepareRow(row);
             return (
-              <tr key={row.original._id}>
+              <TableRow key={row.original._id}>
                 {row.cells.map((cell) => {
                   if (
                     cell.column.Header !== "Download" &&
                     cell.column.Header !== "Delete"
                   ) {
                     return (
-                      <td
+                      <MuiTableCell
                         className="react-td"
                         {...cell.getCellProps()}
                         onMouseEnter={(e) => {
@@ -209,63 +247,38 @@ const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
                         }}
                       >
                         {cell.render("Cell")}
-                      </td>
+                      </MuiTableCell>
                     );
                   } else {
                     return (
-                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                      <MuiTableCell {...cell.getCellProps()}>{cell.render("Cell")}</MuiTableCell>
                     );
                   }
                 })}
-              </tr>
+              </TableRow>
             );
           })}
-        </tbody>
-      </Table>
-      <Pagination>
-        <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-          <FirstPage />
-        </button>{" "}
-        <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-          <NavigateBefore />
-        </button>{" "}
-        <button onClick={() => nextPage()} disabled={!canNextPage}>
-          <NavigateNext />
-        </button>{" "}
-        <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
-          <LastPage />
-        </button>{" "}
-        <span>
-          Página
-          <strong>
-            {pageIndex + 1} de {pageOptions.length}
-          </strong>{" "}
-        </span>
-        <span>
-          | Ir a la página:{" "}
-          <input
-            type="number"
-            defaultValue={pageIndex + 1}
-            onChange={(e) => {
-              const page = e.target.value ? Number(e.target.value) - 1 : 0;
-              gotoPage(page);
+        </MuiTableBody>
+        <TableFooter>
+          <TablePagination
+            rowsPerPageOptions={[10, 20, 30]}
+            colSpan={3}
+            count={pageOptions.length}
+            rowsPerPage={pageSize}
+            page={pageIndex}
+            SelectProps={{
+              inputProps: {
+                "aria-label": "Columnas por página"
+              },
+              native: true
             }}
-            style={{ width: "100px" }}
-          />
-        </span>{" "}
-        <Select
-          value={pageSize}
-          onChange={(e) => {
-            setPageSize(Number(e.target.value));
-          }}
-        >
-          {[10, 20, 30, 40, 50].map((pageSize) => (
-            <MenuItem key={pageSize} value={pageSize}>
-              {pageSize}
-            </MenuItem>
-          ))}
-        </Select>
-      </Pagination>
+            ActionsComponent={TablePaginationActions}
+            onRowsPerPageChange={(e) => setPageSize(e.target.value)}
+        sx={{overflow: 'visible'}}
+        />
+        </TableFooter>
+      </Table>
+     
     </Container>
   );
 };

@@ -1,4 +1,5 @@
 import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
 import Header from './components/Header'
 import Hero from './components/Hero'
 import Footer from './components/Footer'
@@ -12,7 +13,9 @@ return (
     <Box sx={{display: 'flex', flexDirection: 'column', minHeight: '100vh'}}>
         
 <Header />
-    <Hero title="CRM Sin Complicación" description="Transforma tu negocio, gestiona todo lo que ocurre en tu empresa en un solo software."/>
+<Container>
+
+    <Hero  />
 <Element name="section2">
     <Features features={data}/>
     </Element> 
@@ -20,9 +23,10 @@ return (
     <About />
         </Element>      
     <CTA />
+
+
+</Container>
 <Footer />
-
-
     </Box>
 )
 }

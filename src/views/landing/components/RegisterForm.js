@@ -157,7 +157,7 @@ export default function LoginForm() {
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <NavLink to="/login">
-                  Ya tienes una cuenta? Accessar
+                  Ya tienes una cuenta? Acceder
 
                 </NavLink>
                 
