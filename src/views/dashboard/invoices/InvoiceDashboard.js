@@ -49,7 +49,8 @@ const InvoiceDashboard = ({ token }) => {
 
   // Editing invoice
   const editInvoice = (invoiceReceived) => {
-    navigate("editarcliente", { state: invoiceReceived });
+    console.log(invoiceReceived)
+    navigate("editarfactura", { state: invoiceReceived });
   };
 
   const handlePdf = async (id) => {
