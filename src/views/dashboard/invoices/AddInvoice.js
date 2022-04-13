@@ -7,7 +7,7 @@ const AddInvoice = ({ token }) => {
 
   const handleSubmit = async (filledInvoice, event) => {
     event.preventDefault();
-    console.log(filledInvoice)
+
     await services.saveInvoice(token, filledInvoice);
     navigate("../facturas", { replace: true });
   };

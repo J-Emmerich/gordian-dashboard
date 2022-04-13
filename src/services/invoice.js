@@ -56,14 +56,14 @@ const deleteInvoice = async (token, id) => {
   }
 };
 
-const saveToPdf = async (token, id) => {
+const saveToPdf = async (token, id, name) => {
   try {
     const pdf = await axios.get(`${baseUrl}/${path}/download/${id}`, {
       headers: { Authorization: `Bearer: ${token}` },
       responseType: "blob"
     });
-
-    handleFileDownload(pdf, id);
+    console.log(pdf.data)
+    handleFileDownload(pdf, name);
   } catch (err) {
     console.log(err);
   }

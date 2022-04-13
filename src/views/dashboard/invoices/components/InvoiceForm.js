@@ -79,7 +79,7 @@ const StyledDate = styled(MobileDatePicker)`
 const InvoiceForm = ({ onSubmit, isEditing, invoice }) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const navigate = useNavigate();
-console.log(invoice, "on form")
+
   const { control, handleSubmit, reset, setValue } = useForm({
     defaultValues: {}
   });
@@ -114,6 +114,7 @@ console.log(invoice, "on form")
   };
 
   const handleDateChange = (date) => {
+    console.log("Has changed to : ", date)
     if (dayjs(date).isValid()) {
       const UTCdate = dayjs(date).utc(true).format();
       const event = {
@@ -122,12 +123,20 @@ console.log(invoice, "on form")
           value: UTCdate
         }
       };
-      setSelectedDate(date);
+      console.log(UTCdate)
+      setSelectedDate(UTCdate);
+     
     }
+
   };
+
+  const submitWithDate = (data, e) => {
+    data.invoiceDate = selectedDate;
+    onSubmit(data, e);
+  }
   return (
     <div>
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <Form onSubmit={handleSubmit(submitWithDate)}>
         <Title>
           <h2>
             Factura n# <span>{invoice?.invoiceNumber}</span>

@@ -120,7 +120,7 @@ const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
           return (
             <PictureAsPdfIcon
               className="save-to-pdf"
-              onClick={() => saveToPdf(props.cell.value)}
+              onClick={() => saveToPdf(props.cell.value, props.cell.row.original.invoiceNumber)}
             >
               PDF
             </PictureAsPdfIcon>
@@ -153,11 +153,8 @@ const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
     prepareRow,
     setFilter,
     // Pagination helpers
-    canPreviousPage,
-    canNextPage,
     pageOptions,
-    pageCount,
-    gotoPage,
+    toggleHideColumn,
     nextPage,
     previousPage,
     setPageSize,
@@ -167,12 +164,10 @@ const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
   const TablePaginationActions = (props) => {
     const { count, page, rowsPerPage, onPageChange } = props;
 
-  
-
     return (
       <Box sx={{ flexShrink: 0, ml: 2.5 }}>
         <IconButton
-          onClick={()=>  previousPage()}
+          onClick={()=>previousPage()}
           disabled={page === 0}
           aria-label="previous page"
         >
@@ -261,9 +256,9 @@ const InvoiceTable = ({ data, handleClick, saveToPdf, deleteInvoice }) => {
         </MuiTableBody>
         <TableFooter>
           <TablePagination
-            rowsPerPageOptions={[10, 20, 30]}
+            rowsPerPageOptions={[10, 20, 30, data.length]}
             colSpan={3}
-            count={pageOptions.length}
+            count={data.length}
             rowsPerPage={pageSize}
             page={pageIndex}
             SelectProps={{

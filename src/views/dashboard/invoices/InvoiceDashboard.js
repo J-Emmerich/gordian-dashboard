@@ -53,9 +53,10 @@ const InvoiceDashboard = ({ token }) => {
     navigate("editarfactura", { state: invoiceReceived });
   };
 
-  const handlePdf = async (id) => {
+  const handlePdf = async (id, name) => {
+    
     if (window.confirm("do you want to save it?")) {
-      await services.saveToPdf(token, id);
+      await services.saveToPdf(token, id,name);
     } else {
       console.log("so bad!");
     }
