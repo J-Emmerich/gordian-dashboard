@@ -13,7 +13,7 @@
     "@mui/lab": "^5.0.0-alpha.70",
     "@mui/material": "^5.4.2",
     "@mui/styled-engine-sc": "^5.4.2",
-    "axios": "^0.26.1",
+    "axios": "^1.6.8",
     "dayjs": "^1.10.7",
     "react": "17.0.2",
     "react-beautiful-dnd": "^13.1.0",
@@ -23,7 +23,7 @@
     "react-scripts": "^5.0.0",
     "react-scroll": "^1.8.5",
     "react-table": "7.7.0",
-    "styled-components": "^5.3.3",
+    "styled-components": "^6.1.0",
     "typeface-roboto": "^1.1.13",
     "uuid": "8.3.2",
     "yup": "0.32.11"
